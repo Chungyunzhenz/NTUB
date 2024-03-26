@@ -16,4 +16,3 @@
 - [x] 決定主題
 - [x] 使用github
 - [ ] 完成專題
-:rocket: :rocket: :rocket: :rocket: :rocket: 
