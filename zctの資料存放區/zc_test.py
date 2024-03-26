@@ -2,18 +2,20 @@
 from google.api_core.client_options import ClientOptions
 from google.cloud import documentai  # type: ignore
 
-# TODO(developer): Uncomment these variables before running the sample.
-# project_id = "YOUR_PROJECT_ID"
-# location = "YOUR_PROCESSOR_LOCATION"  # Format is "us" or "eu"
-# file_path = "/path/to/local/pdf"
-# processor_display_name = "YOUR_PROCESSOR_DISPLAY_NAME" # Must be unique per project, e.g.: "My Processor"
+project_id = "zc-1-417715"
+location = "us" # Format is "us" or "eu"
+processor_id = "3b047912900fc8f2" # Create processor before running sample
+processor_version = "rc" # Refer to https://cloud.google.com/document-ai/docs/manage-processor-versions for more information
+file_path = "G:\LINE_ALBUM_202434_240319_1.jpg"
+mime_type = "image/jpeg" # Refer to https://cloud.google.com/document-ai/docs/file-types for supported file types
+
 
 
 def quickstart(
     project_id: str,
     location: str,
     file_path: str,
-    processor_display_name: str = "My Processor",
+    processor_display_name: str = "zc-8",
 ):
     # You must set the `api_endpoint`if you use a location other than "us".
     opts = ClientOptions(api_endpoint=f"{location}-documentai.googleapis.com")
