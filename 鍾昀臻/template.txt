@@ -2,3 +2,9 @@
 https://flutter.cn/docs/resources/architectural-overview
 2024.04.04
 https://github.com/bimsina/fluttertemplates.dev
+
+模板樣式
+1.https://github.com/ErfanRht/Tasker
+2.https://github.com/tsacdop/tsacdop
+3.https://github.com/bimsina/notes-app
+4.https://github.com/brownboycodes/HADWIN
