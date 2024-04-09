@@ -1,7 +1,7 @@
 import cv2
 import numpy as np
 
-image_path = 'G:/263_0.jpg'
+image_path = 'G:/287.jpg'
 image = cv2.imread(image_path)
 if image is None:
     print(f"无法加载图像: {image_path}")
