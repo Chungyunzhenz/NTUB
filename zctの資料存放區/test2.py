@@ -3,14 +3,14 @@ import numpy as np
 from PIL import Image
 import pytesseract
 import xml.etree.ElementTree as ET
+import os
 
 # 确保这里的路径指向你的Tesseract安装目录
 pytesseract.pytesseract.tesseract_cmd = r'C:\Program Files\Tesseract-OCR\tesseract.exe'
-# 注意：这里的配置仅在需要时使用，如果Tesseract和tessdata配置正确，可能不需要额外的tessdata_dir配置
+# 如果Tesseract和tessdata配置正确，可能不需要额外的tessdata_dir配置
 tessdata_dir_config = '--tessdata-dir "C:\\Program Files\\Tesseract-OCR\\tessdata"'
 lang = 'chi_tra'  # 使用繁体中文
 
-# 检查图像是否能被正确读取
 image_path = 'G:/263_0.jpg'
 image = cv2.imread(image_path)
 if image is None:
@@ -28,7 +28,7 @@ root = ET.Element("document")
 for contour in contours:
     [x, y, w, h] = cv2.boundingRect(contour)
     cv2.rectangle(image, (x, y), (x + w, y + h), (0, 255, 0), 2)
-    roi = gray[y:y + h, x:x + w]  # 使用灰度图像来提高OCR的准确性
+    roi = gray[y:y + h, x:x + w]
     pil_image = Image.fromarray(roi)
     text = pytesseract.image_to_string(pil_image, lang=lang, config=tessdata_dir_config)
 
@@ -40,11 +40,15 @@ for contour in contours:
         text_element.set("height", str(h))
         text_element.text = text
 
-# 尝试保存图像和XML文件，检查是否有权限问题
+annotated_image_path = 'annotated_image.jpg'
+output_xml_path = "output.xml"
+
 try:
-    cv2.imwrite('annotated_image.jpg', image)
+    cv2.imwrite(annotated_image_path, image)
     tree = ET.ElementTree(root)
-    tree.write("output.xml", encoding="utf-8", xml_declaration=True)
-    print("处理完成，已生成XML和标注图像。")
+    tree.write(output_xml_path, encoding="utf-8", xml_declaration=True)
+    print(f"处理完成，已生成XML和标注图像。")
+    print(f"标注图像已保存至: {os.path.abspath(annotated_image_path)}")
+    print(f"XML文件已保存至: {os.path.abspath(output_xml_path)}")
 except IOError as e:
     print(f"文件写入错误: {e}")
