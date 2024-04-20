@@ -9,14 +9,14 @@ CREATE TABLE IF NOT EXISTS Users (
     Name VARCHAR(255) NOT NULL,
     Phone VARCHAR(20),
     BirthDate DATE NOT NULL,
-    NationalID VARCHAR(20) NOT NULL
+    NationalID VARCHAR(20) NOT NULL,
     Role ENUM('Teacher', 'Teaching Assistant', 'Student', 'Administrator') NOT NULL
 );
 
 -- 創建圖檔上傳資料表
 CREATE TABLE IF NOT EXISTS ImageUploads (
     ID VARCHAR(255) PRIMARY KEY,
-    Image BLOB NOT NULL,
+    Image MEDIUMBLOB NOT NULL,
     UploadDate DATE NOT NULL,
     UploadedBy VARCHAR(255) NOT NULL,
     FOREIGN KEY (UploadedBy) REFERENCES Users(StudentID)
@@ -25,7 +25,7 @@ CREATE TABLE IF NOT EXISTS ImageUploads (
 -- 創建Word檔案上傳資料表
 CREATE TABLE IF NOT EXISTS WordUploads (
     ID VARCHAR(255) PRIMARY KEY,
-    Document BLOB NOT NULL,
+    Document MEDIUMBLOB NOT NULL,
     UploadDate DATE NOT NULL,
     UploadedBy VARCHAR(255) NOT NULL,
     FOREIGN KEY (UploadedBy) REFERENCES Users(StudentID)
