@@ -30,3 +30,26 @@ CREATE TABLE IF NOT EXISTS WordUploads (
     UploadedBy VARCHAR(255) NOT NULL,
     FOREIGN KEY (UploadedBy) REFERENCES Users(StudentID)
 );
+
+-- 創建觸發器來自動生成ID
+DELIMITER //
+CREATE TRIGGER GenerateID1 BEFORE INSERT ON ImageUploads
+FOR EACH ROW
+BEGIN
+    DECLARE random_num INT;
+    SET random_num = FLOOR(RAND() * 1000); -- 生成 0 到 999 之間的隨機數
+    SET NEW.ID = CONCAT(NEW.UploadedBy, '-', DATE_FORMAT(NEW.UploadDate, '%Y%m%d'), '-', LPAD(random_num, 3, '0'));
+END;
+//
+DELIMITER ;
+
+DELIMITER //
+CREATE TRIGGER GenerateID2 BEFORE INSERT ON WordUploads
+FOR EACH ROW
+BEGIN
+    DECLARE random_num INT;
+    SET random_num = FLOOR(RAND() * 1000); -- 生成 0 到 999 之間的隨機數
+    SET NEW.ID = CONCAT(NEW.UploadedBy, '-', DATE_FORMAT(NEW.UploadDate, '%Y%m%d'), '-', LPAD(random_num, 3, '0'));
+END;
+//
+DELIMITER ;
