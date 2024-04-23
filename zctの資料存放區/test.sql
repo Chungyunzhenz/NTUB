@@ -1,6 +1,3 @@
--- 創建資料庫
-CREATE DATABASE IF NOT EXISTS SchoolDB;
-USE SchoolDB;
 
 -- 創建用戶資料表
 CREATE TABLE IF NOT EXISTS Users (

@@ -10,15 +10,15 @@ from PIL import ImageTk
 def retrieve_image_from_db(image_id):
     try:
         connection = mysql.connector.connect(
-            host='127.0.0.1',
-            database='schooldb',
-            user='root',
-            password='--pass--'
+            host='34.80.115.127',
+            database='zc_sql1',
+            user='zcsqlpuser',
+            password='zct--passsql00'
         )
 
         if connection.is_connected():
             cursor = connection.cursor()
-            query = "SELECT Image FROM imageuploads WHERE ID = %s"
+            query = "SELECT Image FROM ImageUploads WHERE ID = %s"
             cursor.execute(query, (image_id,))
             image_data = cursor.fetchone()[0]
             return image_data
