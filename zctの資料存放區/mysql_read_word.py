@@ -2,19 +2,28 @@ import mysql.connector
 from mysql.connector import Error
 import os
 import tempfile
-
+from cryptography.fernet import Fernet
+encrypted = b'gAAAAABmJ-HH5iD3By1yKBym9ARKdpobie__uEu_57jlQwSRXu6f35xknPafR_A3n4oB3339jyV-966ZhBvmBUPj6dmm2Ff8tA=='
+encryptedd = b'gAAAAABmJ-Pjw431d8bK-U2YbKVsS3tM3ZoIi8hWaz6zBzF8tY5NAZt7EVDuDAxhi743NIDssyMdyItivSp45h2CxAkVta-q0A=='
+key=b'Q5ocFlVNMmukhZ7c0qtk9LyCsZ5gpVn438JNRHoKifk='
+def decrypt_message(encrypted_message, key):
+    f = Fernet(key)
+    decrypted_message = f.decrypt(encrypted_message).decode()
+    return decrypted_message
+decrypted = decrypt_message(encrypted, key)
+decryptedd = decrypt_message(encryptedd, key)
 def retrieve_word_from_db(word_id):
     try:
         connection = mysql.connector.connect(
-            host='127.0.0.1',
-            database='schooldb',
-            user='root',
-            password='--pass--'
+            host='34.80.115.127',
+            database='zc_sql1',
+            user=decrypted,
+            password=decryptedd
         )
 
         if connection.is_connected():
             cursor = connection.cursor()
-            query = "SELECT Document FROM worduploads WHERE ID = %s"
+            query = "SELECT Document FROM WordUploads WHERE ID = %s"
             cursor.execute(query, (word_id,))
             word_data = cursor.fetchone()[0]
             return word_data
