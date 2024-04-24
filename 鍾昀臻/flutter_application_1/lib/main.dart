@@ -24,7 +24,7 @@ class MyApp extends StatelessWidget {
         scaffoldBackgroundColor: Colors.white,
         cardColor: Colors.lightBlue.shade50,
       ),
-      home: const MyHomePage(title: '文件掃描辨識'),
+      home: const MyHomePage(title: '文件掃描辨識123'),
     );
   }
 }
