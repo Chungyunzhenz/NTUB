@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+//import 'package:provider/provider.dart';
 import 'AnnouncementPage.dart';
 import 'FormDownloadPage.dart';
 import 'FormUploadPage.dart';
+import 'manual.dart';
 
 void main() {
   runApp(const MyApp());
@@ -38,10 +39,6 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  void openLineBot() {
-    // 這裡添加打開 Line Bot 的操作
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -65,23 +62,21 @@ class _MyHomePageState extends State<MyHomePage> {
                 ),
               ),
             ),
-            // 使用 Material Design 指南中推荐的 ListTile，为每个功能添加适当的图标
-            _buildDrawerItem(Icons.announcement, '校園公告', AnnouncementPage()),
-            _buildDrawerItem(Icons.download, '表單下載', FormDownloadPage()),
             _buildDrawerItem(
-                Icons.upload_file, '表單上傳', FormUploadPage()), // 暂无页面，传递null
-            _buildDrawerItem(Icons.book, '使用手冊', null), // 暂无页面，传递null
+                Icons.announcement, '校園公告', const AnnouncementPage()),
+            _buildDrawerItem(Icons.download, '表單下載', const FormDownloadPage()),
+            _buildDrawerItem(Icons.upload_file, '表單上傳', const FormUploadPage()),
+            _buildDrawerItem(Icons.book, '使用手冊', const ManualPage()),
           ],
         ),
       ),
       body: ListView(
         children: <Widget>[
           _buildProfileCard(context),
-          // 可以添加其他功能按钮或信息显示
         ],
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: openLineBot,
+        onPressed: () {},
         tooltip: '開啟 Line Bot',
         backgroundColor: Theme.of(context).colorScheme.primary,
         child: const Icon(Icons.chat),
@@ -89,16 +84,13 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
-  Widget _buildDrawerItem(IconData icon, String title, Widget? page) {
+  Widget _buildDrawerItem(IconData icon, String title, Widget page) {
     return ListTile(
       leading: Icon(icon, color: Theme.of(context).colorScheme.primary),
       title: Text(title),
       onTap: () {
         Navigator.pop(context);
-        if (page != null) {
-          Navigator.push(
-              context, MaterialPageRoute(builder: (context) => page));
-        }
+        Navigator.push(context, MaterialPageRoute(builder: (context) => page));
       },
     );
   }
