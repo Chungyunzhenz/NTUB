@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'AnnouncementPage.dart';
 import 'FormDownloadPage.dart';
+import 'FormUploadPage.dart';
 
 void main() {
   runApp(const MyApp());
@@ -24,7 +25,7 @@ class MyApp extends StatelessWidget {
         scaffoldBackgroundColor: Colors.white,
         cardColor: Colors.lightBlue.shade50,
       ),
-      home: const MyHomePage(title: '文件掃描辨識123'),
+      home: const MyHomePage(title: '文件掃描辨識'),
     );
   }
 }
@@ -67,7 +68,8 @@ class _MyHomePageState extends State<MyHomePage> {
             // 使用 Material Design 指南中推荐的 ListTile，为每个功能添加适当的图标
             _buildDrawerItem(Icons.announcement, '校園公告', AnnouncementPage()),
             _buildDrawerItem(Icons.download, '表單下載', FormDownloadPage()),
-            _buildDrawerItem(Icons.upload_file, '表單上傳', null), // 暂无页面，传递null
+            _buildDrawerItem(
+                Icons.upload_file, '表單上傳', FormUploadPage()), // 暂无页面，传递null
             _buildDrawerItem(Icons.book, '使用手冊', null), // 暂无页面，传递null
           ],
         ),
