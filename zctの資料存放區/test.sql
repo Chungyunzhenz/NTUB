@@ -30,6 +30,11 @@ CREATE TABLE IF NOT EXISTS WordUploads (
     FOREIGN KEY (UploadedBy) REFERENCES Users(StudentID)
 );
 
+CREATE TABLE json_data (
+    id SERIAL PRIMARY KEY,
+    data JSON NOT NULL
+);
+
 -- 創建觸發器來自動生成ID
 DELIMITER //
 
