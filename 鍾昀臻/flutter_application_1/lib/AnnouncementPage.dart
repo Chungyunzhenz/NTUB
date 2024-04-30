@@ -1,6 +1,9 @@
+// ignore_for_file: file_names
+
 import 'package:flutter/material.dart';
 
 class AnnouncementPage extends StatelessWidget {
+  // ignore: use_super_parameters
   const AnnouncementPage({Key? key}) : super(key: key);
 
   @override

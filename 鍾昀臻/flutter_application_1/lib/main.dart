@@ -1,9 +1,10 @@
+// main.dart
 import 'package:flutter/material.dart';
-//import 'package:provider/provider.dart';
 import 'AnnouncementPage.dart';
 import 'FormDownloadPage.dart';
 import 'FormUploadPage.dart';
-import 'manual.dart';
+//import 'manual_page.dart';
+//import 'package:file_picker/file_picker.dart';
 
 void main() {
   runApp(const MyApp());
@@ -16,15 +17,8 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: '文件掃描辨識',
       theme: ThemeData(
-        colorScheme: ColorScheme.light(
-          primary: Colors.lightBlueAccent,
-          onPrimary: Colors.white,
-          secondary: Colors.lightBlue.shade100,
-          onSecondary: Colors.black,
-        ),
-        useMaterial3: true,
-        scaffoldBackgroundColor: Colors.white,
-        cardColor: Colors.lightBlue.shade50,
+        primarySwatch: Colors.blue,
+        visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
       home: const MyHomePage(title: '文件掃描辨識'),
     );
@@ -34,6 +28,7 @@ class MyApp extends StatelessWidget {
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key, required this.title});
   final String title;
+
   @override
   State<MyHomePage> createState() => _MyHomePageState();
 }
@@ -42,90 +37,44 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.primary,
-        title: Text(widget.title),
-      ),
+      appBar: AppBar(title: Text(widget.title)),
       drawer: Drawer(
         child: ListView(
-          padding: EdgeInsets.zero,
           children: <Widget>[
-            DrawerHeader(
-              decoration: BoxDecoration(
-                color: Theme.of(context).colorScheme.secondary,
-              ),
-              child: Text(
-                '主菜單',
-                style: TextStyle(
-                  color: Theme.of(context).colorScheme.onSecondary,
-                  fontSize: 24,
-                ),
-              ),
+            const DrawerHeader(
+              decoration: BoxDecoration(color: Colors.blue),
+              child: Text('主菜单'),
             ),
-            _buildDrawerItem(
+            _createDrawerItem(
                 Icons.announcement, '校園公告', const AnnouncementPage()),
-            _buildDrawerItem(Icons.download, '表單下載', const FormDownloadPage()),
-            _buildDrawerItem(Icons.upload_file, '表單上傳', const FormUploadPage()),
-            _buildDrawerItem(Icons.book, '使用手冊', const ManualPage()),
+            _createDrawerItem(Icons.download, '表單下載', const FormDownloadPage()),
+            _createDrawerItem(
+                Icons.upload_file, '表單上傳', const FormUploadPage()),
+            _createDrawerItem(Icons.book, '使用手冊', const ManualPage() as Widget),
           ],
         ),
       ),
-      body: ListView(
-        children: <Widget>[
-          _buildProfileCard(context),
-        ],
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {},
-        tooltip: '開啟 Line Bot',
-        backgroundColor: Theme.of(context).colorScheme.primary,
-        child: const Icon(Icons.chat),
+      body: const Center(
+        child: Text('主页面内容'),
       ),
     );
   }
 
-  Widget _buildDrawerItem(IconData icon, String title, Widget page) {
+  Widget _createDrawerItem(IconData icon, String title, Widget page) {
     return ListTile(
-      leading: Icon(icon, color: Theme.of(context).colorScheme.primary),
+      leading: Icon(icon),
       title: Text(title),
       onTap: () {
-        Navigator.pop(context);
-        Navigator.push(context, MaterialPageRoute(builder: (context) => page));
+        Navigator.of(context).pop(); // Close the drawer
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => page),
+        );
       },
     );
   }
+}
 
-  Widget _buildProfileCard(BuildContext context) {
-    return Card(
-      elevation: 4.0,
-      margin: const EdgeInsets.all(8.0),
-      child: Container(
-        padding: EdgeInsets.all(16.0),
-        child: Row(
-          children: <Widget>[
-            CircleAvatar(
-              radius: 30,
-              backgroundImage:
-                  AssetImage('assets/profile_pic.jpg'), // 使用本地圖片為圖像
-            ),
-            SizedBox(width: 10),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Text('姓名：王小華', style: Theme.of(context).textTheme.bodyText1),
-                  Text('科系：資訊管理系',
-                      style: Theme.of(context).textTheme.bodyText1),
-                  Text('學制：日間部二技',
-                      style: Theme.of(context).textTheme.bodyText1),
-                  Text('學號：11236099',
-                      style: Theme.of(context).textTheme.bodyText1),
-                ],
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
+class ManualPage {
+  const ManualPage();
 }
