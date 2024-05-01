@@ -50,7 +50,7 @@ class AnnouncementPage extends StatelessWidget {
               DataCell(Text('點擊進入查看詳情')),
               DataCell(Icon(Icons.keyboard_arrow_right, color: Colors.blue)),
             ]),
-            // 更多行数据...
+            // 更多行數據...
           ],
         ),
       ),
