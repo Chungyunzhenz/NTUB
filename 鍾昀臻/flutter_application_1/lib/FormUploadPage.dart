@@ -3,7 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter/services.dart'; // For file handling
-import 'package:file_picker/file_picker.dart'; // You need to add 'file_picker' to your pubspec.yaml dependencies
+import 'package:file_picker/file_picker.dart'; // Ensure file_picker is added to your pubspec.yaml
 
 class FormUploadPage extends StatelessWidget {
   const FormUploadPage({Key? key}) : super(key: key);
@@ -92,5 +92,3 @@ class FormUploadPage extends StatelessWidget {
     );
   }
 }
-
-class SizedBox {}
