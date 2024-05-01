@@ -4,7 +4,7 @@ from docx import Document
 from docx.shared import Inches
 
 # 載入JSON數據
-with open('data.json', 'r', encoding='utf-8') as file:
+with open("C:/Users/zct/Documents/GitHub/NTUB/zctの資料存放區/document.json", 'r', encoding='utf-8') as file:
     data = json.load(file)
 
 # 將JSON數據轉換為DataFrame

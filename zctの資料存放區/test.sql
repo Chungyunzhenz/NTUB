@@ -32,7 +32,10 @@ CREATE TABLE IF NOT EXISTS WordUploads (
 
 CREATE TABLE json_data (
     id SERIAL PRIMARY KEY,
-    data JSON NOT NULL
+    data JSON NOT NULL,
+    UploadDate DATE NOT NULL,
+    UploadedBy VARCHAR(255) NOT NULL,
+    FOREIGN KEY (UploadedBy) REFERENCES Users(StudentID)
 );
 
 -- 創建觸發器來自動生成ID
