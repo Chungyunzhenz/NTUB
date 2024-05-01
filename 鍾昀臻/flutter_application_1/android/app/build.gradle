@@ -23,7 +23,7 @@ if (flutterVersionName == null) {
 }
 
 android {
-    applicationId "com.example.flutter_application_1"
+    namespace "com.example.flutter_application_1"
     compileSdk flutter.compileSdkVersion
     ndkVersion flutter.ndkVersion
 
