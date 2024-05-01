@@ -1,7 +1,7 @@
 plugins {
-    id "com.android.application"
-    id "kotlin-android"
-    id "dev.flutter.flutter-gradle-plugin"
+    id 'com.android.application'
+    id 'kotlin-android'
+    id 'dev.flutter.flutter-gradle-plugin' apply false
 }
 
 def localProperties = new Properties()
@@ -23,7 +23,7 @@ if (flutterVersionName == null) {
 }
 
 android {
-    namespace "com.example.flutter_application_1"
+    applicationId "com.example.flutter_application_1"
     compileSdk flutter.compileSdkVersion
     ndkVersion flutter.ndkVersion
 

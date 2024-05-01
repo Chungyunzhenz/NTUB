@@ -1,17 +1,19 @@
+// ignore_for_file: file_names, unnecessary_import, use_super_parameters, sort_child_properties_last, use_build_context_synchronously
+
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:file_picker/file_picker.dart';
+import 'package:flutter/widgets.dart';
+import 'package:flutter/services.dart'; // For file handling
+import 'package:file_picker/file_picker.dart'; // You need to add 'file_picker' to your pubspec.yaml dependencies
 
 class FormUploadPage extends StatelessWidget {
   const FormUploadPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    ThemeData theme = Theme.of(context);
     return Scaffold(
       appBar: AppBar(
         title: Text('文件上傳'),
-        backgroundColor: theme.colorScheme.primary,
+        backgroundColor: Colors.blueAccent,
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -22,7 +24,7 @@ class FormUploadPage extends StatelessWidget {
                 columnSpacing: 20,
                 decoration: BoxDecoration(
                   color: Colors.white,
-                  border: Border.all(color: theme.colorScheme.primary),
+                  border: Border.all(color: Colors.blueAccent),
                   borderRadius: BorderRadius.circular(10),
                 ),
                 columns: const [
@@ -34,22 +36,17 @@ class FormUploadPage extends StatelessWidget {
                           style: TextStyle(fontWeight: FontWeight.bold))),
                   DataColumn(
                       label: Icon(Icons.file_upload, color: Colors.blue)),
-                  DataColumn(
-                      label: Icon(Icons.check_circle_outline,
-                          color: Colors.green)),
                 ],
                 rows: const [
                   DataRow(cells: [
                     DataCell(Text('example_file.pdf')),
                     DataCell(Text('未上傳')),
                     DataCell(Icon(Icons.file_upload, color: Colors.blue)),
-                    DataCell(LinearProgressIndicator(value: 0.5)), // 示例進度條
                   ]),
                   // More rows can be added dynamically
                 ],
               ),
             ),
-            SizedBox(height: 20),
             ElevatedButton(
               onPressed: () => _uploadFile(context),
               child: Text('選擇文件並上傳'),
@@ -72,7 +69,7 @@ class FormUploadPage extends StatelessWidget {
       _showUploadStatus(context, file.name, '上傳成功');
     } else {
       // User canceled the picker
-      _showUploadStatus(context, '', '沒有選擇文件');
+      _showUploadStatus(context, '', '没有選擇文件');
     }
   }
 
@@ -95,3 +92,5 @@ class FormUploadPage extends StatelessWidget {
     );
   }
 }
+
+class SizedBox {}
