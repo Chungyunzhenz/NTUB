@@ -55,7 +55,7 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
       ),
       body: const Center(
-        child: Text('主页面内容'),
+        child: Text('主畫面内容'),
       ),
     );
   }
