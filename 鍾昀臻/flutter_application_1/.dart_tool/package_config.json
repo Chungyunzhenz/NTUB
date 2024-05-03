@@ -32,6 +32,12 @@
       "languageVersion": "2.18"
     },
     {
+      "name": "cross_file",
+      "rootUri": "file:///C:/Users/emmac/AppData/Local/Pub/Cache/hosted/pub.dev/cross_file-0.3.4+1",
+      "packageUri": "lib/",
+      "languageVersion": "3.3"
+    },
+    {
       "name": "fake_async",
       "rootUri": "file:///C:/Users/emmac/AppData/Local/Pub/Cache/hosted/pub.dev/fake_async-1.3.1",
       "packageUri": "lib/",
@@ -39,15 +45,15 @@
     },
     {
       "name": "ffi",
-      "rootUri": "file:///C:/Users/emmac/AppData/Local/Pub/Cache/hosted/pub.dev/ffi-1.2.1",
+      "rootUri": "file:///C:/Users/emmac/AppData/Local/Pub/Cache/hosted/pub.dev/ffi-2.1.2",
       "packageUri": "lib/",
-      "languageVersion": "2.12"
+      "languageVersion": "3.3"
     },
     {
       "name": "file_picker",
-      "rootUri": "file:///C:/Users/emmac/AppData/Local/Pub/Cache/hosted/pub.dev/file_picker-4.6.1",
+      "rootUri": "file:///C:/Users/emmac/AppData/Local/Pub/Cache/hosted/pub.dev/file_picker-8.0.3",
       "packageUri": "lib/",
-      "languageVersion": "2.12"
+      "languageVersion": "2.19"
     },
     {
       "name": "flutter",
@@ -176,19 +182,25 @@
       "languageVersion": "3.0"
     },
     {
-      "name": "win32",
-      "rootUri": "file:///C:/Users/emmac/AppData/Local/Pub/Cache/hosted/pub.dev/win32-2.6.1",
+      "name": "web",
+      "rootUri": "file:///C:/Users/emmac/AppData/Local/Pub/Cache/hosted/pub.dev/web-0.5.1",
       "packageUri": "lib/",
-      "languageVersion": "2.17"
+      "languageVersion": "3.3"
     },
     {
-      "name": "flutter_application_1",
+      "name": "win32",
+      "rootUri": "file:///C:/Users/emmac/AppData/Local/Pub/Cache/hosted/pub.dev/win32-5.5.0",
+      "packageUri": "lib/",
+      "languageVersion": "3.3"
+    },
+    {
+      "name": "package_fonts",
       "rootUri": "../",
       "packageUri": "lib/",
       "languageVersion": "2.17"
     }
   ],
-  "generated": "2024-05-01T08:03:49.391954Z",
+  "generated": "2024-05-03T15:45:44.159797Z",
   "generator": "pub",
   "generatorVersion": "3.3.4"
 }
