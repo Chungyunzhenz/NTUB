@@ -3,9 +3,9 @@ import json
 import math
 
 # 讀取 Word 文件
-input_doc_path = "D:/NTUB/zctの資料存放區/uri.docx"
-output_doc_path = 'parsed_output.docx'
-doc = Document(input_doc_path)
+input_doc_path = "C:/Users/zct/Documents/GitHub/NTUB/zctの資料存放區/output.json"
+output_doc_path = 'parsed_output1.docx'
+doc = input_doc_path
 
 
 # 用於存儲處理後的表格數據
