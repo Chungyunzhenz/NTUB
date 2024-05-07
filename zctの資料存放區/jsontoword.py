@@ -2,7 +2,7 @@ import json
 from docx import Document
 
 # 載入 JSON 檔案
-with open("C:/Users/zct/Documents/GitHub/NTUB/zctの資料存放區/output.json", 'r', encoding='utf-8') as file:
+with open("C:/Users/zct/Documents/GitHub/NTUB/zctの資料存放區/測試輸出/output3.json", 'r', encoding='utf-8') as file:
     data = json.load(file)
 
 # 創建 Word 文件
@@ -31,7 +31,7 @@ if data and isinstance(data, list):
             table.cell(row_idx, col_idx).text = str(value) if value else ''
 
 # 儲存成 Word 檔案
-output_path = 'output0.docx'
+output_path = 'output3.docx'
 doc.save(output_path)
 
 print(f'The table has been created and saved to {output_path}')
