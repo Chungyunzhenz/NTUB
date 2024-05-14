@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mysql1/mysql1.dart';
-import 'package:http/http.dart' as http;
+import 'dart:convert';
+
 void main() {
   runApp(MyApp());
 }
@@ -28,10 +29,20 @@ class _MyHomePageState extends State<MyHomePage> {
   bool _isLoading = false;
   String _error = '';
 
+  final String _encryptedHost = 'MzQuODAuMTE1LjEyNw==';
+  final String _encryptedUser = 'emMx';
+  final String _encryptedPassword = 'emN0b29sMDIwNA==';
+  final String _encryptedDb = 'emNfc3FsMQ==';
+  final int _port = 3306;
+
   @override
   void initState() {
     super.initState();
     _fetchStudents();
+  }
+
+  String _decrypt(String encryptedText) {
+    return utf8.decode(base64Url.decode(encryptedText));
   }
 
   Future<void> _fetchStudents() async {
@@ -42,11 +53,11 @@ class _MyHomePageState extends State<MyHomePage> {
 
     try {
       final conn = await MySqlConnection.connect(ConnectionSettings(
-        host: '34.80.115.127',
-        port: 3306,
-        user: 'zc1',
-        password: 'zctool0204',
-        db: 'zc_sql1',
+        host: _decrypt(_encryptedHost),
+        port: _port,
+        user: _decrypt(_encryptedUser),
+        password: _decrypt(_encryptedPassword),
+        db: _decrypt(_encryptedDb),
       ));
 
       final results = await conn.query('SELECT * FROM Users');
@@ -83,7 +94,7 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Flutter MySQL Example'),
+        title: Text('Flutter MySQL Connect TEST'),
       ),
       body: _isLoading
           ? Center(child: CircularProgressIndicator())
