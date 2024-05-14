@@ -13,7 +13,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter MySQL Example',
+      title: 'Flutter MySQL Connect Test',
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
@@ -34,6 +34,7 @@ class _MyHomePageState extends State<MyHomePage> {
   Uint8List? _imageData;
 
   final picker = ImagePicker();
+  final TextEditingController _idController = TextEditingController();
 
   // 替換為加密後的字符串
   final String _encryptedHost = 'MzQuODAuMTE1LjEyNw==';
@@ -72,16 +73,16 @@ class _MyHomePageState extends State<MyHomePage> {
 
       final students = results
           .map((row) => {
-                'StudentID': row['StudentID'],
-                'Password': row['Password'],
-                'Name': row['Name'],
-                'Phone': row['Phone'],
-                'BirthDate': row['BirthDate'],
-                'NationalID': row['NationalID'],
-                'Role': row['Role'],
-                'Academic': row['Academic'],
-                'Department': row['Department'],
-              })
+        'StudentID': row['StudentID'],
+        'Password': row['Password'],
+        'Name': row['Name'],
+        'Phone': row['Phone'],
+        'BirthDate': row['BirthDate'],
+        'NationalID': row['NationalID'],
+        'Role': row['Role'],
+        'Academic': row['Academic'],
+        'Department': row['Department'],
+      })
           .toList();
 
       setState(() {
@@ -148,67 +149,133 @@ class _MyHomePageState extends State<MyHomePage> {
     }
   }
 
+  Future<void> _searchImage() async {
+    String id = _idController.text;
+    if (id.isEmpty) {
+      setState(() {
+        _error = 'Please enter an ID';
+      });
+      return;
+    }
+
+    setState(() {
+      _isLoading = true;
+      _error = '';
+      _imageData = null;
+    });
+
+    try {
+      final conn = await MySqlConnection.connect(ConnectionSettings(
+        host: _decrypt(_encryptedHost),
+        port: _port,
+        user: _decrypt(_encryptedUser),
+        password: _decrypt(_encryptedPassword),
+        db: _decrypt(_encryptedDb),
+      ));
+
+      var results = await conn.query(
+        'SELECT Image FROM ImageUploads WHERE ID = ?',
+        [id],
+      );
+
+      if (results.isNotEmpty) {
+        var row = results.first;
+        setState(() {
+          _imageData = (row['Image'] as Blob).toBytes() as Uint8List?;
+        });
+      } else {
+        setState(() {
+          _error = 'No image found for the given ID';
+        });
+      }
+
+      await conn.close();
+    } catch (e) {
+      setState(() {
+        _error = e.toString();
+      });
+    } finally {
+      setState(() {
+        _isLoading = false;
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Flutter MySQL Example'),
+        title: Text('Flutter MySQL Connect Test'),
       ),
       body: _isLoading
           ? Center(child: CircularProgressIndicator())
           : _error.isNotEmpty
-              ? Center(child: Text('Error: $_error'))
-              : Column(
-                  children: [
-                    _students.isEmpty
-                        ? Center(child: Text('No students found.'))
-                        : Expanded(
-                            child: ListView.builder(
-                              itemCount: _students.length,
-                              itemBuilder: (context, index) {
-                                final student = _students[index];
-                                return Card(
-                                  margin: EdgeInsets.all(10),
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(10.0),
-                                    child: Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      children: [
-                                        Text('StudentID: ${student['StudentID']}'),
-                                        Text('Password: ${student['Password']}'),
-                                        Text('Name: ${student['Name']}'),
-                                        Text('Phone: ${student['Phone']}'),
-                                        Text('BirthDate: ${student['BirthDate']}'),
-                                        Text('NationalID: ${student['NationalID']}'),
-                                        Text('Role: ${student['Role']}'),
-                                        Text('Academic: ${student['Academic']}'),
-                                        Text('Department: ${student['Department']}'),
-                                      ],
-                                    ),
-                                  ),
-                                );
-                              },
-                            ),
-                          ),
-                    if (_imageData != null)
-                      Image.memory(_imageData!),
-                    SizedBox(height: 10),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
+          ? Center(child: Text('Error: $_error'))
+          : Column(
+        children: [
+          _students.isEmpty
+              ? Center(child: Text('No students found.'))
+              : Expanded(
+            child: ListView.builder(
+              itemCount: _students.length,
+              itemBuilder: (context, index) {
+                final student = _students[index];
+                return Card(
+                  margin: EdgeInsets.all(10),
+                  child: Padding(
+                    padding: const EdgeInsets.all(10.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        ElevatedButton(
-                          onPressed: _pickImage,
-                          child: Text('Select Image'),
-                        ),
-                        SizedBox(width: 20),
-                        ElevatedButton(
-                          onPressed: _uploadImage,
-                          child: Text('Upload Image'),
-                        ),
+                        Text('StudentID: ${student['StudentID']}'),
+                        Text('Password: ${student['Password']}'),
+                        Text('Name: ${student['Name']}'),
+                        Text('Phone: ${student['Phone']}'),
+                        Text('BirthDate: ${student['BirthDate']}'),
+                        Text('NationalID: ${student['NationalID']}'),
+                        Text('Role: ${student['Role']}'),
+                        Text('Academic: ${student['Academic']}'),
+                        Text('Department: ${student['Department']}'),
                       ],
                     ),
-                  ],
-                ),
+                  ),
+                );
+              },
+            ),
+          ),
+          if (_imageData != null)
+            Image.memory(_imageData!),
+          SizedBox(height: 10),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              ElevatedButton(
+                onPressed: _pickImage,
+                child: Text('Select Image'),
+              ),
+              SizedBox(width: 20),
+              ElevatedButton(
+                onPressed: _uploadImage,
+                child: Text('Upload Image'),
+              ),
+            ],
+          ),
+          Padding(
+            padding: const EdgeInsets.all(10.0),
+            child: TextField(
+              controller: _idController,
+              decoration: InputDecoration(
+                border: OutlineInputBorder(),
+                labelText: 'Enter Image ID to Search',
+              ),
+            ),
+          ),
+          ElevatedButton(
+            onPressed: _searchImage,
+            child: Text('Search Image'),
+          ),
+        ],
+      ),
     );
   }
 }
