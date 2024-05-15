@@ -12,7 +12,7 @@ class FormUploadPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('文件上傳'),
+        title: Text('文件上传'),
         backgroundColor: Colors.blueAccent,
       ),
       body: SingleChildScrollView(
@@ -32,7 +32,7 @@ class FormUploadPage extends StatelessWidget {
                       label: Text('文件名',
                           style: TextStyle(fontWeight: FontWeight.bold))),
                   DataColumn(
-                      label: Text('狀態',
+                      label: Text('状态',
                           style: TextStyle(fontWeight: FontWeight.bold))),
                   DataColumn(
                       label: Icon(Icons.file_upload, color: Colors.blue)),
@@ -40,7 +40,7 @@ class FormUploadPage extends StatelessWidget {
                 rows: const [
                   DataRow(cells: [
                     DataCell(Text('example_file.pdf')),
-                    DataCell(Text('未上傳')),
+                    DataCell(Text('未上传')),
                     DataCell(Icon(Icons.file_upload, color: Colors.blue)),
                   ]),
                   // More rows can be added dynamically
@@ -49,7 +49,7 @@ class FormUploadPage extends StatelessWidget {
             ),
             ElevatedButton(
               onPressed: () => _uploadFile(context),
-              child: Text('選擇文件並上傳'),
+              child: Text('选择文件并上传'),
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.blueAccent,
               ),
@@ -66,10 +66,10 @@ class FormUploadPage extends StatelessWidget {
     if (result != null) {
       PlatformFile file = result.files.first;
       // Upload logic goes here
-      _showUploadStatus(context, file.name, '上傳成功');
+      _showUploadStatus(context, file.name, '上传成功');
     } else {
       // User canceled the picker
-      _showUploadStatus(context, '', '沒有選擇文件');
+      _showUploadStatus(context, '', '没有选择文件');
     }
   }
 
@@ -78,11 +78,11 @@ class FormUploadPage extends StatelessWidget {
     showDialog(
       context: context,
       builder: (BuildContext context) => AlertDialog(
-        title: Text('上傳狀態'),
+        title: Text('上传状态'),
         content: Text('文件名: $fileName\n$message'),
         actions: <Widget>[
           TextButton(
-            child: Text('關閉'),
+            child: Text('关闭'),
             onPressed: () {
               Navigator.of(context).pop();
             },
