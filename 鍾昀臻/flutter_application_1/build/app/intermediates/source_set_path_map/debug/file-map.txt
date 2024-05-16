@@ -1,0 +1,15 @@
+com.example.flutter_application_1.app-jetified-window-1.0.0-beta04-0 C:\Users\zct\.gradle\caches\transforms-3\032f4dff274e516110d9363a9793a3e3\transformed\jetified-window-1.0.0-beta04\res
+com.example.flutter_application_1.app-jetified-window-java-1.0.0-beta04-1 C:\Users\zct\.gradle\caches\transforms-3\142c24f2530665bb6deb4123ab140714\transformed\jetified-window-java-1.0.0-beta04\res
+com.example.flutter_application_1.app-core-1.6.0-2 C:\Users\zct\.gradle\caches\transforms-3\2579a7de00054bf46a8dbc332552f622\transformed\core-1.6.0\res
+com.example.flutter_application_1.app-jetified-annotation-experimental-1.1.0-3 C:\Users\zct\.gradle\caches\transforms-3\3f96ca76068ab400b494bc7d541ee256\transformed\jetified-annotation-experimental-1.1.0\res
+com.example.flutter_application_1.app-debug-4 G:\app_project\zc3\flutter_application_1\android\app\src\debug\res
+com.example.flutter_application_1.app-main-5 G:\app_project\zc3\flutter_application_1\android\app\src\main\res
+com.example.flutter_application_1.app-pngs-6 G:\app_project\zc3\flutter_application_1\build\app\generated\res\pngs\debug
+com.example.flutter_application_1.app-resValues-7 G:\app_project\zc3\flutter_application_1\build\app\generated\res\resValues\debug
+com.example.flutter_application_1.app-rs-8 G:\app_project\zc3\flutter_application_1\build\app\generated\res\rs\debug
+com.example.flutter_application_1.app-mergeDebugResources-9 G:\app_project\zc3\flutter_application_1\build\app\intermediates\incremental\debug\mergeDebugResources\merged.dir
+com.example.flutter_application_1.app-mergeDebugResources-10 G:\app_project\zc3\flutter_application_1\build\app\intermediates\incremental\debug\mergeDebugResources\stripped.dir
+com.example.flutter_application_1.app-merged_res-11 G:\app_project\zc3\flutter_application_1\build\app\intermediates\merged_res\debug
+com.example.flutter_application_1.app-packaged_res-12 G:\app_project\zc3\flutter_application_1\build\file_picker\intermediates\packaged_res\debug
+com.example.flutter_application_1.app-packaged_res-13 G:\app_project\zc3\flutter_application_1\build\flutter_plugin_android_lifecycle\intermediates\packaged_res\debug
+com.example.flutter_application_1.app-packaged_res-14 G:\app_project\zc3\flutter_application_1\build\path_provider_android\intermediates\packaged_res\debug
