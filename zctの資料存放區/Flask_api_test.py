@@ -1,5 +1,6 @@
 from flask import Flask, request, jsonify
 import mysql.connector
+from datetime import datetime
 
 app = Flask(__name__)
 
@@ -17,23 +18,23 @@ def get_db_connection():
     )
     return connection
 
-@app.route('/upload_data', methods=['POST'])
-def upload_data():
-    data = request.get_json()
-    Image = data.get('Image')
-    UploadDate = data.get('UploadDate')
-    UploadedBy = data.get('UploadedBy')
+@app.route('/upload_image', methods=['POST'])
+def upload_image():
+    image = request.files['image'].read()
+    upload_date = datetime.now()
+    uploaded_by = '00000000001'
     
     connection = get_db_connection()
     cursor = connection.cursor()
     
-    cursor.execute("INSERT INTO users (Image, UploadDate, UploadedBy) VALUES (%s, %s, %s)", (Image, UploadDate, UploadedBy))
+    cursor.execute("INSERT INTO ImageUploads (Image, UploadDate, UploadedBy) VALUES (%s, %s, %s)", 
+                   (image, upload_date, uploaded_by))
     connection.commit()
     
     cursor.close()
     connection.close()
     
-    return jsonify({'message': 'Data uploaded successfully!'})
+    return jsonify({'message': 'Image uploaded successfully!'})
 
 if __name__ == '__main__':
     app.run(debug=True)
