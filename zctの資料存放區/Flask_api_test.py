@@ -3,6 +3,7 @@ import mysql.connector
 from datetime import datetime
 import os
 import subprocess
+import pandas as pd
 
 app = Flask(__name__)
 
@@ -12,6 +13,7 @@ app.config['MYSQL_PASSWORD'] = 'zctool0204'
 app.config['MYSQL_DB'] = 'zc_sql1'
 
 IMG_INPUT_DIR = 'imginput'
+OUTPUT_DIR = 'G:/PaddleOCR-2.7.5/output'
 
 if not os.path.exists(IMG_INPUT_DIR):
     os.makedirs(IMG_INPUT_DIR)
@@ -34,21 +36,26 @@ def upload_image():
     upload_date = datetime.now()
     uploaded_by = '00000000001'
 
+    # 保存图片到本地
     image_path = os.path.join(IMG_INPUT_DIR, image_file.filename)
     image_file.save(image_path)
 
+    # 重新读取图片数据
+    with open(image_path, 'rb') as file:
+        image_data = file.read()
+
+    # 将图片数据插入数据库
     connection = get_db_connection()
     cursor = connection.cursor()
 
     cursor.execute("INSERT INTO ImageUploads (Image, UploadDate, UploadedBy) VALUES (%s, %s, %s)", 
-                   (image_file.read(), upload_date, uploaded_by))
+                   (image_data, upload_date, uploaded_by))
     connection.commit()
 
     cursor.close()
     connection.close()
 
     # 调用其他 Python 文件
-    output_dir = '../output/table'
     script_path = 'table/predict_table.py'
     det_model_dir = 'inference/ch_PP-OCRv3_det_infer'
     rec_model_dir = 'inference/ch_PP-OCRv3_rec_infer'
@@ -64,10 +71,19 @@ def upload_image():
         '--rec_char_dict_path', rec_char_dict_path,
         '--table_char_dict_path', table_char_dict_path,
         '--image_dir', image_path,
-        '--output', output_dir
+        '--output', OUTPUT_DIR
     ]
 
     subprocess.run(command, check=True)
+
+    # 查找并转换生成的 .xlsx 文件
+    xlsx_path = os.path.join(OUTPUT_DIR, f"{os.path.basename(image_path)}.xlsx")
+    json_path = os.path.join(OUTPUT_DIR, f"{os.path.basename(image_path)}.json")
+
+    if os.path.exists(xlsx_path):
+        df = pd.read_excel(xlsx_path)
+        df.to_json(json_path, orient='records', force_ascii=False)
+        print(f"Converted {xlsx_path} to {json_path}")
 
     return jsonify({'message': 'Image uploaded and processed successfully!', 'image_path': image_path})
 
