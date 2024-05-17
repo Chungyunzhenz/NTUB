@@ -4,13 +4,14 @@ from datetime import datetime
 import os
 import subprocess
 import pandas as pd
+import json
 
 app = Flask(__name__)
 
-app.config['MYSQL_HOST'] = '34.80.115.127'
-app.config['MYSQL_USER'] = 'zc1'
-app.config['MYSQL_PASSWORD'] = 'zctool0204'
-app.config['MYSQL_DB'] = 'zc_sql1'
+app.config['MYSQL_HOST'] = '0'
+app.config['MYSQL_USER'] = '0'
+app.config['MYSQL_PASSWORD'] = '0'
+app.config['MYSQL_DB'] = '0'
 
 IMG_INPUT_DIR = 'imginput'
 OUTPUT_DIR = 'G:/PaddleOCR-2.7.5/output'
@@ -88,6 +89,21 @@ def upload_image():
         df = pd.read_excel(xlsx_path)
         df.to_json(json_path, orient='records', force_ascii=False)
         print(f"Converted {xlsx_path} to {json_path}")
+
+        # 读取 JSON 文件内容并插入到数据库
+        with open(json_path, 'r', encoding='utf-8') as json_file:
+            json_data = json_file.read()
+
+        connection = get_db_connection()
+        cursor = connection.cursor()
+
+        cursor.execute("INSERT INTO json_data (data, UploadDate, UploadedBy) VALUES (%s, %s, %s)", 
+                       (json_data, upload_date, uploaded_by))
+        connection.commit()
+
+        cursor.close()
+        connection.close()
+
     else:
         print(f"{xlsx_path} does not exist.")  # Debug information
 
