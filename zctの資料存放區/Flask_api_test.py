@@ -48,7 +48,7 @@ def upload_image():
     connection = get_db_connection()
     cursor = connection.cursor()
 
-    cursor.execute("INSERT INTO ImageUploads (Image, UploadDate, UploadedBy) VALUES (%s, %s, %s)", 
+    cursor.execute("INSERT INTO ImageUploads (Image, UploadDate, UploadedBy) VALUES (%s, %s, %s)",
                    (image_data, upload_date, uploaded_by))
     connection.commit()
 
@@ -77,13 +77,19 @@ def upload_image():
     subprocess.run(command, check=True)
 
     # 查找并转换生成的 .xlsx 文件
-    xlsx_path = os.path.join(OUTPUT_DIR, f"{os.path.basename(image_path)}.xlsx")
-    json_path = os.path.join(OUTPUT_DIR, f"{os.path.basename(image_path)}.json")
+    image_base_name = os.path.basename(image_path)
+    image_name_without_ext = os.path.splitext(image_base_name)[0]
+    xlsx_path = os.path.join(OUTPUT_DIR, f"{image_name_without_ext}.xlsx")
+    json_path = os.path.join(OUTPUT_DIR, f"{image_name_without_ext}.json")
+
+    print(f"Looking for .xlsx file at: {xlsx_path}")  # Debug information
 
     if os.path.exists(xlsx_path):
         df = pd.read_excel(xlsx_path)
         df.to_json(json_path, orient='records', force_ascii=False)
         print(f"Converted {xlsx_path} to {json_path}")
+    else:
+        print(f"{xlsx_path} does not exist.")  # Debug information
 
     return jsonify({'message': 'Image uploaded and processed successfully!', 'image_path': image_path})
 
