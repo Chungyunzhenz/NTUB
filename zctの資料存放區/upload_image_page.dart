@@ -5,6 +5,8 @@ import 'dart:io';
 import 'dart:convert';
 
 class UploadImagePage extends StatefulWidget {
+  const UploadImagePage({super.key});
+
   @override
   _UploadImagePageState createState() => _UploadImagePageState();
 }
@@ -28,14 +30,17 @@ class _UploadImagePageState extends State<UploadImagePage> {
   Future<void> _uploadImage() async {
     if (_image == null) return;
 
-    final uri = Uri.parse('http://127.0.0.1:5000/upload_image');
+    final uri = Uri.parse('http://1.171.136.200:5000/upload_image');
     final request = http.MultipartRequest('POST', uri)
       ..files.add(await http.MultipartFile.fromPath('image', _image!.path));
 
     final response = await request.send();
 
     if (response.statusCode == 200) {
+      final responseData = await http.Response.fromStream(response);
+      final responseJson = json.decode(responseData.body);
       print('Image uploaded successfully');
+      print('Image path: ${responseJson['image_path']}');
     } else {
       print('Failed to upload image');
     }
