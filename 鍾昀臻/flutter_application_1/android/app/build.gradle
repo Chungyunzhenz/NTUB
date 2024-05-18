@@ -7,7 +7,7 @@ buildscript {
     dependencies {
         classpath 'com.android.tools.build:gradle:4.1.0'
         classpath 'org.jetbrains.kotlin:kotlin-gradle-plugin:1.6.10' // Use the latest Kotlin version
-        classpath 'dev.flutter:flutter-gradle-plugin:2.8.0' // Use the latest Flutter Gradle plugin version
+        classpath 'dev.flutter:flutter-gradle-plugin'// Use the latest Flutter Gradle plugin version
     }
 }
 
@@ -20,4 +20,14 @@ allprojects {
 
 task clean(type: Delete) {
     delete rootProject.buildDir
+}
+
+android {
+    defaultConfig {
+        applicationId "com.example.yourapp"
+        minSdkVersion 16
+        targetSdkVersion 30
+        versionCode 1
+        versionName "1.0"
+    }
 }

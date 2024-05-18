@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:dio/dio.dart';
+import 'package:path_provider/path_provider.dart';
+import 'dart:io';
 
 class FormDownloadPage extends StatefulWidget {
   const FormDownloadPage({Key? key}) : super(key: key);
@@ -14,11 +17,13 @@ class _FormDownloadPageState extends State<FormDownloadPage> {
       'name': '選課單',
       'department': '科系',
       'file': '選課單.pdf',
+      'url': 'https://example.com/選課單.pdf', // 替換為實際的文件URL
     },
     {
       'name': '請假單',
       'department': '學務處',
       'file': '請假單.pdf',
+      'url': 'https://example.com/請假單.pdf', // 替換為實際的文件URL
     },
   ];
 
@@ -64,8 +69,8 @@ class _FormDownloadPageState extends State<FormDownloadPage> {
                           DataCell(Text(form['name'])),
                           DataCell(IconButton(
                             icon: Icon(Icons.file_download),
-                            onPressed: () =>
-                                _downloadFile(context, form['file']),
+                            onPressed: () => _downloadFile(
+                                context, form['file'], form['url']),
                           )),
                           DataCell(IconButton(
                             icon: Icon(Icons.visibility),
@@ -108,13 +113,45 @@ class _FormDownloadPageState extends State<FormDownloadPage> {
     );
   }
 
-  void _downloadFile(BuildContext context, String fileName) {
-    // 模拟文件下载過程
+  Future<void> _downloadFile(
+      BuildContext context, String fileName, String fileUrl) async {
+    try {
+      var dio = Dio();
+      var dir = await getApplicationDocumentsDirectory();
+      String savePath = "${dir.path}/$fileName";
+
+      await dio.download(fileUrl, savePath);
+
+      _showDownloadSuccessDialog(context, fileName);
+    } catch (e) {
+      _showErrorDialog(context, e.toString());
+    }
+  }
+
+  void _showDownloadSuccessDialog(BuildContext context, String fileName) {
     showDialog(
       context: context,
       builder: (BuildContext context) => AlertDialog(
-        title: Text('下載文件'),
-        content: Text('您正在下載: $fileName'),
+        title: Text('下載成功'),
+        content: Text('文件已下載至: $fileName'),
+        actions: <Widget>[
+          TextButton(
+            child: Text('關閉'),
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _showErrorDialog(BuildContext context, String errorMessage) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) => AlertDialog(
+        title: Text('下載失敗'),
+        content: Text('錯誤: $errorMessage'),
         actions: <Widget>[
           TextButton(
             child: Text('關閉'),
