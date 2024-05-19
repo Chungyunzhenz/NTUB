@@ -14,8 +14,6 @@ class UploadImagePage extends StatefulWidget {
 class _UploadImagePageState extends State<UploadImagePage> {
   File? _image;
   final picker = ImagePicker();
-  final TextEditingController _ipController = TextEditingController();
-  String? _apiIP;
 
   Future<void> _pickImage() async {
     final pickedFile = await picker.pickImage(source: ImageSource.gallery);
@@ -30,9 +28,9 @@ class _UploadImagePageState extends State<UploadImagePage> {
   }
 
   Future<void> _uploadImage() async {
-    if (_image == null || _apiIP == null || _apiIP!.isEmpty) return;
+    if (_image == null) return;
 
-    final uri = Uri.parse('http://$_apiIP:5000/upload_image');
+    final uri = Uri.parse('http://1.171.136.200:5000/upload_image');
     final request = http.MultipartRequest('POST', uri)
       ..files.add(await http.MultipartFile.fromPath('image', _image!.path));
 
@@ -58,19 +56,6 @@ class _UploadImagePageState extends State<UploadImagePage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: TextField(
-                controller: _ipController,
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(),
-                  labelText: 'Enter Flask API IP',
-                ),
-                onChanged: (value) {
-                  _apiIP = value;
-                },
-              ),
-            ),
             _image == null
                 ? Text('No image selected.')
                 : Image.file(_image!),
