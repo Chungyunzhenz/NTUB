@@ -10,7 +10,7 @@
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
 START TRANSACTION;
-SET time_zone = "+08:00";
+SET time_zone = "+00:00";
 
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
@@ -30,9 +30,9 @@ SET time_zone = "+08:00";
 
 CREATE TABLE `announcement` (
   `id` int NOT NULL,
-  `Purpose` varchar(666) NOT NULL,
-  `content` varchar(666) DEFAULT NULL,
-  `sender` varchar(666) NOT NULL
+  `Purpose` varchar(4096) NOT NULL,
+  `content` varchar(4096) DEFAULT NULL,
+  `sender` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- --------------------------------------------------------
@@ -42,11 +42,11 @@ CREATE TABLE `announcement` (
 --
 
 CREATE TABLE `ImageUploads` (
-  `ID` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_unicode_ci NOT NULL,
+  `id` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_unicode_ci NOT NULL,
   `Image` longblob NOT NULL,
   `UploadDate` date NOT NULL,
   `UploadedBy` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_unicode_ci NOT NULL,
-  `state` varchar(666) COLLATE utf8mb3_unicode_ci DEFAULT NULL
+  `state` enum('upload finish','upload fail','rejrct','error','success') CHARACTER SET utf8mb3 COLLATE utf8mb3_unicode_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
 
 --
@@ -84,7 +84,7 @@ DELIMITER ;
 --
 
 CREATE TABLE `json_data` (
-  `id` bigint UNSIGNED NOT NULL,
+  `id` varchar(255) COLLATE utf8mb3_unicode_ci NOT NULL,
   `data` json NOT NULL,
   `UploadDate` date NOT NULL,
   `UploadedBy` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_unicode_ci NOT NULL
@@ -97,15 +97,16 @@ CREATE TABLE `json_data` (
 --
 
 CREATE TABLE `Users` (
-  `StudentID` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_unicode_ci NOT NULL,
+  `NationalID` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_unicode_ci NOT NULL,
   `Password` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_unicode_ci NOT NULL,
   `Name` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_unicode_ci NOT NULL,
   `Phone` varchar(20) CHARACTER SET utf8mb3 COLLATE utf8mb3_unicode_ci DEFAULT NULL,
   `BirthDate` date NOT NULL,
-  `NationalID` varchar(20) CHARACTER SET utf8mb3 COLLATE utf8mb3_unicode_ci NOT NULL,
-  `Role` enum('Teacher','Teaching Assistant','Student','Administrator') CHARACTER SET utf8mb3 COLLATE utf8mb3_unicode_ci NOT NULL,
-  `Academic` varchar(555) CHARACTER SET utf8mb3 COLLATE utf8mb3_unicode_ci NOT NULL,
-  `Department` varchar(555) CHARACTER SET utf8mb3 COLLATE utf8mb3_unicode_ci NOT NULL
+  `StudentID` varchar(20) CHARACTER SET utf8mb3 COLLATE utf8mb3_unicode_ci NOT NULL,
+  `Role` enum('老師','助教','管理員','學生') CHARACTER SET utf8mb3 COLLATE utf8mb3_unicode_ci NOT NULL,
+  `Academic` enum('四技','二技','五專','夜四技','夜二技','空中大學') CHARACTER SET utf8mb3 COLLATE utf8mb3_unicode_ci NOT NULL,
+  `Department` enum('會計資訊系','財務金融系','財政稅務系','國際商務系','應用外語系','企業管理系','資訊管理系','數位多媒體設計系','商業設計管理系','創意科技與產品設計系') CHARACTER SET utf8mb3 COLLATE utf8mb3_unicode_ci NOT NULL,
+  `line_id` varchar(512) CHARACTER SET utf8mb3 COLLATE utf8mb3_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
 
 -- --------------------------------------------------------
@@ -116,16 +117,10 @@ CREATE TABLE `Users` (
 
 CREATE TABLE `user_messages` (
   `id` int NOT NULL,
-  `user_id` varchar(255) DEFAULT NULL,
+  `user_id` varchar(512) CHARACTER SET utf8mb3 COLLATE utf8mb3_unicode_ci DEFAULT NULL,
   `message` text,
   `timestamp` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-
---
--- 傾印資料表的資料 `user_messages`
---
-
-
 
 -- --------------------------------------------------------
 
@@ -134,7 +129,7 @@ CREATE TABLE `user_messages` (
 --
 
 CREATE TABLE `WordUploads` (
-  `ID` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_unicode_ci NOT NULL,
+  `id` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_unicode_ci NOT NULL,
   `Document` longblob NOT NULL,
   `UploadDate` date NOT NULL,
   `UploadedBy` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_unicode_ci NOT NULL
@@ -176,14 +171,15 @@ DELIMITER ;
 -- 資料表索引 `announcement`
 --
 ALTER TABLE `announcement`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `announcement_fk` (`sender`);
 
 --
 -- 資料表索引 `ImageUploads`
 --
 ALTER TABLE `ImageUploads`
-  ADD PRIMARY KEY (`ID`),
-  ADD UNIQUE KEY `unique_id` (`ID`),
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `unique_id` (`id`),
   ADD KEY `UploadedBy` (`UploadedBy`);
 
 --
@@ -198,22 +194,24 @@ ALTER TABLE `json_data`
 -- 資料表索引 `Users`
 --
 ALTER TABLE `Users`
-  ADD PRIMARY KEY (`StudentID`),
-  ADD UNIQUE KEY `StudentID` (`StudentID`),
-  ADD UNIQUE KEY `NationalID` (`NationalID`);
+  ADD PRIMARY KEY (`NationalID`),
+  ADD UNIQUE KEY `StudentID` (`NationalID`),
+  ADD UNIQUE KEY `NationalID` (`StudentID`),
+  ADD KEY `idx_line_id` (`line_id`);
 
 --
 -- 資料表索引 `user_messages`
 --
 ALTER TABLE `user_messages`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `user_messages_fk` (`user_id`);
 
 --
 -- 資料表索引 `WordUploads`
 --
 ALTER TABLE `WordUploads`
-  ADD PRIMARY KEY (`ID`),
-  ADD UNIQUE KEY `unique_id` (`ID`),
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `unique_id` (`id`),
   ADD KEY `UploadedBy` (`UploadedBy`);
 
 --
@@ -227,12 +225,6 @@ ALTER TABLE `announcement`
   MODIFY `id` int NOT NULL AUTO_INCREMENT;
 
 --
--- 使用資料表自動遞增(AUTO_INCREMENT) `json_data`
---
-ALTER TABLE `json_data`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT;
-
---
 -- 使用資料表自動遞增(AUTO_INCREMENT) `user_messages`
 --
 ALTER TABLE `user_messages`
@@ -243,16 +235,36 @@ ALTER TABLE `user_messages`
 --
 
 --
+-- 資料表的限制式 `announcement`
+--
+ALTER TABLE `announcement`
+  ADD CONSTRAINT `announcement_fk` FOREIGN KEY (`sender`) REFERENCES `Users` (`NationalID`);
+
+--
 -- 資料表的限制式 `ImageUploads`
 --
 ALTER TABLE `ImageUploads`
-  ADD CONSTRAINT `ImageUploads_ibfk_1` FOREIGN KEY (`UploadedBy`) REFERENCES `Users` (`StudentID`);
+  ADD CONSTRAINT `ImageUploads_ibfk_1` FOREIGN KEY (`UploadedBy`) REFERENCES `Users` (`NationalID`);
 
 --
 -- 資料表的限制式 `json_data`
 --
 ALTER TABLE `json_data`
-  ADD CONSTRAINT `json_data_ibfk_1` FOREIGN KEY (`UploadedBy`) REFERENCES `Users` (`StudentID`);
+  ADD CONSTRAINT `json_data_fk1` FOREIGN KEY (`UploadedBy`) REFERENCES `Users` (`NationalID`),
+  ADD CONSTRAINT `json_data_fk2` FOREIGN KEY (`id`) REFERENCES `ImageUploads` (`id`),
+  ADD CONSTRAINT `json_data_ibfk_1` FOREIGN KEY (`UploadedBy`) REFERENCES `Users` (`NationalID`);
+
+--
+-- 資料表的限制式 `user_messages`
+--
+ALTER TABLE `user_messages`
+  ADD CONSTRAINT `user_messages_fk` FOREIGN KEY (`user_id`) REFERENCES `Users` (`line_id`);
+
+--
+-- 資料表的限制式 `WordUploads`
+--
+ALTER TABLE `WordUploads`
+  ADD CONSTRAINT `WordUploads_fk1` FOREIGN KEY (`UploadedBy`) REFERENCES `Users` (`NationalID`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
