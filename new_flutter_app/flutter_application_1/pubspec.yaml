@@ -1,4 +1,4 @@
-name: package_fonts
+name: flutter_application_1
 description: An example of how to use package fonts with Flutter
 
 dependencies:
@@ -6,8 +6,9 @@ dependencies:
     sdk: flutter
   file_picker: ^8.0.3
   http: ^0.13.3
-  path_provider: ^2.0.11  # 更新版本以確保兼容性
-  dio: ^5.0.3  # 添加dio依賴
+  path_provider: ^2.0.11
+  dio: ^5.0.3
+  permission_handler: ^10.2.0  # 添加permission_handler依賴
   flutter_application_1: ^0.0.2
 
 dev_dependencies:

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
 import 'package:path_provider/path_provider.dart';
 import 'dart:io';
+import 'package:permission_handler/permission_handler.dart';
 
 class FormDownloadPage extends StatefulWidget {
   const FormDownloadPage({Key? key}) : super(key: key);
@@ -23,7 +24,8 @@ class _FormDownloadPageState extends State<FormDownloadPage> {
       'name': '請假單',
       'department': '學務處',
       'file': '請假單.pdf',
-      'url': 'https://example.com/請假單.pdf', // 替換為實際的文件URL
+      'url':
+          'https://stud.ntub.edu.tw/app/index.php?Action=downloadfile&file=WVhSMFlXTm9MekV2Y0hSaFh6WTVNVGMyWHpneU9Ea3dYelkyTVRNeUxtOWtkQT09&fname=LOGGROOKWWCGA1YXEDLKSW24143025RLYSFG04XSVXGDXW40A0YW01SWWWOOA0OKZTPOZXKK200454HCMOXSTSLO34B0WSGCNPYTXWA034MKB001USSSWXFCMKPOCDNLDGA054WSVW30HCLK1434YSLK4435QPROLKB4YSSWIG00CDUSNOPOQPYXDGFGVWYWVWXSRLYS20RO14XSJDNPPOA5NKROECFGIGPOFCEGWWDCFD10TS24KPWWKKTWWTYWQO34SSMKTXJD40PKKPNO1145',
     },
   ];
 
@@ -116,24 +118,30 @@ class _FormDownloadPageState extends State<FormDownloadPage> {
   Future<void> _downloadFile(
       BuildContext context, String fileName, String fileUrl) async {
     try {
+      // Request storage permissions
+      var status = await Permission.storage.request();
+      if (!status.isGranted) {
+        throw Exception('Storage permission not granted');
+      }
+
       var dio = Dio();
       var dir = await getApplicationDocumentsDirectory();
       String savePath = "${dir.path}/$fileName";
 
       await dio.download(fileUrl, savePath);
 
-      _showDownloadSuccessDialog(context, fileName);
+      _showDownloadSuccessDialog(context, savePath);
     } catch (e) {
       _showErrorDialog(context, e.toString());
     }
   }
 
-  void _showDownloadSuccessDialog(BuildContext context, String fileName) {
+  void _showDownloadSuccessDialog(BuildContext context, String filePath) {
     showDialog(
       context: context,
       builder: (BuildContext context) => AlertDialog(
         title: Text('下載成功'),
-        content: Text('文件已下載至: $fileName'),
+        content: Text('文件已下載至: $filePath'),
         actions: <Widget>[
           TextButton(
             child: Text('關閉'),
