@@ -8,7 +8,7 @@ import json
 
 app = Flask(__name__)
 
-app.config['MYSQL_HOST'] = '0'
+app.config['MYSQL_HOST'] = '0.0.0.127'
 app.config['MYSQL_USER'] = '0'
 app.config['MYSQL_PASSWORD'] = '0'
 app.config['MYSQL_DB'] = '0'
@@ -35,7 +35,7 @@ def upload_image():
         return jsonify({'error': 'No image provided'}), 400
 
     upload_date = datetime.now()
-    uploaded_by = '00000000001'
+    uploaded_by = 'WET8644G3S46'
 
     # 保存图片到本地
     image_path = os.path.join(IMG_INPUT_DIR, image_file.filename)
@@ -52,6 +52,11 @@ def upload_image():
     cursor.execute("INSERT INTO ImageUploads (Image, UploadDate, UploadedBy) VALUES (%s, %s, %s)",
                    (image_data, upload_date, uploaded_by))
     connection.commit()
+    cursor.execute("SELECT id FROM ImageUploads WHERE UploadedBy = %s ORDER BY UploadDate DESC LIMIT 1",
+                   ( uploaded_by,))
+    image_id = cursor.fetchone()[0]
+
+
 
     cursor.close()
     connection.close()
@@ -96,9 +101,9 @@ def upload_image():
 
         connection = get_db_connection()
         cursor = connection.cursor()
-
-        cursor.execute("INSERT INTO json_data (data, UploadDate, UploadedBy) VALUES (%s, %s, %s)", 
-                       (json_data, upload_date, uploaded_by))
+        print("///"+image_id+"///")
+        cursor.execute("INSERT INTO json_data (id,data, UploadDate, UploadedBy) VALUES (%s, %s, %s, %s)", 
+                       (image_id, json_data, upload_date, uploaded_by))
         connection.commit()
 
         cursor.close()
