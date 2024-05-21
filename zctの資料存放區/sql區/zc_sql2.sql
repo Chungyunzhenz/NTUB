@@ -2,9 +2,9 @@
 -- version 4.9.1
 -- https://www.phpmyadmin.net/
 --
--- 主機： 140.131.114.242
+-- 主機： 34.80.115.127
 -- 產生時間： 
--- 伺服器版本： 8.0.36-0ubuntu0.22.04.1
+-- 伺服器版本： 8.0.31-google
 -- PHP 版本： 7.3.10
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
@@ -19,7 +19,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- 資料庫： `113-Ntub_113205DB`
+-- 資料庫： `zc_sql2`
 --
 
 -- --------------------------------------------------------
@@ -42,9 +42,9 @@ CREATE TABLE `announcement` (
 --
 
 CREATE TABLE `ImageUploads` (
-  `id` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_unicode_ci NOT NULL,
+  `id` varchar(1024) CHARACTER SET utf8mb3 COLLATE utf8mb3_unicode_ci NOT NULL,
   `Image` longblob NOT NULL,
-  `UploadDate` date NOT NULL,
+  `UploadDate` datetime NOT NULL,
   `UploadedBy` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_unicode_ci NOT NULL,
   `state` enum('upload finish','upload fail','rejrct','error','success') CHARACTER SET utf8mb3 COLLATE utf8mb3_unicode_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
@@ -84,7 +84,7 @@ DELIMITER ;
 --
 
 CREATE TABLE `json_data` (
-  `id` varchar(255) COLLATE utf8mb3_unicode_ci NOT NULL,
+  `id` varchar(1024) COLLATE utf8mb3_unicode_ci NOT NULL,
   `data` json NOT NULL,
   `UploadDate` date NOT NULL,
   `UploadedBy` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_unicode_ci NOT NULL
@@ -108,6 +108,13 @@ CREATE TABLE `Users` (
   `Department` enum('會計資訊系','財務金融系','財政稅務系','國際商務系','應用外語系','企業管理系','資訊管理系','數位多媒體設計系','商業設計管理系','創意科技與產品設計系') CHARACTER SET utf8mb3 COLLATE utf8mb3_unicode_ci NOT NULL,
   `line_id` varchar(512) CHARACTER SET utf8mb3 COLLATE utf8mb3_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+
+--
+-- 傾印資料表的資料 `Users`
+--
+
+INSERT INTO `Users` (`NationalID`, `Password`, `Name`, `Phone`, `BirthDate`, `StudentID`, `Role`, `Academic`, `Department`, `line_id`) VALUES
+('WET8644G3S46', 'sedewf6468ew', 'test', '0912345678', '1999-01-01', '00000000001', '老師', '四技', '會計資訊系', 'drfh5767');
 
 -- --------------------------------------------------------
 
@@ -179,7 +186,6 @@ ALTER TABLE `announcement`
 --
 ALTER TABLE `ImageUploads`
   ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `unique_id` (`id`),
   ADD KEY `UploadedBy` (`UploadedBy`);
 
 --
@@ -187,8 +193,7 @@ ALTER TABLE `ImageUploads`
 --
 ALTER TABLE `json_data`
   ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `id` (`id`),
-  ADD KEY `UploadedBy` (`UploadedBy`);
+  ADD UNIQUE KEY `id` (`id`);
 
 --
 -- 資料表索引 `Users`
@@ -245,14 +250,6 @@ ALTER TABLE `announcement`
 --
 ALTER TABLE `ImageUploads`
   ADD CONSTRAINT `ImageUploads_ibfk_1` FOREIGN KEY (`UploadedBy`) REFERENCES `Users` (`NationalID`);
-
---
--- 資料表的限制式 `json_data`
---
-ALTER TABLE `json_data`
-  ADD CONSTRAINT `json_data_fk1` FOREIGN KEY (`UploadedBy`) REFERENCES `Users` (`NationalID`),
-  ADD CONSTRAINT `json_data_fk2` FOREIGN KEY (`id`) REFERENCES `ImageUploads` (`id`),
-  ADD CONSTRAINT `json_data_ibfk_1` FOREIGN KEY (`UploadedBy`) REFERENCES `Users` (`NationalID`);
 
 --
 -- 資料表的限制式 `user_messages`
