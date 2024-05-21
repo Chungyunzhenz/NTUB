@@ -126,6 +126,7 @@ class LoginPage extends StatelessWidget {
   }
 }
 
+// 註冊頁面
 class SignUpPage extends StatelessWidget {
   final TextEditingController usernameController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
@@ -181,6 +182,7 @@ class SignUpPage extends StatelessWidget {
   }
 }
 
+// 首頁
 class HomePage extends StatelessWidget {
   final String role;
   final VoidCallback toggleTheme;
@@ -437,10 +439,11 @@ class AssistantHomePage extends StatelessWidget {
   final VoidCallback toggleTheme;
   final bool isDarkMode;
 
-  AssistantHomePage(
-      {required this.title,
-      required this.toggleTheme,
-      required this.isDarkMode});
+  AssistantHomePage({
+    required this.title,
+    required this.toggleTheme,
+    required this.isDarkMode,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -458,16 +461,30 @@ class AssistantHomePage extends StatelessWidget {
               Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(
-                    builder: (context) => LoginPage(
-                        toggleTheme: toggleTheme, isDarkMode: isDarkMode)),
+                  builder: (context) => LoginPage(
+                    toggleTheme: toggleTheme,
+                    isDarkMode: isDarkMode,
+                  ),
+                ),
               );
             },
           ),
         ],
       ),
       body: Center(
-        child: Text('助教專用介面'),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              '這是助教專用介面，你可以在這裡添加助教特定的功能。',
+              style: TextStyle(fontSize: 18),
+              textAlign: TextAlign.center,
+            ),
+            // 在這裡添加助教專用的功能小部件
+          ],
+        ),
       ),
+      backgroundColor: Colors.yellow[100], // 設置背景顏色
     );
   }
 }
@@ -477,10 +494,11 @@ class TeacherHomePage extends StatelessWidget {
   final VoidCallback toggleTheme;
   final bool isDarkMode;
 
-  TeacherHomePage(
-      {required this.title,
-      required this.toggleTheme,
-      required this.isDarkMode});
+  TeacherHomePage({
+    required this.title,
+    required this.toggleTheme,
+    required this.isDarkMode,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -498,8 +516,11 @@ class TeacherHomePage extends StatelessWidget {
               Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(
-                    builder: (context) => LoginPage(
-                        toggleTheme: toggleTheme, isDarkMode: isDarkMode)),
+                  builder: (context) => LoginPage(
+                    toggleTheme: toggleTheme,
+                    isDarkMode: isDarkMode,
+                  ),
+                ),
               );
             },
           ),
@@ -508,6 +529,7 @@ class TeacherHomePage extends StatelessWidget {
       body: Center(
         child: Text('老師專用介面'),
       ),
+      backgroundColor: Colors.green[100],
     );
   }
 }
