@@ -27,7 +27,7 @@ class SettingsPage extends StatelessWidget {
           children: <Widget>[
             Text(
               '個人資訊',
-              style: Theme.of(context).textTheme.headline6,
+              //style: Theme.of(context).textTheme.headline6,
             ),
             const SizedBox(height: 20),
             _buildTextField(
@@ -132,3 +132,5 @@ class SettingsPage extends StatelessWidget {
     );
   }
 }
+
+mixin headline6 {}
