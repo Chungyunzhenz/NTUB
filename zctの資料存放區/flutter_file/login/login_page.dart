@@ -1,0 +1,92 @@
+import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'main.dart';
+
+class LoginPage extends StatefulWidget {
+  @override
+  _LoginPageState createState() => _LoginPageState();
+}
+
+class _LoginPageState extends State<LoginPage> {
+  final _studentIdController = TextEditingController();
+  final _passwordController = TextEditingController();
+  final _storage = FlutterSecureStorage();
+
+  Future<void> _login() async {
+    final studentId = _studentIdController.text;
+    final password = _passwordController.text;
+
+    if (studentId.isEmpty || password.isEmpty) {
+      _showError('Please enter both StudentID and Password');
+      return;
+    }
+
+    final response = await http.post(
+      Uri.parse('http://125.229.155.140:5000/login'),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(<String, String>{
+        'StudentID': studentId,
+        'Password': password,
+      }),
+    );
+
+    if (response.statusCode == 200) {
+      await _storage.write(key: 'user', value: response.body);
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => MainPage()),
+      );
+    } else {
+      final error = jsonDecode(response.body)['error'];
+      _showError(error);
+    }
+  }
+
+  void _showError(String message) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text('Error'),
+        content: Text(message),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(),
+            child: Text('OK'),
+          ),
+        ],
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: Text('Login')),
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          children: [
+            TextField(
+              controller: _studentIdController,
+              decoration: InputDecoration(labelText: 'StudentID'),
+            ),
+            TextField(
+              controller: _passwordController,
+              decoration: InputDecoration(labelText: 'Password'),
+              obscureText: true,
+            ),
+            SizedBox(height: 20),
+            ElevatedButton(
+              onPressed: _login,
+              child: Text('Login'),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}

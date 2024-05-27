@@ -6,10 +6,10 @@ app = Flask(__name__)
 
 # 设置MySQL连接
 db_config = {
-    'user': 'zc1',
-    'password': 'zctool0204',
-    'host': '34.80.115.127',
-    'database': 'zc_sql2',
+    'user': '0',
+    'password': '0',
+    'host': '0.0.0.0',
+    'database': '0',
 }
 
 @app.route('/login', methods=['POST'])
