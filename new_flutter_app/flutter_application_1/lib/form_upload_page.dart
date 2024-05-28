@@ -18,7 +18,6 @@ class _FormUploadPageState extends State<FormUploadPage> {
   File? _image;
   final picker = ImagePicker();
   final TextEditingController _ipController = TextEditingController();
-  String? _apiIP;
 
   Future<void> _pickImage() async {
     final pickedFile = await picker.pickImage(source: ImageSource.gallery);
@@ -33,9 +32,9 @@ class _FormUploadPageState extends State<FormUploadPage> {
   }
 
   Future<void> _uploadImage() async {
-    if (_image == null || _apiIP == null || _apiIP!.isEmpty) return;
+    if (_image == null ) return;
 
-    final uri = Uri.parse('http://$_apiIP:5000/upload_image');
+    final uri = Uri.parse('http://125.229.155.140:5000:5000/upload_image');
     final request = http.MultipartRequest('POST', uri)
       ..files.add(await http.MultipartFile.fromPath('image', _image!.path));
 
@@ -132,19 +131,7 @@ class _FormUploadPageState extends State<FormUploadPage> {
               ),
             ),
             SizedBox(height: 20),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: TextField(
-                controller: _ipController,
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(),
-                  labelText: 'Enter Flask API IP',
-                ),
-                onChanged: (value) {
-                  _apiIP = value;
-                },
-              ),
-            ),
+            
             _image == null ? Text('No image selected.') : Image.file(_image!),
             SizedBox(height: 20),
             ElevatedButton(
