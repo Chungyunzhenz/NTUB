@@ -12,12 +12,15 @@ dependencies:
   mysql1: ^0.20.0
   cupertino_icons: ^1.0.2
   image_picker: ^0.8.4+4
+  google_sign_in: ^5.0.7
+  flutter_secure_storage: ^5.0.2
 
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-
+  flutter_lints: ^3.0.0
+  
 environment:
   sdk: '>=2.17.0 <3.0.0'  # 支持空安全的最低版本
 

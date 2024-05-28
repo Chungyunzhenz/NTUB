@@ -1,3 +1,4 @@
+// ignore: file_names
 import 'package:flutter/material.dart';
 
 class AnnouncementPage extends StatefulWidget {
@@ -61,7 +62,9 @@ class _AnnouncementPageState extends State<AnnouncementPage> {
     if (selectedLocation == '全部') {
       return announcements;
     }
-    return announcements.where((announcement) => announcement.location == selectedLocation).toList();
+    return announcements
+        .where((announcement) => announcement.location == selectedLocation)
+        .toList();
   }
 
   @override
@@ -111,15 +114,20 @@ class _AnnouncementPageState extends State<AnnouncementPage> {
           ),
           columns: const [
             DataColumn(
-                label: Text('日期', style: TextStyle(fontWeight: FontWeight.bold))),
+                label:
+                    Text('日期', style: TextStyle(fontWeight: FontWeight.bold))),
             DataColumn(
-                label: Text('時間', style: TextStyle(fontWeight: FontWeight.bold))),
+                label:
+                    Text('時間', style: TextStyle(fontWeight: FontWeight.bold))),
             DataColumn(
-                label: Text('處所', style: TextStyle(fontWeight: FontWeight.bold))),
+                label:
+                    Text('處所', style: TextStyle(fontWeight: FontWeight.bold))),
             DataColumn(
-                label: Text('資訊內容', style: TextStyle(fontWeight: FontWeight.bold))),
+                label: Text('資訊內容',
+                    style: TextStyle(fontWeight: FontWeight.bold))),
             DataColumn(
-                label: Text('詳細內容', style: TextStyle(fontWeight: FontWeight.bold))),
+                label: Text('詳細內容',
+                    style: TextStyle(fontWeight: FontWeight.bold))),
             DataColumn(label: Icon(Icons.info_outline, color: Colors.blue)),
           ],
           rows: filteredAnnouncements.map((announcement) {

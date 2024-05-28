@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'dart:io';
 import 'package:image_picker/image_picker.dart';
-import 'AnnouncementPage.dart';
-import 'FormDownloadPage.dart';
-import 'FormUploadPage.dart';
-import 'ManualPage.dart';
+import 'announcement_page.dart';
+import 'form_download_page.dart';
+import 'form_upload_page.dart';
+import 'manual_page.dart';
 
 void main() {
   runApp(const MyApp());
@@ -58,7 +58,7 @@ class LoginPage extends StatelessWidget {
   final VoidCallback toggleTheme;
   final bool isDarkMode;
 
-  LoginPage({required this.toggleTheme, required this.isDarkMode});
+  LoginPage({super.key, required this.toggleTheme, required this.isDarkMode});
 
   @override
   Widget build(BuildContext context) {

@@ -1,121 +1,130 @@
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
-// 定義 LoginPage 狀態控制元件
 class LoginPage extends StatefulWidget {
   @override
   _LoginPageState createState() => _LoginPageState();
 }
 
-// 定義 LoginPage 的狀態
 class _LoginPageState extends State<LoginPage> {
-  final _formKey = GlobalKey<FormState>(); // 定義表單的鍵，用於驗證和儲存表單
-  String _email = ''; // 儲存用戶輸入的電子郵件
-  String _password = ''; // 儲存用戶輸入的密碼
+  final _studentIdController = TextEditingController();
+  final _passwordController = TextEditingController();
+  // final _storage = FlutterSecureStorage();
 
-  // 嘗試登入的方法
-  void _tryLogin() {
-    if (_formKey.currentState?.validate() == true) {
-      // 驗證表單輸入
-      _formKey.currentState?.save(); // 儲存表單資料
-      print('Email: $_email'); // 輸出電子郵件
-      print('Password: $_password'); // 輸出密碼
-      // 導航到首頁，並替換當前頁面
-      Navigator.of(context)
-          .pushReplacement(MaterialPageRoute(builder: (context) => HomePage()));
+  Future<void> _login() async {
+    final studentId = _studentIdController.text;
+    final password = _passwordController.text;
+
+    if (studentId.isEmpty || password.isEmpty) {
+      _showError('Please enter both StudentID and Password');
+      return;
     }
+
+    final response = await http.post(
+      Uri.parse('http://125.229.155.140:5000/login'),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(<String, String>{
+        'StudentID': studentId,
+        'Password': password,
+      }),
+    );
+
+    if (response.statusCode == 200) {
+      await _storage.write(key: 'user', value: response.body);
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+            builder: (context) => HomePage()), // 这里应该导航到具体的页面，而不是 main
+      );
+    } else {
+      final error = jsonDecode(response.body)['error'];
+      _showError(error);
+    }
+  }
+
+  void _showError(String message) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text('Error'),
+        content: Text(message),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(),
+            child: Text('OK'),
+          ),
+        ],
+      ),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Login'), // AppBar 標題
-      ),
-      body: Center(
-        // 中央佈局
-        child: SingleChildScrollView(
-          // 可滾動的單一子項容器
-          child: Form(
-            key: _formKey, // 表單鍵
-            child: Padding(
-              // 增加內邊距
-              padding: const EdgeInsets.all(16.0),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center, // 垂直居中
-                children: <Widget>[
-                  Image.asset(
-                    // 添加圖片
-                    'assets/image/genie.png',
-                    height: 150,
-                  ),
-                  SizedBox(height: 20), // 增加間距
-                  TextFormField(
-                    decoration: InputDecoration(
-                      labelText: 'Email', // 標籤文字
-                      hintText: 'Enter your email', // 提示文字
-                      border: OutlineInputBorder(), // 邊框樣式
-                    ),
-                    validator: (value) {
-                      // 驗證輸入
-                      if (value == null ||
-                          value.isEmpty ||
-                          !value.contains('@')) {
-                        return 'Please enter a valid email'; // 驗證失敗提示
-                      }
-                      return null;
-                    },
-                    onSaved: (value) {
-                      // 儲存輸入
-                      _email = value ?? '';
-                    },
-                  ),
-                  SizedBox(height: 10), // 增加間距
-                  TextFormField(
-                    obscureText: true, // 隱藏文字
-                    decoration: InputDecoration(
-                      labelText: 'Password', // 標籤文字
-                      hintText: 'Enter your password', // 提示文字
-                      border: OutlineInputBorder(), // 邊框樣式
-                    ),
-                    validator: (value) {
-                      // 驗證輸入
-                      if (value == null || value.isEmpty || value.length < 5) {
-                        return 'Password must be at least 5 characters long'; // 驗證失敗提示
-                      }
-                      return null;
-                    },
-                    onSaved: (value) {
-                      // 儲存輸入
-                      _password = value ?? '';
-                    },
-                  ),
-                  SizedBox(height: 20), // 增加間距
-                  ElevatedButton(
-                    onPressed: _tryLogin, // 點擊按鈕執行登入
-                    child: Text('Login'), // 按鈕文字
-                  ),
-                ],
-              ),
+      appBar: AppBar(title: Text('Login')),
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          children: [
+            TextField(
+              controller: _studentIdController,
+              decoration: InputDecoration(labelText: 'StudentID'),
             ),
-          ),
+            TextField(
+              controller: _passwordController,
+              decoration: InputDecoration(labelText: 'Password'),
+              obscureText: true,
+            ),
+            SizedBox(height: 20),
+            ElevatedButton(
+              onPressed: _login,
+              child: Text('Login'),
+            ),
+          ],
         ),
       ),
     );
   }
 }
 
-// 定義首頁
+class _storage {
+  static Future<void> write(
+      {required String key, required String value}) async {
+    // 模拟存储行为，可以使用 SharedPreferences 或其他存储机制
+    print('Key: $key, Value: $value');
+  }
+}
+
 class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Home'), // AppBar 標題
+        title: Text('Home Page'),
       ),
       body: Center(
-        // 中央佈局
-        child: Text('Welcome to the Home Page!'), // 中央文本
+        child: Text('Welcome to the Home Page!'),
       ),
+    );
+  }
+}
+
+void main() {
+  runApp(MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Flutter Demo',
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+      ),
+      home: LoginPage(),
     );
   }
 }
