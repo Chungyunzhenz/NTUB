@@ -7,6 +7,7 @@ import 'form_upload_page.dart';
 import 'manual_page.dart';
 
 void main() {
+  HttpOverrides.global = MyHttpOverrides();
   runApp(const MyApp());
 }
 

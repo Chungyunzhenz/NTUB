@@ -1,7 +1,7 @@
+import 'package:dio/io.dart';
 import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
 import 'package:path_provider/path_provider.dart';
-// ignore: unused_import
 import 'dart:io';
 import 'package:permission_handler/permission_handler.dart';
 
@@ -12,6 +12,15 @@ class FormDownloadPage extends StatefulWidget {
   _FormDownloadPageState createState() => _FormDownloadPageState();
 }
 
+class MyHttpOverrides extends HttpOverrides {
+  @override
+  HttpClient createHttpClient(SecurityContext? context) {
+    return super.createHttpClient(context)
+      ..badCertificateCallback =
+          (X509Certificate cert, String host, int port) => true;
+  }
+}
+
 class _FormDownloadPageState extends State<FormDownloadPage> {
   String? _selectedDepartment;
   final List<Map<String, dynamic>> _forms = [
@@ -19,7 +28,7 @@ class _FormDownloadPageState extends State<FormDownloadPage> {
       'name': '選課單',
       'department': '科系',
       'file': '選課單.pdf',
-      'url': 'https://example.com/選課單.pdf', // 替換為實際的文件URL
+      'url': 'https://acad.ntub.edu.tw/app/index.php?Action=downloadfile&file=WVhSMFlXTm9MekkwTDNCMFlWODRNREV5TVY4MU5UUXpPVEF4WHprMU9ESXpMbVJ2WTNnPQ==&fname=WSGGTSB00010A1KKEDLKFCMOQOMO25GGYSB0UWYSQPGD0040QKA424540054FCEGPOPOHH00DG04ICHCFC30TSIGKL34B1NOVXVXA4CCYSA4RKSWWSKKUSSSRK40SS44',
     },
     {
       'name': '請假單',
@@ -39,81 +48,9 @@ class _FormDownloadPageState extends State<FormDownloadPage> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('文件管理'),
-      ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: _buildDepartmentDropdown(),
-            ),
-            SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              child: DataTable(
-                columnSpacing: 20,
-                showCheckboxColumn: false,
-                columns: const [
-                  DataColumn(
-                      label: Text('表單名稱',
-                          style: TextStyle(fontWeight: FontWeight.bold))),
-                  DataColumn(
-                      label: Text('下載',
-                          style: TextStyle(fontWeight: FontWeight.bold))),
-                  DataColumn(
-                      label: Text('檢視',
-                          style: TextStyle(fontWeight: FontWeight.bold))),
-                ],
-                rows: _filteredForms
-                    .map((form) => DataRow(cells: [
-                          DataCell(Text(form['name'])),
-                          DataCell(IconButton(
-                            icon: Icon(Icons.file_download),
-                            onPressed: () => _downloadFile(
-                                context, form['file'], form['url']),
-                          )),
-                          DataCell(IconButton(
-                            icon: Icon(Icons.visibility),
-                            onPressed: () => _viewFile(context, form['file']),
-                          )),
-                        ]))
-                    .toList(),
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildDepartmentDropdown() {
-    return DropdownButtonFormField<String>(
-      decoration: InputDecoration(
-        border: OutlineInputBorder(),
-        contentPadding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
-        labelText: '選擇處室',
-      ),
-      value: _selectedDepartment,
-      isExpanded: true,
-      icon: const Icon(Icons.arrow_drop_down_circle),
-      iconSize: 24,
-      elevation: 16,
-      style: TextStyle(color: Theme.of(context).primaryColor),
-      onChanged: (String? newValue) {
-        setState(() {
-          _selectedDepartment = newValue;
-        });
-      },
-      items: <String>['科系', '學務處']
-          .map((String department) => DropdownMenuItem<String>(
-                value: department,
-                child: Text(department),
-              ))
-          .toList(),
-    );
+  void initState() {
+    super.initState();
+    HttpOverrides.global = MyHttpOverrides();
   }
 
   Future<void> _downloadFile(
@@ -126,8 +63,15 @@ class _FormDownloadPageState extends State<FormDownloadPage> {
       }
 
       var dio = Dio();
-      var dir = await getApplicationDocumentsDirectory();
-      String savePath = "${dir.path}/$fileName";
+      (dio.httpClientAdapter as DefaultHttpClientAdapter).onHttpClientCreate =
+          (HttpClient client) {
+        client.badCertificateCallback =
+            (X509Certificate cert, String host, int port) => true;
+        return client;
+      };
+
+      String dir = '/storage/emulated/0/Download';
+      String savePath = "$dir/$fileName";
 
       await dio.download(fileUrl, savePath);
 
@@ -173,19 +117,46 @@ class _FormDownloadPageState extends State<FormDownloadPage> {
     );
   }
 
-  void _viewFile(BuildContext context, String fileName) {
-    // 模拟文件查看过程
-    showDialog(
-      context: context,
-      builder: (BuildContext context) => AlertDialog(
-        title: Text('查看文件'),
-        content: Text('您正在查看: $fileName'),
-        actions: <Widget>[
-          TextButton(
-            child: Text('關閉'),
-            onPressed: () {
-              Navigator.of(context).pop();
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('下載表單'),
+      ),
+      body: Column(
+        children: [
+          DropdownButton<String>(
+            hint: Text('選擇科系'),
+            value: _selectedDepartment,
+            onChanged: (String? newValue) {
+              setState(() {
+                _selectedDepartment = newValue;
+              });
             },
+            items: <String>['科系', '學務處']
+                .map<DropdownMenuItem<String>>((String value) {
+              return DropdownMenuItem<String>(
+                value: value,
+                child: Text(value),
+              );
+            }).toList(),
+          ),
+          Expanded(
+            child: ListView.builder(
+              itemCount: _filteredForms.length,
+              itemBuilder: (context, index) {
+                return ListTile(
+                  title: Text(_filteredForms[index]['name']),
+                  onTap: () {
+                    _downloadFile(
+                      context,
+                      _filteredForms[index]['file'],
+                      _filteredForms[index]['url'],
+                    );
+                  },
+                );
+              },
+            ),
           ),
         ],
       ),
