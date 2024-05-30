@@ -37,10 +37,11 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   final TextEditingController _studentIdController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  String _errorMessage = '';
 
   Future<void> _login() async {
     final response = await http.post(
-      Uri.parse('http://125.229.155.140:5000/login'),
+      Uri.parse('http://zctool.8bit.ca:5000/login'),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },
@@ -53,25 +54,39 @@ class _LoginPageState extends State<LoginPage> {
     if (response.statusCode == 200) {
       final data = jsonDecode(response.body);
       String role = data['role'];
+
       if (role == '老師') {
+        setState(() {
+          _errorMessage = '';
+        });
         Navigator.push(
           context,
           MaterialPageRoute(builder: (context) => TeacherPage()),
         );
       } else if (role == '助教') {
+        setState(() {
+          _errorMessage = '';
+        });
         Navigator.push(
           context,
           MaterialPageRoute(builder: (context) => AssistantPage()),
         );
       } else if (role == '學生') {
+        setState(() {
+          _errorMessage = '';
+        });
         Navigator.push(
           context,
           MaterialPageRoute(builder: (context) => StudentPage()),
         );
+      } else {
+        setState(() {
+          _errorMessage = 'Invalid Student ID or Password';
+        });
       }
     } else {
       setState(() {
-        // Handle login failed scenario
+        _errorMessage = 'Invalid Student ID or Password';
       });
     }
   }
@@ -99,6 +114,11 @@ class _LoginPageState extends State<LoginPage> {
             ElevatedButton(
               onPressed: _login,
               child: Text('Login'),
+            ),
+            SizedBox(height: 20),
+            Text(
+              _errorMessage,
+              style: TextStyle(color: Colors.red),
             ),
           ],
         ),
