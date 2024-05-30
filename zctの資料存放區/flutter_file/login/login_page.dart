@@ -1,9 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'dart:io';
+
+import 't.dart';
+import 'z.dart';
+import 's.dart';
 
 void main() {
+  HttpOverrides.global = MyHttpOverrides();
   runApp(MyApp());
+}
+
+class MyHttpOverrides extends HttpOverrides {
+  @override
+  HttpClient createHttpClient(SecurityContext? context) {
+    return super.createHttpClient(context)
+      ..badCertificateCallback = (X509Certificate cert, String host, int port) => true;
+  }
 }
 
 class MyApp extends StatelessWidget {
@@ -23,7 +37,6 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   final TextEditingController _studentIdController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  String _role = '';
 
   Future<void> _login() async {
     final response = await http.post(
@@ -39,12 +52,26 @@ class _LoginPageState extends State<LoginPage> {
 
     if (response.statusCode == 200) {
       final data = jsonDecode(response.body);
-      setState(() {
-        _role = data['role'];
-      });
+      String role = data['role'];
+      if (role == '老師') {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => TeacherPage()),
+        );
+      } else if (role == '助教') {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => AssistantPage()),
+        );
+      } else if (role == '學生') {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => StudentPage()),
+        );
+      }
     } else {
       setState(() {
-        _role = 'Login failed';
+        // Handle login failed scenario
       });
     }
   }
@@ -72,11 +99,6 @@ class _LoginPageState extends State<LoginPage> {
             ElevatedButton(
               onPressed: _login,
               child: Text('Login'),
-            ),
-            SizedBox(height: 20),
-            Text(
-              'Role: $_role',
-              style: TextStyle(fontSize: 20),
             ),
           ],
         ),
