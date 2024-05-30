@@ -1,8 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'main.dart';
+
+void main() {
+  runApp(MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: LoginPage(),
+    );
+  }
+}
 
 class LoginPage extends StatefulWidget {
   @override
@@ -10,69 +21,47 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  final _studentIdController = TextEditingController();
-  final _passwordController = TextEditingController();
-  final _storage = FlutterSecureStorage();
+  final TextEditingController _studentIdController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+  String _role = '';
 
   Future<void> _login() async {
-    final studentId = _studentIdController.text;
-    final password = _passwordController.text;
-
-    if (studentId.isEmpty || password.isEmpty) {
-      _showError('Please enter both StudentID and Password');
-      return;
-    }
-
     final response = await http.post(
       Uri.parse('http://125.229.155.140:5000/login'),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },
       body: jsonEncode(<String, String>{
-        'StudentID': studentId,
-        'Password': password,
+        'StudentID': _studentIdController.text,
+        'Password': _passwordController.text,
       }),
     );
 
     if (response.statusCode == 200) {
-      await _storage.write(key: 'user', value: response.body);
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (context) => MainPage()),
-      );
+      final data = jsonDecode(response.body);
+      setState(() {
+        _role = data['role'];
+      });
     } else {
-      final error = jsonDecode(response.body)['error'];
-      _showError(error);
+      setState(() {
+        _role = 'Login failed';
+      });
     }
-  }
-
-  void _showError(String message) {
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: Text('Error'),
-        content: Text(message),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.of(context).pop(),
-            child: Text('OK'),
-          ),
-        ],
-      ),
-    );
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Login')),
+      appBar: AppBar(
+        title: Text('Login'),
+      ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
-          children: [
+          children: <Widget>[
             TextField(
               controller: _studentIdController,
-              decoration: InputDecoration(labelText: 'StudentID'),
+              decoration: InputDecoration(labelText: 'Student ID'),
             ),
             TextField(
               controller: _passwordController,
@@ -83,6 +72,11 @@ class _LoginPageState extends State<LoginPage> {
             ElevatedButton(
               onPressed: _login,
               child: Text('Login'),
+            ),
+            SizedBox(height: 20),
+            Text(
+              'Role: $_role',
+              style: TextStyle(fontSize: 20),
             ),
           ],
         ),
