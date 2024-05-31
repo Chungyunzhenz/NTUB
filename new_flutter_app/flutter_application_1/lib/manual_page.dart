@@ -1,31 +1,33 @@
 import 'package:flutter/material.dart';
 
 class ManualPage extends StatelessWidget {
-  const ManualPage({Key? key}) : super(key: key);
+  const ManualPage({super.key}); // 使用 super 参数并添加 const
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('使用手冊'),
+        title: const Text('使用手冊'), // 使用 const
         backgroundColor: Colors.blueAccent,
       ),
       body: ListView(
         children: [
-          ExpansionTile(
+          const ExpansionTile(
+            // 使用 const
             title: Text('功能介绍一'),
             children: <Widget>[
               ListTile(title: Text('這裡是功能一的詳細說明。')),
             ],
           ),
-          ExpansionTile(
+          const ExpansionTile(
+            // 使用 const
             title: Text('功能介绍二'),
             children: <Widget>[
               ListTile(title: Text('這裡是功能二的詳細說明。')),
             ],
           ),
           ListTile(
-            title: Text('提供回饋'),
+            title: const Text('提供回饋'), // 使用 const
             onTap: () {
               Navigator.push(
                 context,
@@ -34,11 +36,11 @@ class ManualPage extends StatelessWidget {
             },
           ),
           ListTile(
-            title: Text('更新公告'),
+            title: const Text('更新公告'), // 使用 const
             onTap: () {},
           ),
           ListTile(
-            title: Text('常見問題'),
+            title: const Text('常見問題'), // 使用 const
             onTap: () {},
           ),
         ],
@@ -48,7 +50,7 @@ class ManualPage extends StatelessWidget {
 }
 
 class FeedbackForm extends StatelessWidget {
-  FeedbackForm({Key? key}) : super(key: key);
+  FeedbackForm({super.key}); // 使用 super 参数
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
@@ -56,14 +58,14 @@ class FeedbackForm extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('回饋表單'),
+        title: const Text('回饋表單'), // 使用 const
       ),
       body: Form(
         key: _formKey,
         child: Column(
           children: <Widget>[
             TextFormField(
-              decoration: InputDecoration(labelText: '您的回饋'),
+              decoration: const InputDecoration(labelText: '您的回饋'), // 使用 const
               validator: (value) {
                 if (value == null || value.isEmpty) {
                   return '請填寫回饋内容';
@@ -75,11 +77,11 @@ class FeedbackForm extends StatelessWidget {
               onPressed: () {
                 if (_formKey.currentState!.validate()) {
                   ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(content: Text('感谢您的回饋！')),
+                    const SnackBar(content: Text('感谢您的回饋！')), // 使用 const
                   );
                 }
               },
-              child: Text('提交'),
+              child: const Text('提交'), // 使用 const
             ),
           ],
         ),

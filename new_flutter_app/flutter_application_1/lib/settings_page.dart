@@ -25,9 +25,9 @@ class SettingsPage extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            Text(
+            const Text(
               '個人資訊',
-              //style: Theme.of(context).textTheme.headline6,
+              // style: Theme.of(context).textTheme.headline6,
             ),
             const SizedBox(height: 20),
             _buildTextField(
@@ -72,7 +72,7 @@ class SettingsPage extends StatelessWidget {
       decoration: InputDecoration(
         labelText: labelText,
         prefixIcon: Icon(icon),
-        border: OutlineInputBorder(),
+        border: const OutlineInputBorder(),
       ),
     );
   }
@@ -132,5 +132,3 @@ class SettingsPage extends StatelessWidget {
     );
   }
 }
-
-mixin headline6 {}

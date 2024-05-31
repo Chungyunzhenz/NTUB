@@ -1,6 +1,33 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'dart:io';
+
+import 't.dart';
+import 'z.dart';
+import 's.dart';
+
+void main() {
+  HttpOverrides.global = MyHttpOverrides();
+  runApp(MyApp());
+}
+
+class MyHttpOverrides extends HttpOverrides {
+  @override
+  HttpClient createHttpClient(SecurityContext? context) {
+    return super.createHttpClient(context)
+      ..badCertificateCallback = (X509Certificate cert, String host, int port) => true;
+  }
+}
+
+class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: LoginPage(),
+    );
+  }
+}
 
 class LoginPage extends StatefulWidget {
   @override
@@ -8,70 +35,75 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  final _studentIdController = TextEditingController();
-  final _passwordController = TextEditingController();
-  // final _storage = FlutterSecureStorage();
+  final TextEditingController _studentIdController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+  String _errorMessage = '';
 
   Future<void> _login() async {
-    final studentId = _studentIdController.text;
-    final password = _passwordController.text;
-
-    if (studentId.isEmpty || password.isEmpty) {
-      _showError('Please enter both StudentID and Password');
-      return;
-    }
-
     final response = await http.post(
-      Uri.parse('http://125.229.155.140:5000/login'),
+      Uri.parse('http://zctool.8bit.ca:5000/login'),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },
       body: jsonEncode(<String, String>{
-        'StudentID': studentId,
-        'Password': password,
+        'StudentID': _studentIdController.text,
+        'Password': _passwordController.text,
       }),
     );
 
     if (response.statusCode == 200) {
-      await _storage.write(key: 'user', value: response.body);
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(
-            builder: (context) => HomePage()), // 这里应该导航到具体的页面，而不是 main
-      );
-    } else {
-      final error = jsonDecode(response.body)['error'];
-      _showError(error);
-    }
-  }
+      final data = jsonDecode(response.body);
+      String role = data['role'];
 
-  void _showError(String message) {
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: Text('Error'),
-        content: Text(message),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.of(context).pop(),
-            child: Text('OK'),
-          ),
-        ],
-      ),
-    );
+      if (role == '老師') {
+        setState(() {
+          _errorMessage = '';
+        });
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => TeacherPage()),
+        );
+      } else if (role == '助教') {
+        setState(() {
+          _errorMessage = '';
+        });
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => AssistantPage()),
+        );
+      } else if (role == '學生') {
+        setState(() {
+          _errorMessage = '';
+        });
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => StudentPage()),
+        );
+      } else {
+        setState(() {
+          _errorMessage = 'Invalid Student ID or Password';
+        });
+      }
+    } else {
+      setState(() {
+        _errorMessage = 'Invalid Student ID or Password';
+      });
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Login')),
+      appBar: AppBar(
+        title: Text('Login'),
+      ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
-          children: [
+          children: <Widget>[
             TextField(
               controller: _studentIdController,
-              decoration: InputDecoration(labelText: 'StudentID'),
+              decoration: InputDecoration(labelText: 'Student ID'),
             ),
             TextField(
               controller: _passwordController,
@@ -83,48 +115,14 @@ class _LoginPageState extends State<LoginPage> {
               onPressed: _login,
               child: Text('Login'),
             ),
+            SizedBox(height: 20),
+            Text(
+              _errorMessage,
+              style: TextStyle(color: Colors.red),
+            ),
           ],
         ),
       ),
-    );
-  }
-}
-
-class _storage {
-  static Future<void> write(
-      {required String key, required String value}) async {
-    // 模拟存储行为，可以使用 SharedPreferences 或其他存储机制
-    print('Key: $key, Value: $value');
-  }
-}
-
-class HomePage extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Home Page'),
-      ),
-      body: Center(
-        child: Text('Welcome to the Home Page!'),
-      ),
-    );
-  }
-}
-
-void main() {
-  runApp(MyApp());
-}
-
-class MyApp extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: LoginPage(),
     );
   }
 }
