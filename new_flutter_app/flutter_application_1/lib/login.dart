@@ -3,38 +3,43 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'dart:io';
 
-import 't.dart';
-import 'z.dart';
-import 's.dart';
+import 't.dart'; // 导入教师页面
+import 'z.dart'; // 导入助教页面
+import 's.dart'; // 导入学生页面
 
 void main() {
   HttpOverrides.global = MyHttpOverrides();
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyHttpOverrides extends HttpOverrides {
   @override
   HttpClient createHttpClient(SecurityContext? context) {
     return super.createHttpClient(context)
-      ..badCertificateCallback = (X509Certificate cert, String host, int port) => true;
+      ..badCertificateCallback =
+          (X509Certificate cert, String host, int port) => true;
   }
 }
 
 class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return const MaterialApp(
       home: LoginPage(),
     );
   }
 }
 
 class LoginPage extends StatefulWidget {
+  const LoginPage({super.key});
+
   @override
-  _LoginPageState createState() => _LoginPageState();
+  LoginPageState createState() => LoginPageState();
 }
 
-class _LoginPageState extends State<LoginPage> {
+class LoginPageState extends State<LoginPage> {
   final TextEditingController _studentIdController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   String _errorMessage = '';
@@ -51,6 +56,8 @@ class _LoginPageState extends State<LoginPage> {
       }),
     );
 
+    if (!mounted) return;
+
     if (response.statusCode == 200) {
       final data = jsonDecode(response.body);
       String role = data['role'];
@@ -61,7 +68,7 @@ class _LoginPageState extends State<LoginPage> {
         });
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => TeacherPage()),
+          MaterialPageRoute(builder: (context) => const TeacherPage()),
         );
       } else if (role == '助教') {
         setState(() {
@@ -69,7 +76,7 @@ class _LoginPageState extends State<LoginPage> {
         });
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => AssistantPage()),
+          MaterialPageRoute(builder: (context) => const AssistantPage()),
         );
       } else if (role == '學生') {
         setState(() {
@@ -77,7 +84,7 @@ class _LoginPageState extends State<LoginPage> {
         });
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => StudentPage()),
+          MaterialPageRoute(builder: (context) => const StudentPage()),
         );
       } else {
         setState(() {
@@ -95,7 +102,7 @@ class _LoginPageState extends State<LoginPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Login'),
+        title: const Text('Login'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -103,22 +110,22 @@ class _LoginPageState extends State<LoginPage> {
           children: <Widget>[
             TextField(
               controller: _studentIdController,
-              decoration: InputDecoration(labelText: 'Student ID'),
+              decoration: const InputDecoration(labelText: 'Student ID'),
             ),
             TextField(
               controller: _passwordController,
-              decoration: InputDecoration(labelText: 'Password'),
+              decoration: const InputDecoration(labelText: 'Password'),
               obscureText: true,
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             ElevatedButton(
               onPressed: _login,
-              child: Text('Login'),
+              child: const Text('Login'),
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             Text(
               _errorMessage,
-              style: TextStyle(color: Colors.red),
+              style: const TextStyle(color: Colors.red),
             ),
           ],
         ),

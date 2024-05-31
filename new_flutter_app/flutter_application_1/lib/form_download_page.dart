@@ -1,7 +1,6 @@
 import 'package:dio/io.dart';
 import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
-import 'package:path_provider/path_provider.dart';
 import 'dart:io';
 import 'package:permission_handler/permission_handler.dart';
 
@@ -9,7 +8,7 @@ class FormDownloadPage extends StatefulWidget {
   const FormDownloadPage({Key? key}) : super(key: key);
 
   @override
-  _FormDownloadPageState createState() => _FormDownloadPageState();
+  FormDownloadPageState createState() => FormDownloadPageState();
 }
 
 class MyHttpOverrides extends HttpOverrides {
@@ -21,14 +20,15 @@ class MyHttpOverrides extends HttpOverrides {
   }
 }
 
-class _FormDownloadPageState extends State<FormDownloadPage> {
+class FormDownloadPageState extends State<FormDownloadPage> {
   String? _selectedDepartment;
   final List<Map<String, dynamic>> _forms = [
     {
       'name': '選課單',
       'department': '科系',
       'file': '選課單.pdf',
-      'url': 'https://acad.ntub.edu.tw/app/index.php?Action=downloadfile&file=WVhSMFlXTm9MekkwTDNCMFlWODRNREV5TVY4MU5UUXpPVEF4WHprMU9ESXpMbVJ2WTNnPQ==&fname=WSGGTSB00010A1KKEDLKFCMOQOMO25GGYSB0UWYSQPGD0040QKA424540054FCEGPOPOHH00DG04ICHCFC30TSIGKL34B1NOVXVXA4CCYSA4RKSWWSKKUSSSRK40SS44',
+      'url':
+          'https://acad.ntub.edu.tw/app/index.php?Action=downloadfile&file=WVhSMFlXTm9MekkwTDNCMFlWODRNREV5TVY4MU5UUXpPVEF4WHprMU9ESXpMbVJ2WTNnPQ==&fname=WSGGTSB00010A1KKEDLKFCMOQOMO25GGYSB0UWYSQPGD0040QKA424540054FCEGPOPOHH00DG04ICHCFC30TSIGKL34B1NOVXVXA4CCYSA4RKSWWSKKUSSSRK40SS44',
     },
     {
       'name': '請假單',
@@ -53,8 +53,7 @@ class _FormDownloadPageState extends State<FormDownloadPage> {
     HttpOverrides.global = MyHttpOverrides();
   }
 
-  Future<void> _downloadFile(
-      BuildContext context, String fileName, String fileUrl) async {
+  Future<void> _downloadFile(String fileName, String fileUrl) async {
     try {
       // Request storage permissions
       var status = await Permission.storage.request();
@@ -63,12 +62,11 @@ class _FormDownloadPageState extends State<FormDownloadPage> {
       }
 
       var dio = Dio();
-      (dio.httpClientAdapter as DefaultHttpClientAdapter).onHttpClientCreate =
-          (HttpClient client) {
-        client.badCertificateCallback =
-            (X509Certificate cert, String host, int port) => true;
-        return client;
-      };
+      dio.httpClientAdapter = Http2Adapter(
+        HttpClient(
+          context: SecurityContext(),
+        ),
+      );
 
       String dir = '/storage/emulated/0/Download';
       String savePath = "$dir/$fileName";
@@ -85,11 +83,11 @@ class _FormDownloadPageState extends State<FormDownloadPage> {
     showDialog(
       context: context,
       builder: (BuildContext context) => AlertDialog(
-        title: Text('下載成功'),
+        title: const Text('下載成功'),
         content: Text('文件已下載至: $filePath'),
         actions: <Widget>[
           TextButton(
-            child: Text('關閉'),
+            child: const Text('關閉'),
             onPressed: () {
               Navigator.of(context).pop();
             },
@@ -103,11 +101,11 @@ class _FormDownloadPageState extends State<FormDownloadPage> {
     showDialog(
       context: context,
       builder: (BuildContext context) => AlertDialog(
-        title: Text('下載失敗'),
+        title: const Text('下載失敗'),
         content: Text('錯誤: $errorMessage'),
         actions: <Widget>[
           TextButton(
-            child: Text('關閉'),
+            child: const Text('關閉'),
             onPressed: () {
               Navigator.of(context).pop();
             },
@@ -121,12 +119,12 @@ class _FormDownloadPageState extends State<FormDownloadPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('下載表單'),
+        title: const Text('下載表單'),
       ),
       body: Column(
         children: [
           DropdownButton<String>(
-            hint: Text('選擇科系'),
+            hint: const Text('選擇科系'),
             value: _selectedDepartment,
             onChanged: (String? newValue) {
               setState(() {

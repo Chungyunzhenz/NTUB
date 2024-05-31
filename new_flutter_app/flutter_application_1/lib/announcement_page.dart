@@ -1,14 +1,13 @@
-// ignore: file_names
 import 'package:flutter/material.dart';
 
 class AnnouncementPage extends StatefulWidget {
-  const AnnouncementPage({Key? key}) : super(key: key);
+  const AnnouncementPage({super.key}); // 使用 super 参数
 
   @override
-  _AnnouncementPageState createState() => _AnnouncementPageState();
+  AnnouncementPageState createState() => AnnouncementPageState();
 }
 
-class _AnnouncementPageState extends State<AnnouncementPage> {
+class AnnouncementPageState extends State<AnnouncementPage> {
   List<Announcement> announcements = [
     Announcement(
         date: '2024-04-21',
@@ -79,7 +78,7 @@ class _AnnouncementPageState extends State<AnnouncementPage> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('公告'),
+        title: const Text('公告'), // 使用 const
         actions: [
           IconButton(
             icon: Icon(isAscending ? Icons.arrow_downward : Icons.arrow_upward),
@@ -152,10 +151,11 @@ class _AnnouncementPageState extends State<AnnouncementPage> {
       DataCell(Text(time)),
       DataCell(Text(location)),
       DataCell(Text(content)),
-      DataCell(Text('點擊查看詳情'), onTap: () {
+      DataCell(const Text('點擊查看詳情'), onTap: () {
         showDetail(context, detail);
       }),
-      DataCell(Icon(Icons.keyboard_arrow_right, color: Colors.blue), onTap: () {
+      DataCell(const Icon(Icons.keyboard_arrow_right, color: Colors.blue),
+          onTap: () {
         showDetail(context, detail);
       }),
     ]);
