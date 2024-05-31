@@ -59,7 +59,11 @@ class LoginPage extends StatelessWidget {
   final VoidCallback toggleTheme;
   final bool isDarkMode;
 
-  LoginPage({super.key, required this.toggleTheme, required this.isDarkMode});
+  const LoginPage({
+    super.key,
+    required this.toggleTheme,
+    required this.isDarkMode,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -104,7 +108,7 @@ class LoginPage extends StatelessWidget {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => SignUpPage(),
+                    builder: (context) => const SignUpPage(),
                   ),
                 );
               },
@@ -129,13 +133,15 @@ class LoginPage extends StatelessWidget {
 
 // 註冊頁面
 class SignUpPage extends StatelessWidget {
-  final TextEditingController usernameController = TextEditingController();
-  final TextEditingController passwordController = TextEditingController();
-  final TextEditingController confirmPasswordController =
-      TextEditingController();
+  const SignUpPage({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final TextEditingController usernameController = TextEditingController();
+    final TextEditingController passwordController = TextEditingController();
+    final TextEditingController confirmPasswordController =
+        TextEditingController();
+
     return Scaffold(
       appBar: AppBar(title: const Text('註冊')),
       body: Padding(
@@ -189,10 +195,12 @@ class HomePage extends StatelessWidget {
   final VoidCallback toggleTheme;
   final bool isDarkMode;
 
-  HomePage(
-      {required this.role,
-      required this.toggleTheme,
-      required this.isDarkMode});
+  const HomePage({
+    super.key,
+    required this.role,
+    required this.toggleTheme,
+    required this.isDarkMode,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -214,11 +222,13 @@ class HomePage extends StatelessWidget {
 }
 
 class MyHomePage extends StatefulWidget {
-  const MyHomePage(
-      {super.key,
-      required this.title,
-      required this.toggleTheme,
-      required this.isDarkMode});
+  const MyHomePage({
+    super.key,
+    required this.title,
+    required this.toggleTheme,
+    required this.isDarkMode,
+  });
+
   final String title;
   final VoidCallback toggleTheme;
   final bool isDarkMode;
@@ -251,7 +261,7 @@ class _MyHomePageState extends State<MyHomePage> {
             onPressed: widget.toggleTheme,
           ),
           IconButton(
-            icon: Icon(Icons.logout),
+            icon: const Icon(Icons.logout),
             onPressed: () {
               Navigator.pushReplacement(
                 context,
@@ -271,7 +281,7 @@ class _MyHomePageState extends State<MyHomePage> {
               decoration: BoxDecoration(
                 color: Colors.blue[800],
               ),
-              child: Column(
+              child: const Column(
                 children: [
                   CircleAvatar(),
                   SizedBox(height: 10),
@@ -314,11 +324,86 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget _createDrawerItem(IconData icon, String title, Widget page) {
     return ListTile(
       leading: Icon(icon, color: Colors.blue[800]),
-      title: Text(title, style: TextStyle(color: Colors.black)),
+      title: Text(title, style: const TextStyle(color: Colors.black)),
       onTap: () {
         Navigator.pop(context);
         Navigator.push(context, MaterialPageRoute(builder: (context) => page));
       },
+    );
+  }
+
+  Widget _buildWelcomeMessage() {
+    return Padding(
+      padding: const EdgeInsets.all(16.0),
+      child: Text(
+        '歡迎，$userName',
+        style: TextStyle(fontSize: 20, color: Colors.grey[600]),
+      ),
+    );
+  }
+
+  Widget _buildProfileCard(BuildContext context) {
+    return Card(
+      margin: const EdgeInsets.all(16.0),
+      child: Column(
+        children: <Widget>[
+          ListTile(
+            leading: CircleAvatar(
+              backgroundImage: _image != null
+                  ? FileImage(_image!)
+                  : const AssetImage('assets/avatar_placeholder.png')
+                      as ImageProvider,
+            ),
+            title: Text(userName),
+            subtitle: const Text('學生'),
+          ),
+          ButtonBar(
+            children: <Widget>[
+              TextButton(
+                child: const Text('編輯個人資料'),
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => SettingsPage(
+                            updateUserName: _updateUserName,
+                            pickImage: _pickImage,
+                            image: _image)),
+                  );
+                },
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildFeatureSection(BuildContext context) {
+    return Column(
+      children: <Widget>[
+        ListTile(
+          leading: const Icon(Icons.assignment),
+          title: const Text('功能介紹'),
+          onTap: () {
+            // Handle tap
+          },
+        ),
+        ListTile(
+          leading: const Icon(Icons.help),
+          title: const Text('常見問題'),
+          onTap: () {
+            // Handle tap
+          },
+        ),
+        ListTile(
+          leading: const Icon(Icons.info),
+          title: const Text('關於'),
+          onTap: () {
+            // Handle tap
+          },
+        ),
+      ],
     );
   }
 
@@ -327,120 +412,16 @@ class _MyHomePageState extends State<MyHomePage> {
       userName = newUserName;
     });
   }
-
-  Widget _buildWelcomeMessage() {
-    return Padding(
-      padding: const EdgeInsets.all(16.0),
-      child: Text(
-        '歡迎, $userName!',
-        style: TextStyle(
-            fontSize: 24, fontWeight: FontWeight.bold, color: Colors.blue[800]),
-      ),
-    );
-  }
-
-  Widget _buildProfileCard(BuildContext context) {
-    return Card(
-      elevation: 4.0,
-      margin: const EdgeInsets.all(8.0),
-      child: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text('姓名：$userName',
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-            const SizedBox(height: 10),
-            const Text('科系：資訊管理系'),
-            const Text('學制：日間部二技'),
-            const Text('學號：11236099'),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildFeatureSection(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(16.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          Text('主要功能',
-              style: TextStyle(
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.blue[800])),
-          const SizedBox(height: 16),
-          GridView.count(
-            shrinkWrap: true,
-            physics: const NeverScrollableScrollPhysics(),
-            crossAxisCount: 2,
-            crossAxisSpacing: 10,
-            mainAxisSpacing: 10,
-            children: <Widget>[
-              _buildFeatureCard('校園公告', Icons.public, Colors.blue, () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const AnnouncementPage()));
-              }),
-              _buildFeatureCard('表單下載', Icons.download, Colors.green, () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const FormDownloadPage()));
-              }),
-              _buildFeatureCard('表單上傳', Icons.upload_file, Colors.red, () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const FormUploadPage()));
-              }),
-              _buildFeatureCard('使用手冊', Icons.book, Colors.orange, () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const ManualPage()));
-              }),
-            ],
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildFeatureCard(
-      String title, IconData icon, Color color, VoidCallback onTap) {
-    return Card(
-      clipBehavior: Clip.antiAlias,
-      child: InkWell(
-        onTap: onTap,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            CircleAvatar(
-              radius: 30,
-              backgroundColor: color,
-              child: Icon(icon, size: 30, color: Colors.white),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Text(title, style: const TextStyle(color: Colors.black)),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
 }
 
+// 助教首頁
 class AssistantHomePage extends StatelessWidget {
   final String title;
   final VoidCallback toggleTheme;
   final bool isDarkMode;
 
-  AssistantHomePage({
+  const AssistantHomePage({
+    super.key,
     required this.title,
     required this.toggleTheme,
     required this.isDarkMode,
@@ -457,45 +438,31 @@ class AssistantHomePage extends StatelessWidget {
             onPressed: toggleTheme,
           ),
           IconButton(
-            icon: Icon(Icons.logout),
+            icon: const Icon(Icons.logout),
             onPressed: () {
               Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => LoginPage(
-                    toggleTheme: toggleTheme,
-                    isDarkMode: isDarkMode,
-                  ),
-                ),
+                    builder: (context) => LoginPage(
+                        toggleTheme: toggleTheme, isDarkMode: isDarkMode)),
               );
             },
           ),
         ],
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(
-              '這是助教專用介面，你可以在這裡添加助教特定的功能。',
-              style: TextStyle(fontSize: 18),
-              textAlign: TextAlign.center,
-            ),
-            // 在這裡添加助教專用的功能小部件
-          ],
-        ),
-      ),
-      backgroundColor: Colors.yellow[100], // 設置背景顏色
+      body: const Center(child: Text('助教首頁')),
     );
   }
 }
 
+// 老師首頁
 class TeacherHomePage extends StatelessWidget {
   final String title;
   final VoidCallback toggleTheme;
   final bool isDarkMode;
 
-  TeacherHomePage({
+  const TeacherHomePage({
+    super.key,
     required this.title,
     required this.toggleTheme,
     required this.isDarkMode,
@@ -512,43 +479,39 @@ class TeacherHomePage extends StatelessWidget {
             onPressed: toggleTheme,
           ),
           IconButton(
-            icon: Icon(Icons.logout),
+            icon: const Icon(Icons.logout),
             onPressed: () {
               Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => LoginPage(
-                    toggleTheme: toggleTheme,
-                    isDarkMode: isDarkMode,
-                  ),
-                ),
+                    builder: (context) => LoginPage(
+                        toggleTheme: toggleTheme, isDarkMode: isDarkMode)),
               );
             },
           ),
         ],
       ),
-      body: Center(
-        child: Text('老師專用介面'),
-      ),
-      backgroundColor: Colors.green[100],
+      body: const Center(child: Text('老師首頁')),
     );
   }
 }
 
+// 個人資料頁面
 class SettingsPage extends StatelessWidget {
-  final ValueChanged<String> updateUserName;
+  final Function(String) updateUserName;
   final VoidCallback pickImage;
   final File? image;
 
-  const SettingsPage(
-      {super.key,
-      required this.updateUserName,
-      required this.pickImage,
-      required this.image});
+  const SettingsPage({
+    super.key,
+    required this.updateUserName,
+    required this.pickImage,
+    this.image,
+  });
 
   @override
   Widget build(BuildContext context) {
-    final TextEditingController nameController = TextEditingController();
+    final TextEditingController usernameController = TextEditingController();
 
     return Scaffold(
       appBar: AppBar(title: const Text('個人資料')),
@@ -556,29 +519,37 @@ class SettingsPage extends StatelessWidget {
         padding: const EdgeInsets.all(16.0),
         child: Column(
           children: <Widget>[
-            CircleAvatar(
-              radius: 50,
-              backgroundImage: image != null ? FileImage(image!) : null,
-            ),
-            TextButton(
-              onPressed: pickImage,
-              child: const Text('選擇頭像'),
-            ),
             TextField(
-              controller: nameController,
-              decoration: const InputDecoration(labelText: '更改姓名'),
+              controller: usernameController,
+              decoration: const InputDecoration(labelText: '用戶名'),
             ),
             const SizedBox(height: 20),
             ElevatedButton(
               onPressed: () {
-                updateUserName(nameController.text);
+                updateUserName(usernameController.text);
                 Navigator.pop(context);
               },
-              child: const Text('保存'),
+              child: const Text('更新資料'),
             ),
+            const SizedBox(height: 20),
+            ElevatedButton(
+              onPressed: pickImage,
+              child: const Text('選擇圖片'),
+            ),
+            const SizedBox(height: 20),
+            image != null ? Image.file(image!) : const Text('尚未選擇圖片'),
           ],
         ),
       ),
     );
+  }
+}
+
+class MyHttpOverrides extends HttpOverrides {
+  @override
+  HttpClient createHttpClient(SecurityContext? context) {
+    return super.createHttpClient(context)
+      ..badCertificateCallback =
+          (X509Certificate cert, String host, int port) => true;
   }
 }

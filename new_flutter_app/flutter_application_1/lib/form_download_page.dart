@@ -1,11 +1,10 @@
-import 'package:dio/io.dart';
 import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
 import 'dart:io';
 import 'package:permission_handler/permission_handler.dart';
 
 class FormDownloadPage extends StatefulWidget {
-  const FormDownloadPage({Key? key}) : super(key: key);
+  const FormDownloadPage({super.key});
 
   @override
   FormDownloadPageState createState() => FormDownloadPageState();
@@ -62,20 +61,18 @@ class FormDownloadPageState extends State<FormDownloadPage> {
       }
 
       var dio = Dio();
-      dio.httpClientAdapter = Http2Adapter(
-        HttpClient(
-          context: SecurityContext(),
-        ),
-      );
-
       String dir = '/storage/emulated/0/Download';
       String savePath = "$dir/$fileName";
 
       await dio.download(fileUrl, savePath);
 
-      _showDownloadSuccessDialog(context, savePath);
+      if (mounted) {
+        _showDownloadSuccessDialog(context, savePath);
+      }
     } catch (e) {
-      _showErrorDialog(context, e.toString());
+      if (mounted) {
+        _showErrorDialog(context, e.toString());
+      }
     }
   }
 
@@ -147,7 +144,6 @@ class FormDownloadPageState extends State<FormDownloadPage> {
                   title: Text(_filteredForms[index]['name']),
                   onTap: () {
                     _downloadFile(
-                      context,
                       _filteredForms[index]['file'],
                       _filteredForms[index]['url'],
                     );

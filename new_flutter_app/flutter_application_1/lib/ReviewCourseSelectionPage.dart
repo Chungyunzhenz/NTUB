@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' show AppBar, BuildContext, Card, EdgeInsets, Icon, IconButton, Icons, ListTile, ListView, Scaffold, StatelessWidget, Text, Widget;
 
 class ReviewCourseSelectionPage extends StatelessWidget {
   const ReviewCourseSelectionPage({super.key});
