@@ -204,20 +204,165 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return role == '學生'
-        ? MyHomePage(
-            title: '文件掃描辨識 - 學生',
-            toggleTheme: toggleTheme,
-            isDarkMode: isDarkMode)
-        : role == '助教'
-            ? AssistantHomePage(
-                title: '文件掃描辨識 - 助教',
-                toggleTheme: toggleTheme,
-                isDarkMode: isDarkMode)
-            : TeacherHomePage(
-                title: '文件掃描辨識 - 老師',
-                toggleTheme: toggleTheme,
-                isDarkMode: isDarkMode);
+    ThemeData theme;
+    if (role == '學生') {
+      theme = _buildTheme(Colors.blue);
+    } else if (role == '助教') {
+      theme = _buildTheme(Colors.yellow);
+    } else {
+      theme = _buildTheme(Colors.purple);
+    }
+
+    return MaterialApp(
+      theme: theme,
+      home: Scaffold(
+        appBar: AppBar(
+          title: Text('文件掃描辨識 - $role'),
+          actions: <Widget>[
+            IconButton(
+              icon: Icon(isDarkMode ? Icons.wb_sunny : Icons.nightlight_round),
+              onPressed: toggleTheme,
+            ),
+            IconButton(
+              icon: const Icon(Icons.logout),
+              onPressed: () {
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => LoginPage(
+                          toggleTheme: toggleTheme, isDarkMode: isDarkMode)),
+                );
+              },
+            ),
+          ],
+        ),
+        drawer: Drawer(
+          child: ListView(
+            children: <Widget>[
+              DrawerHeader(
+                decoration: BoxDecoration(
+                  color: theme.primaryColor,
+                ),
+                child: Column(
+                  children: [
+                    const CircleAvatar(),
+                    const SizedBox(height: 10),
+                    const Text('主選單',
+                        style: TextStyle(color: Colors.white, fontSize: 24)),
+                  ],
+                ),
+              ),
+              _createDrawerItem(
+                  icon: Icons.public,
+                  text: '校園公告',
+                  onTap: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const AnnouncementPage(),
+                        ));
+                  }),
+              _createDrawerItem(
+                  icon: Icons.download,
+                  text: '表單下載',
+                  onTap: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const FormDownloadPage(),
+                        ));
+                  }),
+              _createDrawerItem(
+                  icon: Icons.upload_file,
+                  text: '表單上傳',
+                  onTap: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const FormUploadPage(),
+                        ));
+                  }),
+              _createDrawerItem(
+                  icon: Icons.book,
+                  text: '使用手冊',
+                  onTap: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const ManualPage(),
+                        ));
+                  }),
+              _createDrawerItem(
+                  icon: Icons.settings,
+                  text: '個人資料',
+                  onTap: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => SettingsPage(
+                            updateUserName: (newUserName) {
+                              // 更新用户名称
+                            },
+                            pickImage: () {
+                              // 选择图片
+                            },
+                            image: null,
+                          ),
+                        ));
+                  }),
+            ],
+          ),
+        ),
+        body: _buildRoleBasedPage(role),
+      ),
+    );
+  }
+
+  ThemeData _buildTheme(Color color) {
+    return ThemeData(
+      primaryColor: color,
+      colorScheme: ColorScheme.fromSwatch().copyWith(
+        primary: color,
+        secondary: color.withOpacity(0.7),
+      ),
+      appBarTheme: AppBarTheme(
+        backgroundColor: color,
+      ),
+      floatingActionButtonTheme: FloatingActionButtonThemeData(
+        backgroundColor: color.withOpacity(0.7),
+      ),
+      visualDensity: VisualDensity.adaptivePlatformDensity,
+    );
+  }
+
+  Widget _createDrawerItem(
+      {required IconData icon,
+      required String text,
+      GestureTapCallback? onTap}) {
+    return ListTile(
+      title: Text(text),
+      leading: Icon(icon),
+      onTap: onTap,
+    );
+  }
+
+  Widget _buildRoleBasedPage(String role) {
+    if (role == '學生') {
+      return MyHomePage(
+          title: '文件掃描辨識 - 學生',
+          toggleTheme: toggleTheme,
+          isDarkMode: isDarkMode);
+    } else if (role == '助教') {
+      return AssistantHomePage(
+          title: '文件掃描辨識 - 助教',
+          toggleTheme: toggleTheme,
+          isDarkMode: isDarkMode);
+    } else {
+      return TeacherHomePage(
+          title: '文件掃描辨識 - 老師',
+          toggleTheme: toggleTheme,
+          isDarkMode: isDarkMode);
+    }
   }
 }
 
@@ -246,6 +391,12 @@ class _MyHomePageState extends State<MyHomePage> {
         await ImagePicker().pickImage(source: ImageSource.gallery);
     setState(() {
       _image = pickedFile != null ? File(pickedFile.path) : null;
+    });
+  }
+
+  void _updateUserName(String newUserName) {
+    setState(() {
+      userName = newUserName;
     });
   }
 
@@ -279,13 +430,13 @@ class _MyHomePageState extends State<MyHomePage> {
           children: <Widget>[
             DrawerHeader(
               decoration: BoxDecoration(
-                color: Colors.blue[800],
+                color: Theme.of(context).primaryColor,
               ),
-              child: const Column(
+              child: Column(
                 children: [
-                  CircleAvatar(),
-                  SizedBox(height: 10),
-                  Text('主選單',
+                  const CircleAvatar(),
+                  const SizedBox(height: 10),
+                  const Text('主選單',
                       style: TextStyle(color: Colors.white, fontSize: 24)),
                 ],
               ),
@@ -323,7 +474,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   Widget _createDrawerItem(IconData icon, String title, Widget page) {
     return ListTile(
-      leading: Icon(icon, color: Colors.blue[800]),
+      leading: Icon(icon, color: Theme.of(context).primaryColor),
       title: Text(title, style: const TextStyle(color: Colors.black)),
       onTap: () {
         Navigator.pop(context);
@@ -406,12 +557,6 @@ class _MyHomePageState extends State<MyHomePage> {
       ],
     );
   }
-
-  void _updateUserName(String newUserName) {
-    setState(() {
-      userName = newUserName;
-    });
-  }
 }
 
 // 助教首頁
@@ -450,7 +595,59 @@ class AssistantHomePage extends StatelessWidget {
           ),
         ],
       ),
+      drawer: Drawer(
+        child: ListView(
+          children: <Widget>[
+            DrawerHeader(
+              decoration: BoxDecoration(
+                color: Theme.of(context).primaryColor,
+              ),
+              child: Column(
+                children: [
+                  const CircleAvatar(),
+                  const SizedBox(height: 10),
+                  const Text('主選單',
+                      style: TextStyle(color: Colors.white, fontSize: 24)),
+                ],
+              ),
+            ),
+            _createDrawerItem(Icons.public, '校園公告', const AnnouncementPage()),
+            _createDrawerItem(Icons.download, '表單下載', const FormDownloadPage()),
+            _createDrawerItem(
+                Icons.upload_file, '表單上傳', const FormUploadPage()),
+            _createDrawerItem(Icons.book, '使用手冊', const ManualPage()),
+            _createDrawerItem(
+                Icons.settings,
+                '個人資料',
+                SettingsPage(
+                    updateUserName: (newUserName) {
+                      // 更新用户名称
+                    },
+                    pickImage: () {
+                      // 选择图片
+                    },
+                    image: null)),
+          ],
+        ),
+      ),
       body: const Center(child: Text('助教首頁')),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {},
+        tooltip: '開啟 Line Bot',
+        backgroundColor: Colors.green,
+        child: const Icon(Icons.chat),
+      ),
+    );
+  }
+
+  Widget _createDrawerItem(IconData icon, String title, Widget page) {
+    return ListTile(
+      leading: Icon(icon, color: Theme.of(context).primaryColor),
+      title: Text(title, style: const TextStyle(color: Colors.black)),
+      onTap: () {
+        Navigator.pop(context);
+        Navigator.push(context, MaterialPageRoute(builder: (context) => page));
+      },
     );
   }
 }
@@ -491,7 +688,59 @@ class TeacherHomePage extends StatelessWidget {
           ),
         ],
       ),
+      drawer: Drawer(
+        child: ListView(
+          children: <Widget>[
+            DrawerHeader(
+              decoration: BoxDecoration(
+                color: Theme.of(context).primaryColor,
+              ),
+              child: Column(
+                children: [
+                  const CircleAvatar(),
+                  const SizedBox(height: 10),
+                  const Text('主選單',
+                      style: TextStyle(color: Colors.white, fontSize: 24)),
+                ],
+              ),
+            ),
+            _createDrawerItem(Icons.public, '校園公告', const AnnouncementPage()),
+            _createDrawerItem(Icons.download, '表單下載', const FormDownloadPage()),
+            _createDrawerItem(
+                Icons.upload_file, '表單上傳', const FormUploadPage()),
+            _createDrawerItem(Icons.book, '使用手冊', const ManualPage()),
+            _createDrawerItem(
+                Icons.settings,
+                '個人資料',
+                SettingsPage(
+                    updateUserName: (newUserName) {
+                      // 更新用户名称
+                    },
+                    pickImage: () {
+                      // 选择图片
+                    },
+                    image: null)),
+          ],
+        ),
+      ),
       body: const Center(child: Text('老師首頁')),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {},
+        tooltip: '開啟 Line Bot',
+        backgroundColor: Colors.green,
+        child: const Icon(Icons.chat),
+      ),
+    );
+  }
+
+  Widget _createDrawerItem(IconData icon, String title, Widget page) {
+    return ListTile(
+      leading: Icon(icon, color: Theme.of(context).primaryColor),
+      title: Text(title, style: const TextStyle(color: Colors.black)),
+      onTap: () {
+        Navigator.pop(context);
+        Navigator.push(context, MaterialPageRoute(builder: (context) => page));
+      },
     );
   }
 }

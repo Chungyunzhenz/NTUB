@@ -3,9 +3,9 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'dart:io';
 
-import 't.dart'; // 导入教师页面
-import 'z.dart'; // 导入助教页面
-import 's.dart'; // 导入学生页面
+import 't.dart'; // 教師頁面
+import 'z.dart'; // 助教頁面
+import 's.dart'; // 學生頁面
 
 void main() {
   HttpOverrides.global = MyHttpOverrides();
@@ -84,7 +84,7 @@ class LoginPageState extends State<LoginPage> {
         });
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => const StudentPage()),
+          MaterialPageRoute(builder: (context) => const HomePage()),
         );
       } else {
         setState(() {
