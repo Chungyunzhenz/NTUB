@@ -1,12 +1,7 @@
 import 'package:flutter/material.dart';
 import 'dart:io';
-import 'package:image_picker/image_picker.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-import 'announcement_page.dart';
-import 'form_download_page.dart';
-import 'form_upload_page.dart';
-import 'manual_page.dart';
 import 't.dart'; // Teacher Page
 import 'z.dart'; // Assistant Page
 import 's.dart'; // Student Page
@@ -113,7 +108,7 @@ class LoginPageState extends State<LoginPage> {
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(
-              builder: (context) => TeacherPage(
+              builder: (context) => Teacherpage(
                     title: '文件掃描辨識 - 老師',
                     toggleTheme: widget.toggleTheme,
                     isDarkMode: widget.isDarkMode,
@@ -161,32 +156,63 @@ class LoginPageState extends State<LoginPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Login'),
+        title: const Text('登入'),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          children: <Widget>[
-            TextField(
-              controller: _studentIdController,
-              decoration: const InputDecoration(labelText: 'Student ID'),
-            ),
-            TextField(
-              controller: _passwordController,
-              decoration: const InputDecoration(labelText: 'Password'),
-              obscureText: true,
-            ),
-            const SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: _login,
-              child: const Text('Login'),
-            ),
-            const SizedBox(height: 20),
-            Text(
-              _errorMessage,
-              style: const TextStyle(color: Colors.red),
-            ),
-          ],
+      body: Center(
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Image.asset(
+                'assets/logo.png', // Make sure you have a logo image in the assets folder
+                height: 100,
+              ),
+              const SizedBox(height: 40),
+              TextField(
+                controller: _studentIdController,
+                decoration: const InputDecoration(
+                  labelText: '輸入帳號',
+                  border: OutlineInputBorder(),
+                  prefixIcon: Icon(Icons.person),
+                ),
+              ),
+              const SizedBox(height: 20),
+              TextField(
+                controller: _passwordController,
+                decoration: const InputDecoration(
+                  labelText: '輸入密碼',
+                  border: OutlineInputBorder(),
+                  prefixIcon: Icon(Icons.lock),
+                ),
+                obscureText: true,
+              ),
+              const SizedBox(height: 20),
+              ElevatedButton(
+                onPressed: _login,
+                style: ElevatedButton.styleFrom(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 50, vertical: 15),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                ),
+                child: const Text('登入', style: TextStyle(fontSize: 16)),
+              ),
+              const SizedBox(height: 20),
+              Text(
+                _errorMessage,
+                style: const TextStyle(color: Colors.red),
+              ),
+              const SizedBox(height: 20),
+              TextButton(
+                onPressed: () {
+                  // Navigate to the registration page or forgot password
+                },
+                child: const Text('沒有帳號？點擊註冊'),
+              ),
+            ],
+          ),
         ),
       ),
     );
