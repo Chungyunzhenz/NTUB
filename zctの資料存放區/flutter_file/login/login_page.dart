@@ -1,33 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-import 'dart:io';
-
-import 't.dart';
-import 'z.dart';
-import 's.dart';
-
-void main() {
-  HttpOverrides.global = MyHttpOverrides();
-  runApp(MyApp());
-}
-
-class MyHttpOverrides extends HttpOverrides {
-  @override
-  HttpClient createHttpClient(SecurityContext? context) {
-    return super.createHttpClient(context)
-      ..badCertificateCallback = (X509Certificate cert, String host, int port) => true;
-  }
-}
-
-class MyApp extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      home: LoginPage(),
-    );
-  }
-}
+import 's.dart'; // Import the student page
+import 'z.dart'; // Import the assistant page
+import 't.dart'; // Import the teacher page
 
 class LoginPage extends StatefulWidget {
   @override
@@ -37,11 +13,10 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   final TextEditingController _studentIdController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  String _errorMessage = '';
 
   Future<void> _login() async {
     final response = await http.post(
-      Uri.parse('http://zctool.8bit.ca:5000/login'),
+      Uri.parse('http://125.229.155.140:5000/login'),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },
@@ -53,41 +28,38 @@ class _LoginPageState extends State<LoginPage> {
 
     if (response.statusCode == 200) {
       final data = jsonDecode(response.body);
-      String role = data['role'];
+      final user = data['user'];
+      final role = user['Role'];
 
-      if (role == '老師') {
-        setState(() {
-          _errorMessage = '';
-        });
+      if (role == '學生') {
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => TeacherPage()),
+          MaterialPageRoute(
+            builder: (context) => StudentPage(user: user),
+          ),
         );
       } else if (role == '助教') {
-        setState(() {
-          _errorMessage = '';
-        });
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => AssistantPage()),
+          MaterialPageRoute(
+            builder: (context) => AssistantPage(user: user),
+          ),
         );
-      } else if (role == '學生') {
-        setState(() {
-          _errorMessage = '';
-        });
+      } else if (role == '老師') {
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => StudentPage()),
+          MaterialPageRoute(
+            builder: (context) => TeacherPage(user: user),
+          ),
         );
       } else {
-        setState(() {
-          _errorMessage = 'Invalid Student ID or Password';
-        });
+        // Handle other roles or errors
       }
     } else {
-      setState(() {
-        _errorMessage = 'Invalid Student ID or Password';
-      });
+      // 處理登入錯誤
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Login failed. Please try again.')),
+      );
     }
   }
 
@@ -114,11 +86,6 @@ class _LoginPageState extends State<LoginPage> {
             ElevatedButton(
               onPressed: _login,
               child: Text('Login'),
-            ),
-            SizedBox(height: 20),
-            Text(
-              _errorMessage,
-              style: TextStyle(color: Colors.red),
             ),
           ],
         ),
