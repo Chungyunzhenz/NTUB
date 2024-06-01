@@ -5,58 +5,18 @@ import 'form_upload_page.dart';
 import 'form_download_page.dart';
 import 'manual_page.dart';
 
-void main() {
-  runApp(const MyApp());
-}
-
-class MyApp extends StatefulWidget {
-  const MyApp({super.key});
-
-  @override
-  MyAppState createState() => MyAppState();
-}
-
-class MyAppState extends State<MyApp> {
-  bool isDarkMode = false;
-
-  void toggleTheme() {
-    setState(() {
-      isDarkMode = !isDarkMode;
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Student Portal',
-      theme: ThemeData.light().copyWith(
-        primaryColor: Colors.blue,
-        appBarTheme: const AppBarTheme(color: Colors.blue),
-      ),
-      darkTheme: ThemeData.dark().copyWith(
-        primaryColor: Colors.blueGrey,
-        appBarTheme: const AppBarTheme(color: Colors.blueGrey),
-      ),
-      themeMode: isDarkMode ? ThemeMode.dark : ThemeMode.light,
-      home: MyHomePage(
-        title: '歡迎進入學生畫面',
-        toggleTheme: toggleTheme,
-        isDarkMode: isDarkMode,
-      ),
-    );
-  }
-}
-
 class MyHomePage extends StatefulWidget {
   final String title;
   final VoidCallback toggleTheme;
   final bool isDarkMode;
+  final Map<String, dynamic> user;
 
   const MyHomePage({
     super.key,
     required this.title,
     required this.toggleTheme,
     required this.isDarkMode,
+    required this.user,
   });
 
   @override
@@ -64,28 +24,6 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  String userName = '王小華';
-  String userNumber = '12345678';
-  String userProgram = '資訊管理系';
-
-  void _updateUserName(String newUserName) {
-    setState(() {
-      userName = newUserName;
-    });
-  }
-
-  void _updateUserNumber(String newUserNumber) {
-    setState(() {
-      userNumber = newUserNumber;
-    });
-  }
-
-  void _updateUserProgram(String newUserProgram) {
-    setState(() {
-      userProgram = newUserProgram;
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -134,52 +72,60 @@ class _MyHomePageState extends State<MyHomePage> {
               },
             ),
             ListTile(
-              leading: const Icon(Icons.upload_file), // 修改: 更改頁面名稱
+              leading: const Icon(Icons.upload_file),
               title: const Text('上傳'),
               onTap: () {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) =>
-                          const FormTypeSelectionPage()), // 修改: 使用新的上傳頁面
+                      builder: (context) => const FormTypeSelectionPage()),
                 );
               },
             ),
             ListTile(
-              leading: const Icon(Icons.download), // 修改: 更改頁面名稱
+              leading: const Icon(Icons.download),
               title: const Text('下載'),
               onTap: () {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) =>
-                          const FormDownloadPage()), // 修改: 使用新的下載頁面
+                      builder: (context) => const FormDownloadPage()),
                 );
               },
             ),
             ListTile(
-              leading: const Icon(Icons.book), // 修改: 更改頁面名稱
+              leading: const Icon(Icons.book),
               title: const Text('使用手冊'),
               onTap: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(
-                      builder: (context) =>
-                          const ManualPage()), // 修改: 使用新的使用手冊頁面
+                  MaterialPageRoute(builder: (context) => const ManualPage()),
                 );
               },
             ),
             ListTile(
-              leading: const Icon(Icons.settings), // 修改: 更改頁面名稱
+              leading: const Icon(Icons.settings),
               title: const Text('設定'),
               onTap: () {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
                     builder: (context) => SettingsPage(
-                      updateUserName: _updateUserName,
-                      updateUserNumber: _updateUserNumber,
-                      updateUserProgram: _updateUserProgram,
+                      updateUserName: (String newUserName) {
+                        setState(() {
+                          widget.user['Name'] = newUserName;
+                        });
+                      },
+                      updateUserNumber: (String newUserNumber) {
+                        setState(() {
+                          widget.user['Number'] = newUserNumber;
+                        });
+                      },
+                      updateUserProgram: (String newUserProgram) {
+                        setState(() {
+                          widget.user['Program'] = newUserProgram;
+                        });
+                      },
                     ),
                   ),
                 );
@@ -202,16 +148,15 @@ class _MyHomePageState extends State<MyHomePage> {
           children: <Widget>[
             Card(
               color: Colors.white.withOpacity(0.8),
-              child: const ListTile(
-                leading:
-                    Icon(Icons.account_circle, size: 50, color: Colors.blue),
-                title: Text('姓名: 張三'),
+              child: ListTile(
+                leading: const Icon(Icons.account_circle,
+                    size: 50, color: Colors.blue),
+                title: Text('姓名: ${widget.user['Name']}'),
                 subtitle: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text('學號: 12345678'),
-                    Text('科系: 資訊管理系'),
-                    Text('學制: 大學部'),
+                    Text('學號: ${widget.user['Number']}'),
+                    Text('科系: ${widget.user['Program']}'),
                   ],
                 ),
               ),
@@ -234,21 +179,21 @@ class _MyHomePageState extends State<MyHomePage> {
                     context,
                     Icons.upload_file,
                     '上傳',
-                    const FormTypeSelectionPage(), // 修改: 使用新的上傳頁面
+                    const FormTypeSelectionPage(),
                     Colors.green,
                   ),
                   _buildFeatureCard(
                     context,
                     Icons.download,
                     '下載',
-                    const FormDownloadPage(), // 修改: 使用新的下載頁面
+                    const FormDownloadPage(),
                     Colors.purple,
                   ),
                   _buildFeatureCard(
                     context,
                     Icons.book,
                     '使用手冊',
-                    const ManualPage(), // 修改: 使用新的使用手冊頁面
+                    const ManualPage(),
                     Colors.red,
                   ),
                 ],

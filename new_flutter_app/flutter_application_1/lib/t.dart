@@ -5,86 +5,40 @@ import 'form_upload_page.dart';
 import 'form_download_page.dart';
 import 'manual_page.dart';
 
-void main() {
-  runApp(const MyApp());
-}
-
-class MyApp extends StatefulWidget {
-  const MyApp({super.key});
-
-  @override
-  MyAppState createState() => MyAppState();
-}
-
-class MyAppState extends State<MyApp> {
-  bool isDarkMode = false;
-
-  void toggleTheme() {
-    setState(() {
-      isDarkMode = !isDarkMode;
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Student Portal',
-      theme: ThemeData.light().copyWith(
-        primaryColor: Color.fromARGB(255, 216, 224, 146),
-        appBarTheme:
-            const AppBarTheme(color: Color.fromARGB(255, 227, 208, 60)),
-      ),
-      darkTheme: ThemeData.dark().copyWith(
-        primaryColor: Color.fromARGB(255, 245, 238, 180),
-        appBarTheme:
-            const AppBarTheme(color: Color.fromARGB(255, 219, 239, 129)),
-      ),
-      themeMode: isDarkMode ? ThemeMode.dark : ThemeMode.light,
-      home: Teacherpage(
-        title: '歡迎進入教師畫面',
-        toggleTheme: toggleTheme,
-        isDarkMode: isDarkMode,
-      ),
-    );
-  }
-}
-
-class Teacherpage extends StatefulWidget {
+class TeacherPage extends StatefulWidget {
   final String title;
   final VoidCallback toggleTheme;
   final bool isDarkMode;
+  final Map<String, dynamic> user;
 
-  const Teacherpage({
+  const TeacherPage({
     super.key,
     required this.title,
     required this.toggleTheme,
     required this.isDarkMode,
+    required this.user,
   });
 
   @override
-  State<Teacherpage> createState() => _TeacherPageState();
+  State<TeacherPage> createState() => _TeacherPageState();
 }
 
-class _TeacherPageState extends State<Teacherpage> {
-  String userName = '王小華';
-  String userNumber = '12345678';
-  String userProgram = '資訊管理系';
-
+class _TeacherPageState extends State<TeacherPage> {
   void _updateUserName(String newUserName) {
     setState(() {
-      userName = newUserName;
+      widget.user['Name'] = newUserName;
     });
   }
 
   void _updateUserNumber(String newUserNumber) {
     setState(() {
-      userNumber = newUserNumber;
+      widget.user['Number'] = newUserNumber;
     });
   }
 
   void _updateUserProgram(String newUserProgram) {
     setState(() {
-      userProgram = newUserProgram;
+      widget.user['Program'] = newUserProgram;
     });
   }
 
@@ -107,7 +61,7 @@ class _TeacherPageState extends State<Teacherpage> {
           children: <Widget>[
             const DrawerHeader(
               decoration: BoxDecoration(
-                color: Colors.blue,
+                color: Color.fromARGB(255, 221, 239, 172),
               ),
               child: Text(
                 '主選單',
@@ -136,43 +90,39 @@ class _TeacherPageState extends State<Teacherpage> {
               },
             ),
             ListTile(
-              leading: const Icon(Icons.upload_file), // 修改: 更改頁面名稱
+              leading: const Icon(Icons.upload_file),
               title: const Text('上傳'),
               onTap: () {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) =>
-                          const FormTypeSelectionPage()), // 修改: 使用新的上傳頁面
+                      builder: (context) => const FormTypeSelectionPage()),
                 );
               },
             ),
             ListTile(
-              leading: const Icon(Icons.download), // 修改: 更改頁面名稱
+              leading: const Icon(Icons.download),
               title: const Text('下載'),
               onTap: () {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) =>
-                          const FormDownloadPage()), // 修改: 使用新的下載頁面
+                      builder: (context) => const FormDownloadPage()),
                 );
               },
             ),
             ListTile(
-              leading: const Icon(Icons.book), // 修改: 更改頁面名稱
+              leading: const Icon(Icons.book),
               title: const Text('使用手冊'),
               onTap: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(
-                      builder: (context) =>
-                          const ManualPage()), // 修改: 使用新的使用手冊頁面
+                  MaterialPageRoute(builder: (context) => const ManualPage()),
                 );
               },
             ),
             ListTile(
-              leading: const Icon(Icons.settings), // 修改: 更改頁面名稱
+              leading: const Icon(Icons.settings),
               title: const Text('設定'),
               onTap: () {
                 Navigator.push(
@@ -204,16 +154,15 @@ class _TeacherPageState extends State<Teacherpage> {
           children: <Widget>[
             Card(
               color: Colors.white.withOpacity(0.8),
-              child: const ListTile(
-                leading:
-                    Icon(Icons.account_circle, size: 50, color: Colors.blue),
-                title: Text('姓名: 張三'),
+              child: ListTile(
+                leading: const Icon(Icons.account_circle,
+                    size: 50, color: Colors.blue),
+                title: Text('姓名: ${widget.user['Name']}'),
                 subtitle: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text('學號: 12345678'),
-                    Text('科系: 資訊管理系'),
-                    Text('學制: 大學部'),
+                    Text('學號: ${widget.user['Number']}'),
+                    Text('科系: ${widget.user['Program']}'),
                   ],
                 ),
               ),
@@ -236,21 +185,21 @@ class _TeacherPageState extends State<Teacherpage> {
                     context,
                     Icons.upload_file,
                     '上傳',
-                    const FormTypeSelectionPage(), // 修改: 使用新的上傳頁面
+                    const FormTypeSelectionPage(),
                     Colors.green,
                   ),
                   _buildFeatureCard(
                     context,
                     Icons.download,
                     '下載',
-                    const FormDownloadPage(), // 修改: 使用新的下載頁面
+                    const FormDownloadPage(),
                     Colors.purple,
                   ),
                   _buildFeatureCard(
                     context,
                     Icons.book,
                     '使用手冊',
-                    const ManualPage(), // 修改: 使用新的使用手冊頁面
+                    const ManualPage(),
                     Colors.red,
                   ),
                 ],
@@ -258,16 +207,6 @@ class _TeacherPageState extends State<Teacherpage> {
             ),
           ],
         ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => const LineBotPage()),
-          );
-        },
-        backgroundColor: Colors.green,
-        child: const Icon(Icons.chat),
       ),
     );
   }
@@ -305,22 +244,6 @@ class _TeacherPageState extends State<Teacherpage> {
             ],
           ),
         ),
-      ),
-    );
-  }
-}
-
-class LineBotPage extends StatelessWidget {
-  const LineBotPage({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Line Bot'),
-      ),
-      body: const Center(
-        child: Text('這是 Line Bot 頁面'),
       ),
     );
   }
