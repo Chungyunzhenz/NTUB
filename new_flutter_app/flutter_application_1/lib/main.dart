@@ -432,7 +432,7 @@ class _MyHomePageState extends State<MyHomePage> {
               decoration: BoxDecoration(
                 color: Theme.of(context).primaryColor,
               ),
-              child: Column(
+              child: const Column(
                 children: [
                   const CircleAvatar(),
                   const SizedBox(height: 10),
@@ -480,6 +480,17 @@ class _MyHomePageState extends State<MyHomePage> {
         Navigator.pop(context);
         Navigator.push(context, MaterialPageRoute(builder: (context) => page));
       },
+    );
+  }
+
+  Widget _createDrawerItem(
+      {required IconData icon,
+      required String text,
+      GestureTapCallback? onTap}) {
+    return ListTile(
+      title: Text(text),
+      leading: Icon(icon),
+      onTap: onTap,
     );
   }
 
@@ -602,7 +613,7 @@ class AssistantHomePage extends StatelessWidget {
               decoration: BoxDecoration(
                 color: Theme.of(context).primaryColor,
               ),
-              child: Column(
+              child: const Column(
                 children: [
                   const CircleAvatar(),
                   const SizedBox(height: 10),
@@ -621,10 +632,10 @@ class AssistantHomePage extends StatelessWidget {
                 '個人資料',
                 SettingsPage(
                     updateUserName: (newUserName) {
-                      // 更新用户名称
+                      // 更新用戶名稱
                     },
                     pickImage: () {
-                      // 选择图片
+                      // 選擇圖片
                     },
                     image: null)),
           ],
@@ -695,7 +706,7 @@ class TeacherHomePage extends StatelessWidget {
               decoration: BoxDecoration(
                 color: Theme.of(context).primaryColor,
               ),
-              child: Column(
+              child: const Column(
                 children: [
                   const CircleAvatar(),
                   const SizedBox(height: 10),
