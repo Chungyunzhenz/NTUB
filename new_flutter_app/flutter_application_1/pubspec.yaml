@@ -34,4 +34,9 @@ flutter:
         - asset: lib/fonts/Lato-Thin.ttf
           style: italic
   uses-material-design: true
+<<<<<<< HEAD
   
+=======
+images:
+  - images/logo.png
+>>>>>>> 65234c4081b8333239046cb7af3dcfacbae94e7d

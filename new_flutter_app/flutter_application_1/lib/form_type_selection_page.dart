@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+<<<<<<< HEAD
 import 'package:file_picker/file_picker.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:http/http.dart' as http;
@@ -27,6 +28,12 @@ class MyApp extends StatelessWidget {
     );
   }
 }
+=======
+import 'package:flutter_animate/animate.dart';
+import 'package:flutter_animate/effects/effects.dart';
+//import 'package:flutter_animate/flutter_animate.dart';
+import 'form_upload_page.dart';
+>>>>>>> 65234c4081b8333239046cb7af3dcfacbae94e7d
 
 class FormTypeSelectionPage extends StatelessWidget {
   const FormTypeSelectionPage({super.key});
@@ -73,6 +80,7 @@ class FormTypeSelectionPage extends StatelessWidget {
             ),
           ],
         ),
+<<<<<<< HEAD
       ),
     );
   }
@@ -160,6 +168,9 @@ class FormUploadPageState extends State<FormUploadPage> {
           ),
         ],
       ),
+=======
+      ).animate().fadeIn(duration: const Duration(milliseconds: 800)).scale(),
+>>>>>>> 65234c4081b8333239046cb7af3dcfacbae94e7d
     );
   }
 
