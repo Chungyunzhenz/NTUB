@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/animate.dart';
+import 'package:flutter_animate/effects/effects.dart';
 //import 'package:flutter_animate/flutter_animate.dart';
 import 'form_upload_page.dart';
 
@@ -31,7 +33,7 @@ class FormTypeSelectionPage extends StatelessWidget {
             ),
           ],
         ),
-      ).animate().fadeIn(duration: Duration(milliseconds: 800)).scale(),
+      ).animate().fadeIn(duration: const Duration(milliseconds: 800)).scale(),
     );
   }
 
