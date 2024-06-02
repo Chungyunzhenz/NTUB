@@ -9,79 +9,8 @@ import 'package:logger/logger.dart';
 // Initialize a logger instance
 var logger = Logger();
 
-void main() {
-  runApp(const MyApp());
-}
-
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Form Upload',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: const FormTypeSelectionPage(),
-    );
-  }
-}
-
-class FormTypeSelectionPage extends StatelessWidget {
-  const FormTypeSelectionPage({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('選擇表單類型'),
-        backgroundColor: Colors.blueAccent,
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            ElevatedButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) =>
-                          const FormUploadPage(formType: '請假單')),
-                );
-              },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.blueAccent,
-              ),
-              child: const Text('上傳請假單'),
-            ),
-            const SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) =>
-                          const FormUploadPage(formType: '選課單')),
-                );
-              },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.blueAccent,
-              ),
-              child: const Text('上傳選課單'),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
 class FormUploadPage extends StatefulWidget {
-  final String formType;
-
-  const FormUploadPage({super.key, required this.formType});
+  const FormUploadPage({super.key});
 
   @override
   FormUploadPageState createState() => FormUploadPageState();
@@ -167,7 +96,7 @@ class FormUploadPageState extends State<FormUploadPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('${widget.formType}上傳'),
+        title: const Text('文件上傳'),
         backgroundColor: Colors.blueAccent,
       ),
       body: SingleChildScrollView(
@@ -234,4 +163,10 @@ class FormUploadPageState extends State<FormUploadPage> {
       ),
     );
   }
+}
+
+void main() {
+  runApp(const MaterialApp(
+    home: FormUploadPage(),
+  ));
 }

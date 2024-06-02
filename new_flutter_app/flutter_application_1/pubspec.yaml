@@ -4,7 +4,6 @@ description: An example of how to use package fonts with Flutter
 dependencies:
   flutter:
     sdk: flutter
-  flutter_animate: ^1.0.0
   file_picker: ^4.0.0
   http: ^0.13.3
   path_provider: ^2.0.11
@@ -15,7 +14,6 @@ dependencies:
   image_picker: ^0.8.4+4
   google_sign_in: ^5.0.7
   flutter_secure_storage: ^5.0.2
-  
   logger: ^1.1.0
 
 dev_dependencies:
@@ -34,6 +32,3 @@ flutter:
         - asset: lib/fonts/Lato-Thin.ttf
           style: italic
   uses-material-design: true
-
-images:
-  - images/logo.png
