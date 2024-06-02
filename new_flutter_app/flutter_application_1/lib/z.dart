@@ -4,27 +4,34 @@ class AssistantPage extends StatelessWidget {
   final String title;
   final VoidCallback toggleTheme;
   final bool isDarkMode;
+  final Map<String, dynamic> user;
 
   const AssistantPage({
-    super.key,
+    Key? key,
     required this.title,
     required this.toggleTheme,
     required this.isDarkMode,
-  });
+    required this.user,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text(title),
-        actions: <Widget>[
-          IconButton(
-            icon: Icon(isDarkMode ? Icons.wb_sunny : Icons.nightlight_round),
-            onPressed: toggleTheme,
-          ),
-        ],
       ),
-      body: const Center(child: Text('Welcome to Assistant Page')),
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Text('Name: ${user['Name']}'),
+            Text('Role: ${user['Role']}'),
+            Text('Academic: ${user['Academic']}'),
+            Text('Department: ${user['Department']}'),
+          ],
+        ),
+      ),
     );
   }
 }

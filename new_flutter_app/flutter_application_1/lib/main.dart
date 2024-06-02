@@ -117,6 +117,7 @@ class LoginPageState extends State<LoginPage> {
                       title: '文件掃描辨識 - 老師',
                       toggleTheme: widget.toggleTheme,
                       isDarkMode: widget.isDarkMode,
+                      user: user,
                     )),
           );
         } else if (role == '助教') {
@@ -127,6 +128,7 @@ class LoginPageState extends State<LoginPage> {
                       title: '文件掃描辨識 - 助教',
                       toggleTheme: widget.toggleTheme,
                       isDarkMode: widget.isDarkMode,
+                      user: user,
                     )),
           );
         } else if (role == '學生') {
