@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'dart:io';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-import 's.dart'; // Import the student page
-import 'z.dart'; // Import the assistant page
-import 't.dart'; // Import the teacher page
+import 't.dart'; // Teacher Page
+import 'z.dart'; // Assistant Page
+import 's.dart'; // Student Page
 
 void main() {
   HttpOverrides.global = MyHttpOverrides();
@@ -85,7 +85,7 @@ class LoginPageState extends State<LoginPage> {
 
   Future<void> _login() async {
     final response = await http.post(
-      Uri.parse('http://125.229.155.140:5000/login'),
+      Uri.parse('http://zctool.8bit.ca:5000/login'),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },
@@ -99,48 +99,50 @@ class LoginPageState extends State<LoginPage> {
 
     if (response.statusCode == 200) {
       final data = jsonDecode(response.body);
-      final user = data['user'];
-      final role = user['Role'];
+      String role = data['role'];
 
-      if (role == '學生') {
+      if (role == '老師') {
+        setState(() {
+          _errorMessage = '';
+        });
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(
-            builder: (context) => MyHomePage(
-              title: '文件掃描辨識 - 學生',
-              user: user,
-              toggleTheme: widget.toggleTheme,
-              isDarkMode: widget.isDarkMode,
-            ),
-          ),
+              builder: (context) => Teacherpage(
+                    title: '文件掃描辨識 - 老師',
+                    toggleTheme: widget.toggleTheme,
+                    isDarkMode: widget.isDarkMode,
+                  )),
         );
       } else if (role == '助教') {
+        setState(() {
+          _errorMessage = '';
+        });
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(
-            builder: (context) => AssistantPage(
-              title: '文件掃描辨識 - 助教',
-              user: user,
-              toggleTheme: widget.toggleTheme,
-              isDarkMode: widget.isDarkMode,
-            ),
-          ),
+              builder: (context) => AssistantPage(
+                    title: '文件掃描辨識 - 助教',
+                    toggleTheme: widget.toggleTheme,
+                    isDarkMode: widget.isDarkMode,
+                  )),
         );
-      } else if (role == '老師') {
+      } else if (role == '學生') {
+        setState(() {
+          _errorMessage = '';
+        });
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(
-            builder: (context) => TeacherPage(
-              title: '文件掃描辨識 - 老師',
-              user: user,
-              toggleTheme: widget.toggleTheme,
-              isDarkMode: widget.isDarkMode,
-            ),
-          ),
+              builder: (context) => MyHomePage(
+                    title: '文件掃描辨識 - 學生',
+                    toggleTheme: widget.toggleTheme,
+                    isDarkMode: widget.isDarkMode,
+                  )),
         );
       } else {
         setState(() {
-          _errorMessage = 'Invalid role';
+          _errorMessage = 'Invalid Student ID or Password';
         });
       }
     } else {
@@ -163,7 +165,7 @@ class LoginPageState extends State<LoginPage> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               Image.asset(
-                'assets/logo.png', // 確保在 assets 文件夾中有 logo 圖片
+                'assets/logo.png', // Make sure you have a logo image in the assets folder
                 height: 100,
               ),
               const SizedBox(height: 40),
@@ -205,7 +207,7 @@ class LoginPageState extends State<LoginPage> {
               const SizedBox(height: 20),
               TextButton(
                 onPressed: () {
-                  // 導航到註冊頁面或忘記密碼
+                  // Navigate to the registration page or forgot password
                 },
                 child: const Text('沒有帳號？點擊註冊'),
               ),
