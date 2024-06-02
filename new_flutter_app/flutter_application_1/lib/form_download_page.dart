@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
 import 'dart:io';
+import 'dart:typed_data';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:path/path.dart' as path;
 
 class FormDownloadPage extends StatefulWidget {
   const FormDownloadPage({super.key});
@@ -25,25 +28,21 @@ class FormDownloadPageState extends State<FormDownloadPage> {
     {
       'name': '選課單',
       'department': '科系',
-      'file': '選課單.pdf',
-      'url':
-          'https://acad.ntub.edu.tw/app/index.php?Action=downloadfile&file=WVhSMFlXTm9MekkwTDNCMFlWODRNREV5TVY4MU5UUXpPVEF4WHprMU9ESXpMbVJ2WTNnPQ==&fname=WSGGTSB00010A1KKEDLKFCMOQOMO25GGYSB0UWYSQPGD0040QKA424540054FCEGPOPOHH00DG04ICHCFC30TSIGKL34B1NOVXVXA4CCYSA4RKSWWSKKUSSSRK40SS44',
+      'file': '選課單.docx',
+      'url': 'https://acad.ntub.edu.tw/app/index.php?Action=downloadfile&file=WVhSMFlXTm9MekkwTDNCMFlWODRNREV5TVY4MU5UUXpPVEF4WHprMU9ESXpMbVJ2WTNnPQ==&fname=WSGGTSB00010A1KKEDLKFCMOQOMO25GGYSB0UWYSQPGD0040QKA424540054FCEGPOPOHH00DG04ICHCFC30TSIGKL34B1NOVXVXA4CCYSA4RKSWWSKKUSSSRK40SS44',
     },
     {
       'name': '請假單',
       'department': '學務處',
-      'file': '請假單.pdf',
-      'url':
-          'https://stud.ntub.edu.tw/app/index.php?Action=downloadfile&file=WVhSMFlXTm9MekV2Y0hSaFh6WTVNVGMyWHpneU9Ea3dYelkyTVRNeUxtOWtkQT09&fname=LOGGROOKWWCGA1YXEDLKSW24143025RLYSFG04XSVXGDXW40A0YW01SWWWOOA0OKZTPOZXKK200454HCMOXSTSLO34B0WSGCNPYTXWA034MKB001USSSWXFCMKPOCDNLDGA054WSVW30HCLK1434YSLK4435QPROLKB4YSSWIG00CDUSNOPOQPYXDGFGVWYWVWXSRLYS20RO14XSJDNPPOA5NKROECFGIGPOFCEGWWDCFD10TS24KPWWKKTWWTYWQO34SSMKTXJD40PKKPNO1145',
+      'file': '請假單.odt',
+      'url': 'https://stud.ntub.edu.tw/app/index.php?Action=downloadfile&file=WVhSMFlXTm9MekV2Y0hSaFh6WTVNVGMyWHpneU9Ea3dYelkyTVRNeUxtOWtkQT09&fname=LOGGROOKWWCGA1YXEDLKSW24143025RLYSFG04XSVXGDXW40A0YW01SWWWOOA0OKZTPOZXKK200454HCMOXSTSLO34B0WSGCNPYTXWA034MKB001USSSWXFCMKPOCDNLDGA054WSVW30HCLK1434YSLK4435QPROLKB4YSSWIG00CDUSNOPOQPYXDGFGVWYWVWXSRLYS20RO14XSJDNPPOA5NKROECFGIGPOFCEGWWDCFD10TS24KPWWKKTWWTYWQO34SSMKTXJD40PKKPNO1145',
     },
   ];
 
   List<Map<String, dynamic>> get _filteredForms {
     return _selectedDepartment == null
         ? _forms
-        : _forms
-            .where((form) => form['department'] == _selectedDepartment)
-            .toList();
+        : _forms.where((form) => form['department'] == _selectedDepartment).toList();
   }
 
   @override
@@ -52,22 +51,40 @@ class FormDownloadPageState extends State<FormDownloadPage> {
     HttpOverrides.global = MyHttpOverrides();
   }
 
+  Future<void> requestPermissions() async {
+    var status = await Permission.storage.status;
+    if (!status.isGranted) {
+      await Permission.storage.request();
+    }
+  }
+
   Future<void> _downloadFile(String fileName, String fileUrl) async {
     try {
-      // Request storage permissions
+      await requestPermissions();
       var status = await Permission.storage.request();
       if (!status.isGranted) {
         throw Exception('Storage permission not granted');
       }
 
       var dio = Dio();
-      String dir = '/storage/emulated/0/Download';
-      String savePath = "$dir/$fileName";
+      var response = await dio.get(
+        fileUrl,
+        options: Options(
+          responseType: ResponseType.bytes,
+          followRedirects: false,
+          validateStatus: (status) {
+            return status! < 500;
+          },
+        ),
+      );
 
-      await dio.download(fileUrl, savePath);
+      final Directory? directory = await getExternalStorageDirectory();
+      final String newPath = path.join(directory!.path, fileName);
+      File file = File(newPath);
+      await file.writeAsBytes(response.data);
 
       if (mounted) {
-        _showDownloadSuccessDialog(context, savePath);
+        _showDownloadSuccessDialog(context, newPath);
       }
     } catch (e) {
       if (mounted) {
@@ -104,7 +121,7 @@ class FormDownloadPageState extends State<FormDownloadPage> {
           TextButton(
             child: const Text('關閉'),
             onPressed: () {
-              Navigator.of(context).pop();
+              Navigator.of(context). pop();
             },
           ),
         ],
