@@ -88,28 +88,33 @@ class LoginPageState extends State<LoginPage> {
   final TextEditingController _passwordController = TextEditingController();
   String _errorMessage = '';
 
-  Future<void> _login() async {
-    final response = await http.post(
-      Uri.parse('http://zctool.8bit.ca:5000/login'),
-      headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8',
-      },
-      body: jsonEncode(<String, String>{
-        'StudentID': _studentIdController.text,
-        'Password': _passwordController.text,
-      }),
-    );
+ Future<void> _login() async {
+  final response = await http.post(
+    Uri.parse('http://zctool.8bit.ca:5000/login'),
+    headers: <String, String>{
+      'Content-Type': 'application/json; charset=UTF-8',
+    },
+    body: jsonEncode(<String, String>{
+      'StudentID': _studentIdController.text,
+      'Password': _passwordController.text,
+    }),
+  );
 
-    if (!mounted) return;
+  if (!mounted) return;
 
-    if (response.statusCode == 200) {
-      final data = jsonDecode(response.body);
-      String role = data['role'];
+  if (response.statusCode == 200) {
+    final data = jsonDecode(response.body);
+    final user = data['user'];
+    final role = user['Role'];
 
+    if (role == null || user == null) {
+      // 處理 role 或 user 為 null 的情況，例如設置一個錯誤消息
+      setState(() {
+        _errorMessage = 'Role or User is missing from the response';
+      });
+    } else {
+      // 根據角色導航到不同的頁面
       if (role == '老師') {
-        setState(() {
-          _errorMessage = '';
-        });
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(
@@ -120,9 +125,6 @@ class LoginPageState extends State<LoginPage> {
                   )),
         );
       } else if (role == '助教') {
-        setState(() {
-          _errorMessage = '';
-        });
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(
@@ -133,9 +135,6 @@ class LoginPageState extends State<LoginPage> {
                   )),
         );
       } else if (role == '學生') {
-        setState(() {
-          _errorMessage = '';
-        });
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(
@@ -147,16 +146,20 @@ class LoginPageState extends State<LoginPage> {
         );
       } else {
         setState(() {
-          _errorMessage = 'Invalid Student ID or Password';
+          _errorMessage = 'Invalid role';
         });
       }
-    } else {
-      setState(() {
-        _errorMessage = 'Invalid Student ID or Password';
-      });
     }
+  } else {
+    // 非 200 狀態碼的錯誤處理
+    setState(() {
+      _errorMessage = 'Error: ${response.statusCode}';
+    });
   }
+}
 
+  
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
