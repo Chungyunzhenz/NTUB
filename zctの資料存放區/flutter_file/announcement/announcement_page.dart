@@ -62,6 +62,7 @@ class _AnnouncementPageState extends State<AnnouncementPage> {
                 return ListTile(
                   title: Text(announcement['Purpose']),
                   subtitle: Text(announcement['content']),
+                  Text('time: ${announcement['time']}'),
                 );
               },
             ),

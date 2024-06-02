@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'dart:io';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 's.dart';
 import 't.dart'; // Teacher Page
 import 'z.dart'; // Assistant Page
-import 's.dart'; // Student Page
+// Student Page
+
 
 void main() {
   HttpOverrides.global = MyHttpOverrides();
@@ -135,7 +137,7 @@ class LoginPageState extends State<LoginPage> {
           Navigator.pushReplacement(
             context,
             MaterialPageRoute(
-                builder: (context) => MyHomePage(
+                builder: (context) => StudentPage(
                       title: '文件掃描辨識 - 學生',
                       toggleTheme: widget.toggleTheme,
                       isDarkMode: widget.isDarkMode,

@@ -1,18 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/form_download_page.dart';
 
-class MyHomePage extends StatelessWidget {
+import 'form_upload_page.dart';
+
+class StudentPage extends StatelessWidget {
   final String title;
   final VoidCallback toggleTheme;
   final bool isDarkMode;
   final Map<String, dynamic> user;
 
-  const MyHomePage({
-    Key? key,
+  const StudentPage({
+    super.key,
     required this.title,
     required this.toggleTheme,
     required this.isDarkMode,
     required this.user,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -29,6 +32,28 @@ class MyHomePage extends StatelessWidget {
             Text('Role: ${user['Role']}'),
             Text('Academic: ${user['Academic']}'),
             Text('Department: ${user['Department']}'),
+          SizedBox(height: 20), // 添加間距
+            ElevatedButton(
+              onPressed: () {
+                // 當按鈕被點擊時，導航到 TargetPage
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => FormDownloadPage()),
+                );
+              },
+              child: Text('Go to download Page'), // 按鈕文本
+            ),
+            SizedBox(height: 20), // 添加間距
+            ElevatedButton(
+              onPressed: () {
+                // 當按鈕被點擊時，導航到 TargetPage
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => FormUploadPage()),
+                );
+              },
+              child: Text('Go to upload Page'), // 按鈕文本
+            ),
           ],
         ),
       ),
