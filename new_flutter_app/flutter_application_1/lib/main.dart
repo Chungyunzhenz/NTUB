@@ -2,9 +2,17 @@ import 'package:flutter/material.dart';
 import 'dart:io';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+<<<<<<< HEAD
 //import 't.dart'; // Teacher Page
 //import 'z.dart'; // Assistant Page
 //import 's.dart'; // Student Page
+=======
+import 's.dart';
+import 't.dart'; // Teacher Page
+import 'z.dart'; // Assistant Page
+// Student Page
+
+>>>>>>> 4f5da611ab2eaec2456f3f6f90bc7d459660a23e
 
 void main() {
   HttpOverrides.global = MyHttpOverrides();
@@ -135,6 +143,7 @@ class LoginPageState extends State<LoginPage> {
           Navigator.pushReplacement(
             context,
             MaterialPageRoute(
+<<<<<<< HEAD
               builder: (context) => StudentPage(
                 title: '文件掃描辨識 - 學生',
                 toggleTheme: widget.toggleTheme,
@@ -142,6 +151,14 @@ class LoginPageState extends State<LoginPage> {
                 user: user,
               ),
             ),
+=======
+                builder: (context) => StudentPage(
+                      title: '文件掃描辨識 - 學生',
+                      toggleTheme: widget.toggleTheme,
+                      isDarkMode: widget.isDarkMode,
+                      user: user, // Passing the user data here
+                    )),
+>>>>>>> 4f5da611ab2eaec2456f3f6f90bc7d459660a23e
           );
         } else {
           setState(() {
