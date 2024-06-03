@@ -1,7 +1,7 @@
-from flask import Flask, jsonify
+from flask import Blueprint, jsonify
 import mysql.connector
 
-app = Flask(__name__)
+announcement_bp = Blueprint('announcement_bp', __name__)
 
 # 设置MySQL连接
 db_config = {
@@ -11,12 +11,12 @@ db_config = {
     'database': '0',
 }
 
-@app.route('/announcements', methods=['GET'])
+@announcement_bp.route('/announcements', methods=['GET'])
 def get_announcements():
     try:
         cnx = mysql.connector.connect(**db_config)
         cursor = cnx.cursor(dictionary=True)
-        query = "SELECT Purpose, content FROM announcement"
+        query = "SELECT Purpose, content, time FROM announcement"
         cursor.execute(query)
         announcements = cursor.fetchall()
         cnx.close()
@@ -24,6 +24,3 @@ def get_announcements():
         return jsonify({'announcements': announcements}), 200
     except mysql.connector.Error as err:
         return jsonify({'error': str(err)}), 500
-
-if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000)

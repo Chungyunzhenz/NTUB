@@ -35,6 +35,7 @@ class StudentPage extends StatelessWidget {
             Text('Role: ${user['Role']}'),
             Text('Academic: ${user['Academic']}'),
             Text('Department: ${user['Department']}'),
+            Text('StudentID: ${user['StudentID']}'),
           SizedBox(height: 20), // 添加間距
             ElevatedButton(
               onPressed: () {
