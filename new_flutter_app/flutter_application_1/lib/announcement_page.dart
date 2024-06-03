@@ -23,7 +23,7 @@ class AnnouncementPageState extends State<AnnouncementPage> {
   Future<void> _fetchAnnouncements() async {
     try {
       final response = await http
-          .get(Uri.parse('http://125.229.155.140:5000/announcements'));
+          .get(Uri.parse('http://10.0.2.2:5000/announcements'));
 
       if (response.statusCode == 200) {
         final data = jsonDecode(response.body);
