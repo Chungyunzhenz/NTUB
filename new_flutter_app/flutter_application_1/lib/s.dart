@@ -31,11 +31,11 @@ class StudentPage extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            Text('Name: ${user['Name']}'),
-            Text('Role: ${user['Role']}'),
-            Text('Academic: ${user['Academic']}'),
-            Text('Department: ${user['Department']}'),
-            Text('StudentID: ${user['StudentID']}'),
+              Text('Name: ${user['Name']}'),
+              Text('Role: ${user['Role']}'),
+              Text('Academic: ${user['Academic']}'),
+              Text('Department: ${user['Department']}'),
+              Text('StudentID: ${user['StudentID']}'),
           SizedBox(height: 20), // 添加間距
             ElevatedButton(
               onPressed: () {
