@@ -7,12 +7,12 @@ class TeacherPage extends StatelessWidget {
   final Map<String, dynamic> user;
 
   const TeacherPage({
-    Key? key,
+    super.key,
     required this.title,
     required this.toggleTheme,
     required this.isDarkMode,
     required this.user,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
