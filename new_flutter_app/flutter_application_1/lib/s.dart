@@ -1,26 +1,17 @@
 import 'package:flutter/material.dart';
-<<<<<<< HEAD
 import 'form_upload_page.dart';
 import 'form_download_page.dart';
+//import 'settings_page.dart';
 import 'announcement_page.dart';
 import 'manual_page.dart';
-=======
-import 'package:flutter_application_1/form_download_page.dart';
->>>>>>> 4f5da611ab2eaec2456f3f6f90bc7d459660a23e
 
-import 'form_upload_page.dart';
-
-class StudentPage extends StatelessWidget {
+class MyHomePage extends StatelessWidget {
   final String title;
   final VoidCallback toggleTheme;
   final bool isDarkMode;
   final Map<String, dynamic> user;
 
-<<<<<<< HEAD
   const MyHomePage({
-=======
-  const StudentPage({
->>>>>>> 4f5da611ab2eaec2456f3f6f90bc7d459660a23e
     super.key,
     required this.title,
     required this.toggleTheme,
@@ -81,34 +72,11 @@ class StudentPage extends StatelessWidget {
             Text('Role: ${user['Role']}'),
             Text('Academic: ${user['Academic']}'),
             Text('Department: ${user['Department']}'),
-          SizedBox(height: 20), // 添加間距
-            ElevatedButton(
-              onPressed: () {
-                // 當按鈕被點擊時，導航到 TargetPage
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => FormDownloadPage()),
-                );
-              },
-              child: Text('Go to download Page'), // 按鈕文本
-            ),
-            SizedBox(height: 20), // 添加間距
-            ElevatedButton(
-              onPressed: () {
-                // 當按鈕被點擊時，導航到 TargetPage
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => FormUploadPage()),
-                );
-              },
-              child: Text('Go to upload Page'), // 按鈕文本
-            ),
           ],
         ),
       ),
     );
   }
-<<<<<<< HEAD
 
   Widget _createDrawerItem({
     required IconData icon,
@@ -122,6 +90,3 @@ class StudentPage extends StatelessWidget {
     );
   }
 }
-=======
-}
->>>>>>> 4f5da611ab2eaec2456f3f6f90bc7d459660a23e
