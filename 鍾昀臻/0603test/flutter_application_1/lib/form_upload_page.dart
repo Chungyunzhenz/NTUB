@@ -97,7 +97,7 @@ class FormUploadPageState extends State<FormUploadPage> {
       home: Scaffold(
         appBar: AppBar(
           title: const Text('文件上傳'),
-          backgroundColor: Colors.deepPurple,
+          backgroundColor: Colors.white,
         ),
         body: Container(
           padding: const EdgeInsets.all(20),
@@ -107,7 +107,11 @@ class FormUploadPageState extends State<FormUploadPage> {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 Card(
-                  elevation: 5,
+                  elevation: 8,
+                  shadowColor: Colors.blue.shade300.withOpacity(0.5),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(16),
+                  ),
                   child: Padding(
                     padding: const EdgeInsets.all(20),
                     child: Column(
@@ -116,35 +120,44 @@ class FormUploadPageState extends State<FormUploadPage> {
                         ElevatedButton(
                           onPressed: _uploadFile,
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.deepPurple,
-                            foregroundColor: Colors
-                                .white, // Changed from onPrimary to foregroundColor
+                            backgroundColor: Colors.blue.shade300,
+                            foregroundColor: Colors.white,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(30),
+                            ),
                           ),
                           child: const Text('選擇文件並上傳'),
                         ),
                         const SizedBox(height: 20),
                         _image == null
-                            ? const Text('No image selected.')
-                            : Image.file(_image!),
+                            ? const Text('沒有選擇照片.')
+                            : ClipRRect(
+                                borderRadius: BorderRadius.circular(8),
+                                child: Image.file(_image!),
+                              ),
                         const SizedBox(height: 20),
                         ElevatedButton(
                           onPressed: _pickImage,
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.deepPurple,
-                            foregroundColor: Colors
-                                .white, // Changed from onPrimary to foregroundColor
+                            backgroundColor: Colors.blue.shade300,
+                            foregroundColor: Colors.white,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(30),
+                            ),
                           ),
-                          child: const Text('Pick Image'),
+                          child: const Text('選擇照片'),
                         ),
                         const SizedBox(height: 20),
                         ElevatedButton(
                           onPressed: _uploadImage,
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.deepPurple,
-                            foregroundColor: Colors
-                                .white, // Changed from onPrimary to foregroundColor
+                            backgroundColor: Colors.blue.shade300,
+                            foregroundColor: Colors.white,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(30),
+                            ),
                           ),
-                          child: const Text('Upload Image'),
+                          child: const Text('上傳照片'),
                         ),
                       ],
                     ),

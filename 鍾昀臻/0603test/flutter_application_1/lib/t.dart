@@ -141,7 +141,8 @@ class _TeacherPageState extends State<TeacherPage> {
     );
   }
 
-  Widget _buildFeatureCard(BuildContext context, {required IconData icon, required String text, required Widget page}) {
+  Widget _buildFeatureCard(BuildContext context,
+      {required IconData icon, required String text, required Widget page}) {
     return Expanded(
       child: GestureDetector(
         onTap: () => _navigateTo(context, page),
