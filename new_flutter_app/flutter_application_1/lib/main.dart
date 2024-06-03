@@ -76,7 +76,7 @@ class LoginPageState extends State<LoginPage> {
   String _errorMessage = '';
   Future<void> _login() async {
     final response = await http.post(
-      Uri.parse('http://10.0.2.2:5000/login'),
+      Uri.parse('http://zctool.8bit.ca:5000/login'),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },

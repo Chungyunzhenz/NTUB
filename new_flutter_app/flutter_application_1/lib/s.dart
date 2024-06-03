@@ -1,6 +1,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/form_download_page.dart';
+import 'announcement_page.dart';
 import 'form_upload_page.dart';
 
 class StudentPage extends StatelessWidget {
@@ -54,6 +55,17 @@ class StudentPage extends StatelessWidget {
                 );
               },
               child: Text('Go to upload Page'), // 按鈕文本
+            ),
+            SizedBox(height: 20), // 添加間距
+            ElevatedButton(
+              onPressed: () {
+                // 當按鈕被點擊時，導航到 TargetPage
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => AnnouncementPage()),
+                );
+              },
+              child: Text('Go to Announcement Page'), // 按鈕文本
             ),
           ],
         ),
