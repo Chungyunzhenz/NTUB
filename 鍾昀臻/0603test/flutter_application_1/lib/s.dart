@@ -6,9 +6,21 @@ import 'form_download_page.dart';
 import 'announcement_page.dart';
 import 'manual_page.dart';
 import 'file_upload.dart';
+import 'main.dart';
 
 class StudentPage extends StatefulWidget {
-  const StudentPage({super.key});
+  final String title;
+  final VoidCallback toggleTheme;
+  final bool isDarkMode;
+  final Map<String, dynamic> user;
+
+  const StudentPage({
+    super.key,
+    required this.title,
+    required this.toggleTheme,
+    required this.isDarkMode,
+    required this.user,
+  });
 
   @override
   _StudentPageState createState() => _StudentPageState();
@@ -26,7 +38,7 @@ class _StudentPageState extends State<StudentPage> {
   Future<void> _loadThemePreference() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     setState(() {
-      isDarkMode = prefs.getBool('isDarkMode') ?? false;
+      isDarkMode = prefs.getBool('isDarkMode') ?? widget.isDarkMode;
     });
   }
 
@@ -39,11 +51,23 @@ class _StudentPageState extends State<StudentPage> {
   }
 
   Future<void> _launchLineBot() async {
-    const url = 'https://line.me/R/ti/p/YOUR_LINE_BOT_ID'; // 替換成你的Line Bot的URL
+    const url = 'https://line.me/R/ti/p/YOUR_LINE_BOT_ID';
     if (!await canLaunch(url)) {
-      throw '無法打開 $url';
+      throw '无法打开 $url';
     }
     await launch(url);
+  }
+
+  void _logout() {
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(
+        builder: (context) => LoginPage(
+          toggleTheme: widget.toggleTheme,
+          isDarkMode: widget.isDarkMode,
+        ),
+      ),
+    );
   }
 
   @override
@@ -55,7 +79,7 @@ class _StudentPageState extends State<StudentPage> {
       ),
       home: Scaffold(
         appBar: AppBar(
-          title: const Text('學生介面'),
+          title: Text(widget.title),
           actions: [
             IconButton(
               icon: Icon(isDarkMode ? Icons.dark_mode : Icons.light_mode),
@@ -73,37 +97,73 @@ class _StudentPageState extends State<StudentPage> {
                     style: TextStyle(color: Colors.white, fontSize: 24)),
               ),
               _buildListTile(Icons.upload_file, '上傳圖片', FormUploadPage()),
-              _buildListTile(Icons.upload_file, '上傳檔案', FileUploadPage()),
+              // _buildListTile(Icons.upload_file, '上傳檔案', FileUploadPage()),
               _buildListTile(Icons.download, '下載表單', FormDownloadPage()),
               _buildListTile(Icons.announcement, '公告', AnnouncementPage()),
               _buildListTile(Icons.book, '使用手冊', ManualPage()),
+              ListTile(
+                leading: Icon(Icons.logout),
+                title: Text('登出'),
+                onTap: _logout,
+              ),
             ],
           ),
         ),
         body: Container(
-          decoration: BoxDecoration(
-            image: const DecorationImage(
+          decoration: const BoxDecoration(
+            image: DecorationImage(
               image: AssetImage('assets/background.jpg'),
               fit: BoxFit.cover,
             ),
           ),
-          padding: const EdgeInsets.all(16.0),
+          padding: const EdgeInsets.all(10.0),
           child: Column(
             children: [
               Container(
-                margin: const EdgeInsets.only(bottom: 16.0),
-                padding: const EdgeInsets.all(16.0),
-                color: Colors.blue.withOpacity(0.8),
-                child: const Text('資料庫內容顯示區',
-                    style: TextStyle(color: Colors.white, fontSize: 24)),
+                width: double.infinity,
+                padding: const EdgeInsets.all(20.0),
+                decoration: BoxDecoration(
+                  color: Colors.blue.shade200,
+                  borderRadius: BorderRadius.circular(15.0),
+                ),
+                child: Row(
+                  children: [
+                    CircleAvatar(
+                      radius: 30,
+                      backgroundImage: AssetImage('assets/genie.png'), // 頭像
+                    ),
+                    SizedBox(width: 20),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text('姓名: ${widget.user['Name']}',
+                            style: const TextStyle(
+                                color: Colors.black, fontSize: 18)),
+                        Text('身份: ${widget.user['Role']}',
+                            style: const TextStyle(
+                                color: Colors.black, fontSize: 18)),
+                        Text('學制: ${widget.user['Academic']}',
+                            style: const TextStyle(
+                                color: Colors.black, fontSize: 18)),
+                        Text('學系: ${widget.user['Department']}',
+                            style: const TextStyle(
+                                color: Colors.black, fontSize: 18)),
+                        Text('學號: ${widget.user['StudentID']}',
+                            style: const TextStyle(
+                                color: Colors.black, fontSize: 18)),
+                      ],
+                    ),
+                  ],
+                ),
               ),
+              const SizedBox(height: 30), // 增加距離
               Expanded(
                 child: GridView.count(
                   crossAxisCount: 2,
                   crossAxisSpacing: 10,
-                  mainAxisSpacing: 10,
+                  mainAxisSpacing: 30,
                   children: <Widget>[
-                    _buildGridTile(Icons.upload_file, '上傳表單', FormUploadPage()),
+                    _buildGridTile(Icons.upload_file, '上傳圖片', FormUploadPage()),
                     _buildGridTile(Icons.download, '下載表單', FormDownloadPage()),
                     _buildGridTile(
                         Icons.announcement, '公告', AnnouncementPage()),
@@ -138,6 +198,10 @@ class _StudentPageState extends State<StudentPage> {
           context, MaterialPageRoute(builder: (context) => page)),
       child: Card(
         color: Colors.blue.shade300,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(15.0),
+        ),
+        elevation: 4,
         child: Padding(
           padding: const EdgeInsets.all(20.0),
           child: Column(

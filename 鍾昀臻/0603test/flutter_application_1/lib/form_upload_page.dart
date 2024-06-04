@@ -97,7 +97,7 @@ class FormUploadPageState extends State<FormUploadPage> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('文件上傳'),
-        backgroundColor: Colors.blueAccent,
+        backgroundColor: Colors.white,
       ),
       body: Center(
         child: SingleChildScrollView(
@@ -108,7 +108,7 @@ class FormUploadPageState extends State<FormUploadPage> {
               borderRadius: BorderRadius.circular(15.0),
             ),
             child: Padding(
-              padding: const EdgeInsets.all(16.0),
+              padding: const EdgeInsets.all(50.0),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
@@ -119,13 +119,13 @@ class FormUploadPageState extends State<FormUploadPage> {
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  const SizedBox(height: 20),
+                  const SizedBox(height: 30),
                   ElevatedButton.icon(
                     onPressed: _uploadFile,
                     icon: Icon(Icons.upload_file),
                     label: const Text('選擇文件並上傳'),
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.blueAccent,
+                      backgroundColor: const Color.fromARGB(255, 145, 181, 243),
                       padding:
                           EdgeInsets.symmetric(horizontal: 30, vertical: 15),
                       textStyle: TextStyle(fontSize: 16),
@@ -139,7 +139,7 @@ class FormUploadPageState extends State<FormUploadPage> {
                     icon: Icon(Icons.image),
                     label: const Text('選擇圖片'),
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.blueAccent,
+                      backgroundColor: Color.fromARGB(255, 145, 181, 243),
                       padding:
                           EdgeInsets.symmetric(horizontal: 30, vertical: 15),
                       textStyle: TextStyle(fontSize: 16),
@@ -151,7 +151,7 @@ class FormUploadPageState extends State<FormUploadPage> {
                     icon: Icon(Icons.cloud_upload),
                     label: const Text('上傳圖片'),
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.green,
+                      backgroundColor: Color.fromARGB(255, 145, 181, 243),
                       padding:
                           EdgeInsets.symmetric(horizontal: 30, vertical: 15),
                       textStyle: TextStyle(fontSize: 16),

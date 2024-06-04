@@ -1,13 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'ReviewLeavePage.dart';
 import 'ReviewCourseSelectionPage.dart';
-import 'announcement_page.dart';
 import 'manual_page.dart';
 import 'form_download_page.dart';
+import 'main.dart';
 
 class AssistantPage extends StatefulWidget {
-  const AssistantPage({super.key});
+  final String title;
+  final VoidCallback toggleTheme;
+  final bool isDarkMode;
+  final Map<String, dynamic> user;
+
+  const AssistantPage({
+    super.key,
+    required this.title,
+    required this.toggleTheme,
+    required this.isDarkMode,
+    required this.user,
+  });
 
   @override
   _AssistantPageState createState() => _AssistantPageState();
@@ -38,13 +50,24 @@ class _AssistantPageState extends State<AssistantPage> {
   }
 
   _launchLineBot() async {
-    const url =
-        'https://line.me/R/ti/p/YOUR_LINE_BOT_ID'; // Replace with your Line Bot URL
+    const url = 'https://line.me/R/ti/p/YOUR_LINE_BOT_ID';
     if (await canLaunch(url)) {
       await launch(url);
     } else {
       throw 'Unable to open $url';
     }
+  }
+
+  void _logout() {
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(
+        builder: (context) => LoginPage(
+          toggleTheme: widget.toggleTheme,
+          isDarkMode: widget.isDarkMode,
+        ),
+      ),
+    );
   }
 
   @override
@@ -53,10 +76,19 @@ class _AssistantPageState extends State<AssistantPage> {
       theme: ThemeData(
         primarySwatch: Colors.orange,
         brightness: isDarkMode ? Brightness.dark : Brightness.light,
+        appBarTheme: AppBarTheme(
+          backgroundColor: isDarkMode ? Colors.grey[850] : Colors.orange,
+        ),
+        floatingActionButtonTheme: FloatingActionButtonThemeData(
+          backgroundColor: isDarkMode ? Colors.orange[800] : Colors.orange[700],
+        ),
+        drawerTheme: DrawerThemeData(
+          backgroundColor: isDarkMode ? Colors.grey[900] : Colors.white,
+        ),
       ),
       home: Scaffold(
         appBar: AppBar(
-          title: const Text('助教介面'),
+          title: const Text('教師介面'),
           actions: [
             IconButton(
               icon: Icon(isDarkMode ? Icons.dark_mode : Icons.light_mode),
@@ -64,85 +96,112 @@ class _AssistantPageState extends State<AssistantPage> {
             ),
           ],
         ),
-        drawer: _buildDrawer(),
+        drawer: Drawer(
+          child: _buildDrawer(),
+        ),
         body: _buildBody(context),
         floatingActionButton: FloatingActionButton(
           onPressed: _launchLineBot,
           child: const Icon(Icons.chat),
-          backgroundColor:
-              Colors.orange[800], // Adjusted to match the theme color
         ),
       ),
     );
   }
 
   Widget _buildDrawer() {
-    return Drawer(
-      child: Container(
-        // Adjust the opacity here using withOpacity method
-        color: Color.fromARGB(255, 238, 160, 82)!
-            .withOpacity(0.85), // Setting opacity to 85%
-        child: ListView(
-          padding: EdgeInsets.zero,
-          children: <Widget>[
-            DrawerHeader(
-              decoration: BoxDecoration(
-                color: const Color.fromARGB(255, 242, 240, 238)!
-                    .withOpacity(0.85), // Also set the same opacity for header
-              ),
-              child: const Text(
-                '主選單',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 24,
-                ),
-              ),
+    return ListView(
+      padding: EdgeInsets.zero,
+      children: <Widget>[
+        DrawerHeader(
+          decoration: BoxDecoration(
+            color: Colors.orange[400],
+          ),
+          child: const Text(
+            '主選單',
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: 24,
             ),
-            ListTile(
-              leading: const Icon(Icons.upload_file),
-              title: const Text('審核選課單'),
-              onTap: () =>
-                  _navigateTo(context, const ReviewCourseSelectionPage()),
-            ),
-            ListTile(
-              leading: const Icon(Icons.download),
-              title: const Text('查看班級檔案'),
-              onTap: () => _navigateTo(context, const FormDownloadPage()),
-            ),
-            ListTile(
-              leading: const Icon(Icons.announcement),
-              title: const Text('公告'),
-              onTap: () => _navigateTo(context, const AnnouncementPage()),
-            ),
-            ListTile(
-              leading: const Icon(Icons.book),
-              title: const Text('使用手冊'),
-              onTap: () => _navigateTo(context, const ManualPage()),
-            ),
-          ],
+          ),
         ),
-      ),
+        ListTile(
+          leading: const Icon(Icons.upload_file),
+          title: const Text('審核假單'),
+          onTap: () => _navigateTo(context, const ReviewCourseSelectionPage()),
+        ),
+        ListTile(
+          leading: const Icon(Icons.download),
+          title: const Text('查看班級檔案'),
+          onTap: () => _navigateTo(context, const FormDownloadPage()),
+        ),
+        ListTile(
+          leading: const Icon(Icons.book),
+          title: const Text('使用手冊'),
+          onTap: () => _navigateTo(context, const ManualPage()),
+        ),
+        ListTile(
+          leading: Icon(Icons.logout),
+          title: Text('登出'),
+          onTap: _logout,
+        ),
+      ],
     );
   }
 
   Widget _buildBody(BuildContext context) {
     return Container(
-      decoration: BoxDecoration(
+      decoration: const BoxDecoration(
         image: DecorationImage(
           image: AssetImage('assets/background.jpg'),
           fit: BoxFit.cover,
         ),
       ),
-      child: Padding(
-        padding: const EdgeInsets.all(16.0),
+      padding: const EdgeInsets.all(10.0),
+      child: SingleChildScrollView(
         child: Column(
           children: [
+            Container(
+              width: double.infinity,
+              padding: const EdgeInsets.all(20.0),
+              decoration: BoxDecoration(
+                color: Colors.orange.shade200,
+                borderRadius: BorderRadius.circular(15.0),
+              ),
+              child: Row(
+                children: [
+                  CircleAvatar(
+                    radius: 30,
+                    backgroundImage: AssetImage('assets/genie.png'),
+                  ),
+                  SizedBox(width: 20),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text('姓名: ${widget.user['Name']}',
+                          style: const TextStyle(
+                              color: Colors.black, fontSize: 18)),
+                      Text('身份: ${widget.user['Role']}',
+                          style: const TextStyle(
+                              color: Colors.black, fontSize: 18)),
+                      Text('學制: ${widget.user['Academic']}',
+                          style: const TextStyle(
+                              color: Colors.black, fontSize: 18)),
+                      Text('學系: ${widget.user['Department']}',
+                          style: const TextStyle(
+                              color: Colors.black, fontSize: 18)),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+            SizedBox(height: 16.0),
             _buildFeatureCard(
               context,
               icon: Icons.upload_file,
               text: '審核選課單',
               page: const ReviewCourseSelectionPage(),
             ),
+            SizedBox(height: 16.0),
             _buildFeatureCard(
               context,
               icon: Icons.download,
@@ -158,11 +217,16 @@ class _AssistantPageState extends State<AssistantPage> {
 
   Widget _buildFeatureCard(BuildContext context,
       {required IconData icon, required String text, required Widget page}) {
-    return Expanded(
-      child: GestureDetector(
-        onTap: () => _navigateTo(context, page),
-        child: Container(
+    return Center(
+      child: Container(
+        width: MediaQuery.of(context).size.width * 0.8,
+        height: MediaQuery.of(context).size.height * 0.2,
+        decoration: BoxDecoration(
           color: Colors.orange.shade200,
+          borderRadius: BorderRadius.circular(15.0),
+        ),
+        child: GestureDetector(
+          onTap: () => _navigateTo(context, page),
           child: Center(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:intl/intl.dart';
-import 'package:intl/date_symbol_data_local.dart'; // 引入 intl 的本地化資料
+import 'package:intl/date_symbol_data_local.dart';
 
 class AnnouncementPage extends StatefulWidget {
   const AnnouncementPage({super.key});
@@ -66,11 +66,13 @@ class AnnouncementPageState extends State<AnnouncementPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Announcements'),
+        title: const Text('公告'),
+        backgroundColor: const Color.fromARGB(255, 248, 250, 250), // 设置深色蓝色背景
       ),
       body: isLoading
           ? const Center(child: CircularProgressIndicator())
           : ListView.builder(
+              padding: const EdgeInsets.all(16.0), // 添加边距
               itemCount: announcements.length,
               itemBuilder: (context, index) {
                 final announcement = announcements[index];
@@ -81,21 +83,36 @@ class AnnouncementPageState extends State<AnnouncementPage> {
                     DateFormat('yyyy/MM/dd HH:mm EEEE', 'zh_TW');
                 final String formattedTime = outputFormat.format(time);
 
-                return ListTile(
-                  title: Text(announcement['Purpose']),
-                  subtitle: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(announcement['content']),
-                      SizedBox(height: 5), // 增加一些空隙
-                      Text(
-                        formattedTime,
-                        style: TextStyle(
-                          color: Colors.grey, // 可選：更改顏色使時間顯示更明顯
-                          fontSize: 12, // 可選：調整字體大小
-                        ),
+                return Card(
+                  elevation: 4, // 设置阴影
+                  margin: const EdgeInsets.only(bottom: 16.0), // 添加卡片间距
+                  child: ListTile(
+                    contentPadding: const EdgeInsets.all(16.0), // 添加内容间距
+                    title: Text(
+                      announcement['Purpose'],
+                      style: const TextStyle(
+                        fontWeight: FontWeight.bold,
                       ),
-                    ],
+                    ),
+                    subtitle: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          announcement['content'],
+                          style: const TextStyle(
+                            color: Colors.grey,
+                          ),
+                        ),
+                        const SizedBox(height: 8),
+                        Text(
+                          formattedTime,
+                          style: const TextStyle(
+                            color: Colors.grey,
+                            fontSize: 12,
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 );
               },

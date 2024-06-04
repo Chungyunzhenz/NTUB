@@ -35,4 +35,5 @@ flutter:
         - asset: lib/fonts/Lato-ThinItalic.ttf
         - asset: lib/fonts/Lato-Thin.ttf
           style: italic
+
   uses-material-design: true
