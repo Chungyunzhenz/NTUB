@@ -168,10 +168,6 @@ class _TeacherPageState extends State<TeacherPage> {
               ),
               child: Row(
                 children: [
-                  CircleAvatar(
-                    radius: 30,
-                    backgroundImage: AssetImage('assets/genie.png'),
-                  ),
                   SizedBox(width: 20),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,

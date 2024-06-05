@@ -128,10 +128,6 @@ class _StudentPageState extends State<StudentPage> {
                 ),
                 child: Row(
                   children: [
-                    CircleAvatar(
-                      radius: 30,
-                      backgroundImage: AssetImage('assets/genie.png'), // 頭像
-                    ),
                     SizedBox(width: 20),
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,

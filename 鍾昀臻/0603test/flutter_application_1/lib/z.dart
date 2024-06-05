@@ -169,10 +169,6 @@ class _AssistantPageState extends State<AssistantPage> {
               ),
               child: Row(
                 children: [
-                  CircleAvatar(
-                    radius: 30,
-                    backgroundImage: AssetImage('assets/genie.png'),
-                  ),
                   SizedBox(width: 20),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
