@@ -6,7 +6,6 @@ import 'dart:io';
 import 'dart:convert';
 import 'package:logger/logger.dart';
 
-
 // Initialize a logger instance
 var logger = Logger();
 
@@ -98,68 +97,70 @@ class FormUploadPageState extends State<FormUploadPage> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('文件上傳'),
-        backgroundColor: Colors.blueAccent,
+        backgroundColor: Colors.white,
       ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: DataTable(
-                columnSpacing: 20,
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  border: Border.all(color: Colors.blueAccent),
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                columns: const [
-                  DataColumn(
-                      label: Text('文件名',
-                          style: TextStyle(fontWeight: FontWeight.bold))),
-                  DataColumn(
-                      label: Text('狀態',
-                          style: TextStyle(fontWeight: FontWeight.bold))),
-                  DataColumn(
-                      label: Icon(Icons.file_upload, color: Colors.blue)),
+      body: Center(
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.all(16.0),
+          child: Card(
+            elevation: 8.0,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(15.0),
+            ),
+            child: Padding(
+              padding: const EdgeInsets.all(50.0),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(
+                    '文件上傳',
+                    style: TextStyle(
+                      fontSize: 24.0,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  const SizedBox(height: 30),
+                  ElevatedButton.icon(
+                    onPressed: _uploadFile,
+                    icon: Icon(Icons.upload_file),
+                    label: const Text('選擇文件並上傳'),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: const Color.fromARGB(255, 145, 181, 243),
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 30, vertical: 15),
+                      textStyle: TextStyle(fontSize: 16),
+                    ),
+                  ),
+                  const SizedBox(height: 20),
+                  _image == null ? const Text('未選擇圖片') : Image.file(_image!),
+                  const SizedBox(height: 20),
+                  ElevatedButton.icon(
+                    onPressed: _pickImage,
+                    icon: Icon(Icons.image),
+                    label: const Text('選擇圖片'),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Color.fromARGB(255, 145, 181, 243),
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 30, vertical: 15),
+                      textStyle: TextStyle(fontSize: 16),
+                    ),
+                  ),
+                  const SizedBox(height: 20),
+                  ElevatedButton.icon(
+                    onPressed: _uploadImage,
+                    icon: Icon(Icons.cloud_upload),
+                    label: const Text('上傳圖片'),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Color.fromARGB(255, 145, 181, 243),
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 30, vertical: 15),
+                      textStyle: TextStyle(fontSize: 16),
+                    ),
+                  ),
                 ],
-                rows: const [
-                  DataRow(cells: [
-                    DataCell(Text('example_file.pdf')),
-                    DataCell(Text('未上傳')),
-                    DataCell(Icon(Icons.file_upload, color: Colors.blue)),
-                  ]),
-                  // More rows can be added dynamically
-                ],
               ),
             ),
-            ElevatedButton(
-              onPressed: _uploadFile,
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.blueAccent,
-              ),
-              child: const Text('選擇文件並上傳'),
-            ),
-            const SizedBox(height: 20),
-            _image == null
-                ? const Text('No image selected.')
-                : Image.file(_image!),
-            const SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: _pickImage,
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.blueAccent,
-              ),
-              child: const Text('Pick Image'),
-            ),
-            const SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: _uploadImage,
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.blueAccent,
-              ),
-              child: const Text('Upload Image'),
-            ),
-          ],
+          ),
         ),
       ),
     );
@@ -167,7 +168,11 @@ class FormUploadPageState extends State<FormUploadPage> {
 }
 
 void main() {
-  runApp(const MaterialApp(
+  runApp(MaterialApp(
     home: FormUploadPage(),
+    theme: ThemeData(
+      primarySwatch: Colors.blue,
+      visualDensity: VisualDensity.adaptivePlatformDensity,
+    ),
   ));
 }

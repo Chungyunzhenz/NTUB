@@ -5,7 +5,13 @@ import 'dart:io';
 import 'package:permission_handler/permission_handler.dart';
 
 void main() {
-  runApp(MaterialApp(home: FileUploadPage()));
+  runApp(MaterialApp(
+    home: FileUploadPage(),
+    theme: ThemeData(
+      primarySwatch: Colors.blue,
+      visualDensity: VisualDensity.adaptivePlatformDensity,
+    ),
+  ));
 }
 
 class FileUploadPage extends StatefulWidget {
@@ -17,7 +23,6 @@ class _FileUploadPageState extends State<FileUploadPage> {
   File? _file;
 
   Future<void> pickFile() async {
-    // 请求存储权限
     var permission = await Permission.storage.request();
 
     if (permission.isGranted) {
@@ -28,24 +33,73 @@ class _FileUploadPageState extends State<FileUploadPage> {
         });
       }
     } else {
-      // 如果用户拒绝权限，您可以在这里处理
+      // 如果用戶拒絕權限，您可以在這裡處理
       print('Permission denied. Cannot pick the file.');
     }
   }
 
   Future<void> uploadFile() async {
     if (_file != null) {
-      var request = http.MultipartRequest('POST', Uri.parse('http://zctool.8bit.ca:5002/upload'));
+      var request = http.MultipartRequest(
+          'POST', Uri.parse('http://zctool.8bit.ca:5002/upload'));
       request.files.add(await http.MultipartFile.fromPath('file', _file!.path));
       var response = await request.send();
 
       if (response.statusCode == 200) {
-        print('File uploaded');
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: Text('成功'),
+              content: Text('文件已成功上傳'),
+              actions: <Widget>[
+                TextButton(
+                  child: Text('好的'),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                ),
+              ],
+            );
+          },
+        );
       } else {
-        print('Failed to upload file');
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: Text('失敗'),
+              content: Text('文件上傳失敗'),
+              actions: <Widget>[
+                TextButton(
+                  child: Text('好的'),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                ),
+              ],
+            );
+          },
+        );
       }
     } else {
-      print('No file selected');
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text('錯誤'),
+            content: Text('未選擇文件'),
+            actions: <Widget>[
+              TextButton(
+                child: Text('好的'),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+            ],
+          );
+        },
+      );
     }
   }
 
@@ -53,24 +107,67 @@ class _FileUploadPageState extends State<FileUploadPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Upload Document'),
+        title: Text('上傳文件'),
       ),
       body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            ElevatedButton(
-              onPressed: pickFile,
-              child: Text('Pick File'),
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Card(
+            elevation: 8.0,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(15.0),
             ),
-            SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: uploadFile,
-              child: Text('Upload File'),
+            child: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  Text(
+                    '上傳文件',
+                    style: TextStyle(
+                      fontSize: 24.0,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  SizedBox(height: 20),
+                  ElevatedButton.icon(
+                    onPressed: pickFile,
+                    icon: Icon(Icons.folder_open),
+                    label: Text('選擇文件'),
+                    style: ElevatedButton.styleFrom(
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 30, vertical: 15),
+                      textStyle: TextStyle(fontSize: 16),
+                    ),
+                  ),
+                  SizedBox(height: 20),
+                  ElevatedButton.icon(
+                    onPressed: uploadFile,
+                    icon: Icon(Icons.cloud_upload),
+                    label: Text('上傳文件'),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor:
+                          Colors.green, // 使用 backgroundColor 來設置背景顏色
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 30, vertical: 15),
+                      textStyle: TextStyle(fontSize: 16),
+                    ),
+                  ),
+                  SizedBox(height: 20),
+                  Text(
+                    _file != null
+                        ? '選擇的文件: ${_file!.path.split('/').last}'
+                        : '未選擇文件',
+                    style: TextStyle(
+                      fontSize: 16,
+                      color: Colors.grey[600],
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                ],
+              ),
             ),
-            SizedBox(height: 20),
-            Text(_file != null ? 'Selected File: ${_file!.path}' : 'No file selected'),
-          ],
+          ),
         ),
       ),
     );

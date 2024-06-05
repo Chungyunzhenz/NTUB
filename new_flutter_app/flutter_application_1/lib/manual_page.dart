@@ -8,7 +8,7 @@ class ManualPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text('使用手冊'), // 使用 const
-        backgroundColor: Colors.blueAccent,
+        backgroundColor: Color.fromARGB(255, 246, 247, 249),
       ),
       body: ListView(
         children: [
