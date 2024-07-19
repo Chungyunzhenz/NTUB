@@ -3,7 +3,6 @@ from ckiptagger import data_utils, WS, POS, NER
 import pymysql
 import logging
 import tensorflow as tf
-import json
 
 # 設置 TensorFlow 記錄級別
 tf.compat.v1.logging.set_verbosity(tf.compat.v1.logging.ERROR)
@@ -11,14 +10,10 @@ tf.compat.v1.logging.set_verbosity(tf.compat.v1.logging.ERROR)
 app = Flask(__name__)
 
 # 下載並加載 CKIPtagger 模型
-try:
-    data_utils.download_data_url("./")
-    ws = WS("./data")
-    pos = POS("./data")
-    ner = NER("./data")
-except Exception as e:
-    app.logger.error(f"Failed to load CKIPtagger models: {e}")
-    raise
+data_utils.download_data_url("./")
+ws = WS("./data")
+pos = POS("./data")
+ner = NER("./data")
 
 # 數據庫配置
 db_config = {
@@ -45,8 +40,6 @@ def connect_db():
 def predict():
     # 從請求中獲取句子
     data = request.json
-    app.logger.info(f"Received data: {data}")
-    
     sentence = data.get('sentence')
     
     if not sentence:
@@ -73,9 +66,6 @@ def predict():
         app.logger.error("NER result is empty or has an unexpected structure.")
         return jsonify({'error': 'NER result is empty or has an unexpected structure.'}), 500
 
-    # 將 NER 結果轉換為 JSON 字符串
-    ner_results_str = json.dumps([{'start_pos': entity[0], 'end_pos': entity[1], 'type': entity[2], 'entity': entity[3]} for entity in ner_results[0]])
-
     # 連接到數據庫
     connection = connect_db()
     if connection is None:
@@ -84,11 +74,14 @@ def predict():
     cursor = connection.cursor()
     
     try:
-        # 保存句子和 NER 結果到數據庫
-        cursor.execute(
-            "INSERT INTO ner_results (sentence, ner_result) VALUES (%s, %s)",
-            (sentence, ner_results_str)
-        )
+        # 將結果保存到數據庫
+        for entity in ner_results[0]:
+            word, ner_type, start_pos, end_pos = entity
+            app.logger.info(f"Inserting entity: {word}, type: {ner_type}")
+            cursor.execute(
+                "INSERT INTO ner_results (sentence, entity, entity_type) VALUES (%s, %s, %s)",
+                (sentence, word, ner_type)
+            )
         connection.commit()
     except pymysql.MySQLError as e:
         app.logger.error(f"Failed to insert data into the database: {e}")
@@ -97,8 +90,7 @@ def predict():
         cursor.close()
         connection.close()
     
-    return jsonify({'message': 'Prediction saved', 'result': json.loads(ner_results_str)}), 200
-
+    return jsonify({'message': 'Prediction saved', 'result': [{'entity': entity[0], 'type': entity[1]} for entity in ner_results[0]]}), 200
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5003, debug=True)
+    app.run(host='0.0.0.0', port=5002, debug=True)
