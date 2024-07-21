@@ -1,0 +1,22 @@
+<plist version="1.0">
+<dict>
+    <!-- 其他配置項目 -->
+    <key>NSAppTransportSecurity</key>
+    <dict>
+        <key>NSAllowsArbitraryLoads</key>
+        <true/>
+    </dict>
+    <key>UIFileSharingEnabled</key>
+    <true/>
+    <key>LSSupportsOpeningDocumentsInPlace</key>
+    <true/>
+    <key>NSPhotoLibraryUsageDescription</key>
+    <string>App需要訪問您的照片庫以保存文件。</string>
+    <key>NSCameraUsageDescription</key>
+    <string>App需要訪問您的相機以拍攝照片。</string>
+    <key>NSMicrophoneUsageDescription</key>
+    <string>App需要訪問您的麥克風以進行語音記錄。</string>
+    <key>NSDocumentsFolderUsageDescription</key>
+    <string>App需要訪問您的文件夾以保存文件。</string>
+</dict>
+</plist>
