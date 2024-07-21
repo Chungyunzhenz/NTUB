@@ -1,4 +1,0 @@
-#Wed May 15 22:21:50 CST 2024
-base.0=G\:\\app_project\\zc3\\flutter_application_1\\build\\app\\intermediates\\dex\\debug\\mergeDexDebug\\classes.dex
-path.0=classes.dex
-renamed.0=classes.dex

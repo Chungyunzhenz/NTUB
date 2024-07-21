@@ -1,6 +1,0 @@
-场景文字检测——CTPN模型介绍及代码实现
-https://blog.csdn.net/sol_data12/article/details/112856389
-
-
-CTPN+CRNN+CTC进行ocr
-https://www.jianshu.com/p/28b59128769a

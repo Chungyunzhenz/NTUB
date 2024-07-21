@@ -1,3 +1,0 @@
-專題紀錄3/20:
-chineseocr_lite-onnx 網路開源ocr model 未開放model訓練，因此不適用。
-https://github.com/DayBreak-u/chineseocr_lite/blob/onnx/README.md

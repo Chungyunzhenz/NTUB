@@ -1,4 +1,0 @@
-1.ICDAR2017 Competition on Multi-lingual scene text detection and script identification
-https://rrc.cvc.uab.es/?ch=8&com=downloads
-
-2.
