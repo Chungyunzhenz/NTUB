@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:url_launcher/url_launcher.dart';
+import 'package:provider/provider.dart';
 import 'ReviewLeavePage.dart';
 import 'ReviewCourseSelectionPage.dart';
 import 'manual_page.dart';
 import 'form_download_page.dart';
-import 'main.dart';
+import 'login_page.dart';
+import 'theme_notifier.dart';
+import 'announcement_page.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class AssistantPage extends StatefulWidget {
   final String title;
@@ -34,22 +37,23 @@ class _AssistantPageState extends State<AssistantPage> {
     _loadThemePreference();
   }
 
-  _loadThemePreference() async {
+  Future<void> _loadThemePreference() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     setState(() {
-      isDarkMode = prefs.getBool('isDarkMode') ?? false;
+      isDarkMode = prefs.getBool('isDarkMode') ?? widget.isDarkMode;
     });
   }
 
-  _toggleTheme() async {
+  Future<void> _toggleTheme() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     setState(() {
       isDarkMode = !isDarkMode;
       prefs.setBool('isDarkMode', isDarkMode);
+      widget.toggleTheme();
     });
   }
 
-  _launchLineBot() async {
+  Future<void> _launchLineBot() async {
     const url = 'https://line.me/R/ti/p/YOUR_LINE_BOT_ID';
     if (await canLaunch(url)) {
       await launch(url);
@@ -58,52 +62,34 @@ class _AssistantPageState extends State<AssistantPage> {
     }
   }
 
-  void _logout() {
+  void _logout(BuildContext context) {
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(
-        builder: (context) => LoginPage(
-          toggleTheme: widget.toggleTheme,
-          isDarkMode: widget.isDarkMode,
-        ),
+        builder: (context) => const LoginPage(),
       ),
     );
   }
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      theme: ThemeData(
-        primarySwatch: Colors.orange,
-        brightness: isDarkMode ? Brightness.dark : Brightness.light,
-        appBarTheme: AppBarTheme(
-          backgroundColor: isDarkMode ? Colors.grey[850] : Colors.orange,
-        ),
-        floatingActionButtonTheme: FloatingActionButtonThemeData(
-          backgroundColor: isDarkMode ? Colors.orange[800] : Colors.orange[700],
-        ),
-        drawerTheme: DrawerThemeData(
-          backgroundColor: isDarkMode ? Colors.grey[900] : Colors.white,
-        ),
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(widget.title),
+        actions: [
+          IconButton(
+            icon: Icon(isDarkMode ? Icons.dark_mode : Icons.light_mode),
+            onPressed: _toggleTheme,
+          ),
+        ],
       ),
-      home: Scaffold(
-        appBar: AppBar(
-          title: const Text('教師介面'),
-          actions: [
-            IconButton(
-              icon: Icon(isDarkMode ? Icons.dark_mode : Icons.light_mode),
-              onPressed: _toggleTheme,
-            ),
-          ],
-        ),
-        drawer: Drawer(
-          child: _buildDrawer(),
-        ),
-        body: _buildBody(context),
-        floatingActionButton: FloatingActionButton(
-          onPressed: _launchLineBot,
-          child: const Icon(Icons.chat),
-        ),
+      drawer: Drawer(
+        child: _buildDrawer(),
+      ),
+      body: _buildBody(context),
+      floatingActionButton: FloatingActionButton(
+        onPressed: _launchLineBot,
+        child: const Icon(Icons.chat),
       ),
     );
   }
@@ -127,6 +113,11 @@ class _AssistantPageState extends State<AssistantPage> {
         ListTile(
           leading: const Icon(Icons.upload_file),
           title: const Text('審核假單'),
+          onTap: () => _navigateTo(context, const ReviewLeavePage()),
+        ),
+        ListTile(
+          leading: const Icon(Icons.upload_file),
+          title: const Text('審核選課單'),
           onTap: () => _navigateTo(context, const ReviewCourseSelectionPage()),
         ),
         ListTile(
@@ -140,9 +131,9 @@ class _AssistantPageState extends State<AssistantPage> {
           onTap: () => _navigateTo(context, const ManualPage()),
         ),
         ListTile(
-          leading: Icon(Icons.logout),
-          title: Text('登出'),
-          onTap: _logout,
+          leading: const Icon(Icons.logout),
+          title: const Text('登出'),
+          onTap: () => _logout(context),
         ),
       ],
     );

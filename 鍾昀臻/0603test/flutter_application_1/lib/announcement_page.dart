@@ -14,6 +14,7 @@ class AnnouncementPage extends StatefulWidget {
 class AnnouncementPageState extends State<AnnouncementPage> {
   List announcements = [];
   bool isLoading = true;
+  bool isAscending = true; // 排序方式，默认为升序
 
   @override
   void initState() {
@@ -33,6 +34,7 @@ class AnnouncementPageState extends State<AnnouncementPage> {
         if (mounted) {
           setState(() {
             announcements = data['announcements'];
+            _sortAnnouncements(); // 默认加载后排序
             isLoading = false;
           });
         }
@@ -62,12 +64,33 @@ class AnnouncementPageState extends State<AnnouncementPage> {
     }
   }
 
+  void _sortAnnouncements() {
+    announcements.sort((a, b) {
+      final DateFormat inputFormat =
+          DateFormat('EEE, dd MMM yyyy HH:mm:ss zzz');
+      final DateTime timeA = inputFormat.parse(a['time']);
+      final DateTime timeB = inputFormat.parse(b['time']);
+      return isAscending ? timeA.compareTo(timeB) : timeB.compareTo(timeA);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text('公告'),
         backgroundColor: const Color.fromARGB(255, 248, 250, 250), // 设置深色蓝色背景
+        actions: [
+          IconButton(
+            icon: Icon(isAscending ? Icons.arrow_downward : Icons.arrow_upward),
+            onPressed: () {
+              setState(() {
+                isAscending = !isAscending;
+                _sortAnnouncements();
+              });
+            },
+          ),
+        ],
       ),
       body: isLoading
           ? const Center(child: CircularProgressIndicator())

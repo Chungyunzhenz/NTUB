@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:url_launcher/url_launcher.dart';
+import 'package:provider/provider.dart';
 import 'ReviewLeavePage.dart';
 import 'manual_page.dart';
 import 'form_download_page.dart';
-import 'main.dart';
+import 'login_page.dart';
+import 'theme_notifier.dart';
+import 'announcement_page.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class TeacherPage extends StatefulWidget {
   final String title;
@@ -25,30 +28,24 @@ class TeacherPage extends StatefulWidget {
 }
 
 class _TeacherPageState extends State<TeacherPage> {
-  bool isDarkMode = false;
+  late bool isDarkMode;
 
   @override
   void initState() {
     super.initState();
-    _loadThemePreference();
+    isDarkMode = widget.isDarkMode;
   }
 
-  _loadThemePreference() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    setState(() {
-      isDarkMode = prefs.getBool('isDarkMode') ?? false;
-    });
-  }
-
-  _toggleTheme() async {
+  Future<void> _toggleTheme() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     setState(() {
       isDarkMode = !isDarkMode;
       prefs.setBool('isDarkMode', isDarkMode);
+      widget.toggleTheme();
     });
   }
 
-  _launchLineBot() async {
+  Future<void> _launchLineBot() async {
     const url = 'https://line.me/R/ti/p/YOUR_LINE_BOT_ID';
     if (await canLaunch(url)) {
       await launch(url);
@@ -57,52 +54,34 @@ class _TeacherPageState extends State<TeacherPage> {
     }
   }
 
-  void _logout() {
+  void _logout(BuildContext context) {
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(
-        builder: (context) => LoginPage(
-          toggleTheme: widget.toggleTheme,
-          isDarkMode: widget.isDarkMode,
-        ),
+        builder: (context) => const LoginPage(),
       ),
     );
   }
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      theme: ThemeData(
-        primarySwatch: Colors.green,
-        brightness: isDarkMode ? Brightness.dark : Brightness.light,
-        appBarTheme: AppBarTheme(
-          backgroundColor: isDarkMode ? Colors.grey[850] : Colors.green,
-        ),
-        floatingActionButtonTheme: FloatingActionButtonThemeData(
-          backgroundColor: isDarkMode ? Colors.green[800] : Colors.green[700],
-        ),
-        drawerTheme: DrawerThemeData(
-          backgroundColor: isDarkMode ? Colors.grey[900] : Colors.white,
-        ),
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(widget.title),
+        actions: [
+          IconButton(
+            icon: Icon(isDarkMode ? Icons.dark_mode : Icons.light_mode),
+            onPressed: _toggleTheme,
+          ),
+        ],
       ),
-      home: Scaffold(
-        appBar: AppBar(
-          title: const Text('教師介面'),
-          actions: [
-            IconButton(
-              icon: Icon(isDarkMode ? Icons.dark_mode : Icons.light_mode),
-              onPressed: _toggleTheme,
-            ),
-          ],
-        ),
-        drawer: Drawer(
-          child: _buildDrawer(),
-        ),
-        body: _buildBody(context),
-        floatingActionButton: FloatingActionButton(
-          onPressed: _launchLineBot,
-          child: const Icon(Icons.chat),
-        ),
+      drawer: Drawer(
+        child: _buildDrawer(),
+      ),
+      body: _buildBody(context),
+      floatingActionButton: FloatingActionButton(
+        onPressed: _launchLineBot,
+        child: const Icon(Icons.chat),
       ),
     );
   }
@@ -129,6 +108,11 @@ class _TeacherPageState extends State<TeacherPage> {
           onTap: () => _navigateTo(context, const ReviewLeavePage()),
         ),
         ListTile(
+          leading: const Icon(Icons.upload_file),
+          title: const Text('審核通知'),
+          onTap: () => _navigateTo(context, const ReviewLeavePage()),
+        ),
+        ListTile(
           leading: const Icon(Icons.download),
           title: const Text('查看班級檔案'),
           onTap: () => _navigateTo(context, const FormDownloadPage()),
@@ -139,9 +123,9 @@ class _TeacherPageState extends State<TeacherPage> {
           onTap: () => _navigateTo(context, const ManualPage()),
         ),
         ListTile(
-          leading: Icon(Icons.logout),
-          title: Text('登出'),
-          onTap: _logout,
+          leading: const Icon(Icons.logout),
+          title: const Text('登出'),
+          onTap: () => _logout(context),
         ),
       ],
     );
@@ -149,12 +133,7 @@ class _TeacherPageState extends State<TeacherPage> {
 
   Widget _buildBody(BuildContext context) {
     return Container(
-      decoration: const BoxDecoration(
-        image: DecorationImage(
-          image: AssetImage('assets/background.jpg'),
-          fit: BoxFit.cover,
-        ),
-      ),
+      color: Colors.green.shade50,
       padding: const EdgeInsets.all(10.0),
       child: SingleChildScrollView(
         child: Column(
@@ -215,7 +194,7 @@ class _TeacherPageState extends State<TeacherPage> {
     return Center(
       child: Container(
         width: MediaQuery.of(context).size.width * 0.8,
-        height: MediaQuery.of(context).size.height * 0.2,
+        height: MediaQuery.of(context).size.height * 0.15,
         decoration: BoxDecoration(
           color: Colors.green.shade200,
           borderRadius: BorderRadius.circular(15.0),
@@ -223,11 +202,12 @@ class _TeacherPageState extends State<TeacherPage> {
         child: GestureDetector(
           onTap: () => _navigateTo(context, page),
           child: Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.start,
               children: [
+                SizedBox(width: 20),
                 Icon(icon, size: 50),
-                SizedBox(height: 10),
+                SizedBox(width: 20),
                 Text(text, style: TextStyle(fontSize: 18)),
               ],
             ),
