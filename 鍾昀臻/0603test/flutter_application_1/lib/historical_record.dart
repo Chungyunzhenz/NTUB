@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 class HistoryPage extends StatefulWidget {
   @override
@@ -6,17 +8,56 @@ class HistoryPage extends StatefulWidget {
 }
 
 class _HistoryPageState extends State<HistoryPage> {
-  Map<String, bool> filterOptions = {
-    '學年度': true,
-    '節次': false,
-    '日期': false,
-    '課程名稱': false,
-    '請假原因': false,
-    '請假單': false,
-    '選課單': false,
-  };
-  int currentPage = 1;
-  final int totalPages = 20;
+  List<dynamic> historyData = [];
+  final TextEditingController keywordController = TextEditingController();
+  String searchType = 'academic_year'; // 默认搜索类型
+
+  @override
+  void initState() {
+    super.initState();
+    fetchHistoryData();
+  }
+
+  Future<void> fetchHistoryData() async {
+    try {
+      final response =
+          await http.get(Uri.parse('http://localhost:4000/history'));
+
+      if (response.statusCode == 200) {
+        setState(() {
+          historyData = json.decode(response.body);
+          print('Fetched history data: $historyData'); // Debug output
+        });
+      } else {
+        throw Exception('Failed to load history data');
+      }
+    } catch (e) {
+      print('Error fetching history data: $e'); // Debug output
+      throw Exception('Failed to fetch history data');
+    }
+  }
+
+  Future<void> searchHistoryData(String keyword) async {
+    try {
+      final response = await http.post(
+        Uri.parse('http://localhost:4000/search_history'),
+        headers: {'Content-Type': 'application/json'},
+        body: json.encode({'type': searchType, 'keyword': keyword}),
+      );
+
+      if (response.statusCode == 200) {
+        setState(() {
+          historyData = json.decode(response.body);
+          print('Filtered history data: $historyData'); // Debug output
+        });
+      } else {
+        throw Exception('Failed to search history data');
+      }
+    } catch (e) {
+      print('Error searching history data: $e'); // Debug output
+      throw Exception('Failed to search history data');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -34,135 +75,115 @@ class _HistoryPageState extends State<HistoryPage> {
         padding: const EdgeInsets.all(8.0),
         child: Column(
           children: [
-            _buildSearchBar(),
-            const SizedBox(height: 10),
-            _buildFilterOptions(),
-            const SizedBox(height: 10),
+            Row(
+              children: [
+                Expanded(
+                  child: DropdownButton<String>(
+                    value: searchType,
+                    onChanged: (String? newValue) {
+                      setState(() {
+                        searchType = newValue!;
+                      });
+                    },
+                    items: <String>[
+                      'academic_year',
+                      'course_name',
+                      'leave_reason'
+                    ].map<DropdownMenuItem<String>>((String value) {
+                      return DropdownMenuItem<String>(
+                        value: value,
+                        child: Text(_getSearchTypeLabel(value)),
+                      );
+                    }).toList(),
+                  ),
+                ),
+                Expanded(
+                  child: TextField(
+                    controller: keywordController,
+                    decoration: InputDecoration(
+                      labelText: '輸入查詢關鍵字',
+                      suffixIcon: IconButton(
+                        icon: Icon(Icons.search),
+                        onPressed: () {
+                          searchHistoryData(keywordController.text);
+                        },
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
             Expanded(child: _buildHistoryList()),
-            _buildPagination(),
           ],
         ),
       ),
     );
   }
 
-  Widget _buildSearchBar() {
-    return TextField(
-      decoration: InputDecoration(
-        hintText: '輸入對應資訊',
-        prefixIcon: Icon(Icons.search),
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(8),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildFilterOptions() {
-    return Container(
-      height: 150,
-      padding: EdgeInsets.symmetric(horizontal: 8.0),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(10),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black12,
-            blurRadius: 8,
-            offset: Offset(0, 4),
-          ),
-        ],
-      ),
-      child: SingleChildScrollView(
-        child: Column(
-          children: filterOptions.keys.map((option) {
-            return _buildFilterOption(option, filterOptions[option]!);
-          }).toList(),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildFilterOption(String text, bool value) {
-    return Container(
-      margin: const EdgeInsets.symmetric(vertical: 4.0),
-      child: Row(
-        children: [
-          Checkbox(
-            value: value,
-            activeColor: Colors.blue,
-            onChanged: (newValue) {
-              setState(() {
-                filterOptions[text] = newValue!;
-              });
-            },
-          ),
-          Text(
-            text,
-            style: TextStyle(
-              fontSize: 16,
-              color: Colors.black87,
-            ),
-          ),
-        ],
-      ),
-    );
+  String _getSearchTypeLabel(String searchType) {
+    switch (searchType) {
+      case 'academic_year':
+        return '學年';
+      case 'course_name':
+        return '課程名稱';
+      case 'leave_reason':
+        return '請假原因';
+      default:
+        return '';
+    }
   }
 
   Widget _buildHistoryList() {
+    if (historyData.isEmpty) {
+      return Center(child: Text('無歷史紀錄'));
+    }
+
     return ListView.builder(
-      itemCount: 10, // 假設有10個項目，根據需要更改
+      padding: const EdgeInsets.all(16.0),
+      itemCount: historyData.length,
       itemBuilder: (context, index) {
+        final item = historyData[index];
         return Card(
-          margin: const EdgeInsets.symmetric(vertical: 8.0),
+          elevation: 4,
+          margin: const EdgeInsets.only(bottom: 16.0),
           child: ListTile(
-            leading: CircleAvatar(
-              backgroundImage:
-                  NetworkImage('https://via.placeholder.com/150'), // 用示例圖片網址
+            contentPadding: const EdgeInsets.all(16.0),
+            leading: item['image_url'] != null
+                ? CircleAvatar(
+                    backgroundImage: NetworkImage(item['image_url']),
+                  )
+                : null,
+            title: Text(
+              item['title'] ?? '無標題',
+              style: const TextStyle(
+                fontWeight: FontWeight.bold,
+              ),
             ),
-            title: Text('112學年度選課單'),
-            subtitle: Text('Title\nDescription'),
+            subtitle: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text('學年: ${item['academic_year'] ?? '無'}'),
+                Text('學期: ${item['period'] ?? '無'}'),
+                Text('日期: ${item['date'] ?? '無'}'),
+                Text('課程名稱: ${item['course_name'] ?? '無'}'),
+                Text('請假原因: ${item['leave_reason'] ?? '無'}'),
+                Text('請假表格: ${item['leave_form'] ?? '無'}'),
+                Text('選課表格: ${item['course_selection_form'] ?? '無'}'),
+                Text('描述: ${item['description'] ?? '無'}'),
+              ],
+            ),
           ),
         );
       },
     );
   }
-
-  Widget _buildPagination() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        IconButton(
-          icon: Icon(Icons.arrow_back),
-          onPressed: currentPage > 1
-              ? () {
-                  setState(() {
-                    currentPage--;
-                  });
-                }
-              : null,
-        ),
-        Text('$currentPage of $totalPages'),
-        IconButton(
-          icon: Icon(Icons.arrow_forward),
-          onPressed: currentPage < totalPages
-              ? () {
-                  setState(() {
-                    currentPage++;
-                  });
-                }
-              : null,
-        ),
-      ],
-    );
-  }
 }
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
   runApp(MaterialApp(
     theme: ThemeData(
       primaryColor: Colors.blue,
-      //accentColor: Colors.blueAccent,
       visualDensity: VisualDensity.adaptivePlatformDensity,
     ),
     home: HistoryPage(),

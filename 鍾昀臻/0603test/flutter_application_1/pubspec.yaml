@@ -39,4 +39,8 @@ flutter:
 
   assets:
     - lib/images/genie.png
+    - lib/assets/a.jpg
+    - lib/assets/b.jpg
+    - lib/assets/c.jpg
+    - lib/assets/d.jpg
   uses-material-design: true

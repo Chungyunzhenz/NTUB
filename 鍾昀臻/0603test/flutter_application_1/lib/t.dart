@@ -29,6 +29,7 @@ class TeacherPage extends StatefulWidget {
 
 class _TeacherPageState extends State<TeacherPage> {
   late bool isDarkMode;
+  int notificationCount = 3; // 新增通知數量
 
   @override
   void initState() {
@@ -50,7 +51,7 @@ class _TeacherPageState extends State<TeacherPage> {
     if (await canLaunch(url)) {
       await launch(url);
     } else {
-      throw 'Unable to open $url';
+      throw '無法打開 $url';
     }
   }
 
@@ -110,6 +111,16 @@ class _TeacherPageState extends State<TeacherPage> {
         ListTile(
           leading: const Icon(Icons.upload_file),
           title: const Text('審核通知'),
+          trailing: notificationCount > 0
+              ? CircleAvatar(
+                  backgroundColor: Colors.red,
+                  radius: 10,
+                  child: Text(
+                    '$notificationCount',
+                    style: TextStyle(color: Colors.white, fontSize: 12),
+                  ),
+                )
+              : null,
           onTap: () => _navigateTo(context, const ReviewLeavePage()),
         ),
         ListTile(
@@ -133,7 +144,7 @@ class _TeacherPageState extends State<TeacherPage> {
 
   Widget _buildBody(BuildContext context) {
     return Container(
-      color: Colors.green.shade50,
+      color: isDarkMode ? Colors.black12 : Colors.green.shade50,
       padding: const EdgeInsets.all(10.0),
       child: SingleChildScrollView(
         child: Column(
@@ -142,7 +153,7 @@ class _TeacherPageState extends State<TeacherPage> {
               width: double.infinity,
               padding: const EdgeInsets.all(20.0),
               decoration: BoxDecoration(
-                color: Colors.blue.shade200,
+                color: Colors.green.shade200, // 改為綠色色調
                 borderRadius: BorderRadius.circular(15.0),
               ),
               child: Row(
@@ -178,11 +189,25 @@ class _TeacherPageState extends State<TeacherPage> {
             SizedBox(height: 16.0),
             _buildFeatureCard(
               context,
+              icon: Icons.upload_file,
+              text: '審核通知',
+              page: const ReviewLeavePage(),
+              notificationCount: notificationCount, // 傳遞通知數量
+            ),
+            SizedBox(height: 16.0),
+            _buildFeatureCard(
+              context,
               icon: Icons.download,
               text: '查看班級檔案',
               page: const FormDownloadPage(),
             ),
-            // Add more feature cards as needed
+            SizedBox(height: 16.0),
+            _buildFeatureCard(
+              context,
+              icon: Icons.book,
+              text: '使用手冊',
+              page: const ManualPage(),
+            ),
           ],
         ),
       ),
@@ -190,13 +215,16 @@ class _TeacherPageState extends State<TeacherPage> {
   }
 
   Widget _buildFeatureCard(BuildContext context,
-      {required IconData icon, required String text, required Widget page}) {
+      {required IconData icon,
+      required String text,
+      required Widget page,
+      int notificationCount = 0}) {
     return Center(
       child: Container(
         width: MediaQuery.of(context).size.width * 0.8,
         height: MediaQuery.of(context).size.height * 0.15,
         decoration: BoxDecoration(
-          color: Colors.green.shade200,
+          color: Colors.green.shade200, // 綠色色調
           borderRadius: BorderRadius.circular(15.0),
         ),
         child: GestureDetector(
@@ -206,7 +234,23 @@ class _TeacherPageState extends State<TeacherPage> {
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 SizedBox(width: 20),
-                Icon(icon, size: 50),
+                Stack(
+                  children: [
+                    Icon(icon, size: 50),
+                    if (notificationCount > 0)
+                      Positioned(
+                        right: 0,
+                        child: CircleAvatar(
+                          backgroundColor: Colors.red,
+                          radius: 10,
+                          child: Text(
+                            '$notificationCount',
+                            style: TextStyle(color: Colors.white, fontSize: 12),
+                          ),
+                        ),
+                      ),
+                  ],
+                ),
                 SizedBox(width: 20),
                 Text(text, style: TextStyle(fontSize: 18)),
               ],

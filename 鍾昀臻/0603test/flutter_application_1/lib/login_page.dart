@@ -22,7 +22,6 @@ class LoginPageState extends State<LoginPage> {
     final user = {
       'Role': '學生',
       'Name': '示例用戶',
-      // 其他用戶數據...
     };
 
     final themeNotifier = Provider.of<ThemeNotifier>(context, listen: false);
@@ -44,7 +43,6 @@ class LoginPageState extends State<LoginPage> {
     final user = {
       'Role': '教師',
       'Name': '示例用戶',
-      // 其他用戶數據...
     };
 
     final themeNotifier = Provider.of<ThemeNotifier>(context, listen: false);
@@ -66,7 +64,6 @@ class LoginPageState extends State<LoginPage> {
     final user = {
       'Role': '助教',
       'Name': '示例用戶',
-      // 其他用戶數據...
     };
 
     final themeNotifier = Provider.of<ThemeNotifier>(context, listen: false);
