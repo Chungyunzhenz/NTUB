@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'theme_notifier.dart';
 import 'form_upload_page.dart';
-//import 'form_download_page.dart';
 import 'announcement_page.dart';
 import 'manual_page.dart';
 import 'historical_record.dart';
@@ -58,7 +57,7 @@ class _StudentPageState extends State<StudentPage> {
           children: [
             UserAccountsDrawerHeader(
               decoration: const BoxDecoration(
-                color: Colors.blue,
+                color: Colors.teal,
               ),
               accountName: Text(widget.user['Name'],
                   style: const TextStyle(color: Colors.white, fontSize: 18)),
@@ -89,7 +88,6 @@ class _StudentPageState extends State<StudentPage> {
                 },
               ),
             ),
-            //_buildListTile(context, Icons.download, '下載表單', FormDownloadPage()),
             _buildListTile(context, Icons.history, '歷史紀錄', HistoryPage()),
             _buildListTile(
                 context, Icons.announcement, '公告', AnnouncementPage()),
@@ -107,7 +105,7 @@ class _StudentPageState extends State<StudentPage> {
           gradient: LinearGradient(
             colors: context.watch<ThemeNotifier>().isDarkMode
                 ? [Colors.grey[900]!, Colors.grey[800]!]
-                : [Colors.blue, Colors.lightBlueAccent],
+                : [Colors.teal, Colors.tealAccent],
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
           ),
@@ -173,8 +171,6 @@ class _StudentPageState extends State<StudentPage> {
                 children: <Widget>[
                   _buildListTileCard(
                       context, Icons.upload_file, '上傳圖片', FormUploadPage()),
-                  //_buildListTileCard(
-                  //context, Icons.download, '下載表單', FormDownloadPage()),
                   _buildListTileCard(
                       context, Icons.verified_user, '審查進度', ReviewListPage()),
                   _buildListTileCard(
@@ -191,7 +187,7 @@ class _StudentPageState extends State<StudentPage> {
       floatingActionButton: FloatingActionButton(
         onPressed: _launchLineBot,
         child: const Icon(Icons.chat),
-        backgroundColor: Colors.blue[300],
+        backgroundColor: Colors.teal[300],
       ),
     );
   }
@@ -338,7 +334,7 @@ class LeaveRequestPage extends StatelessWidget {
                         style: TextStyle(
                           fontSize: 22,
                           fontWeight: FontWeight.bold,
-                          color: Colors.blueGrey,
+                          color: Colors.teal,
                         ),
                       ),
                       const SizedBox(height: 10),
@@ -352,16 +348,18 @@ class LeaveRequestPage extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           ElevatedButton(
-                            onPressed: () {},
+                            onPressed: () {
+                              Navigator.pop(context);
+                            },
                             style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.blueGrey,
+                              backgroundColor: Colors.teal,
                               padding: EdgeInsets.symmetric(
                                   horizontal: 24, vertical: 12),
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(8),
                               ),
                             ),
-                            child: Text('查看完畢', style: TextStyle(fontSize: 16)),
+                            child: Text('返回', style: TextStyle(fontSize: 16)),
                           ),
                           ElevatedButton(
                             onPressed: () {},

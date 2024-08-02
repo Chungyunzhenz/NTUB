@@ -38,7 +38,7 @@ flutter:
           style: italic
 
   assets:
-    - lib/images/genie.png
+    - lib/assets/genie.png
     - lib/assets/a.jpg
     - lib/assets/b.jpg
     - lib/assets/c.jpg

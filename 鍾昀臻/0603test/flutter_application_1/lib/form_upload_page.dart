@@ -97,7 +97,7 @@ class FormUploadPageState extends State<FormUploadPage> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('文件上傳'),
-        backgroundColor: Colors.white,
+        backgroundColor: Theme.of(context).primaryColor, // 使用主题的主色调
       ),
       body: Center(
         child: SingleChildScrollView(
@@ -139,7 +139,7 @@ class FormUploadPageState extends State<FormUploadPage> {
                     icon: Icon(Icons.image),
                     label: const Text('選擇圖片'),
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Color.fromARGB(255, 145, 181, 243),
+                      backgroundColor: const Color.fromARGB(255, 145, 181, 243),
                       padding:
                           EdgeInsets.symmetric(horizontal: 30, vertical: 15),
                       textStyle: TextStyle(fontSize: 16),
@@ -151,7 +151,7 @@ class FormUploadPageState extends State<FormUploadPage> {
                     icon: Icon(Icons.cloud_upload),
                     label: const Text('上傳圖片'),
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Color.fromARGB(255, 145, 181, 243),
+                      backgroundColor: const Color.fromARGB(255, 145, 181, 243),
                       padding:
                           EdgeInsets.symmetric(horizontal: 30, vertical: 15),
                       textStyle: TextStyle(fontSize: 16),
@@ -171,7 +171,7 @@ void main() {
   runApp(MaterialApp(
     home: FormUploadPage(),
     theme: ThemeData(
-      primarySwatch: Colors.blue,
+      primarySwatch: Colors.teal,
       visualDensity: VisualDensity.adaptivePlatformDensity,
     ),
   ));

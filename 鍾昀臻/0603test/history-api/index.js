@@ -36,30 +36,36 @@ app.get('/history', (req, res) => {
   });
 });
 
-app.post('/search_history', (req, res) => {
+app.post('/filter_history', (req, res) => {
   const keyword = req.body.keyword;
-  const query = `
-    SELECT * FROM history_records 
-    WHERE academic_year LIKE ? 
-    OR period LIKE ?
-    OR date LIKE ?
-    OR course_name LIKE ?
-    OR leave_reason LIKE ?
-    OR leave_form LIKE ?
-    OR course_selection_form LIKE ?
-    OR description LIKE ?
-    OR title LIKE ?`;
+  const searchType = req.body.type;
+
+  // 验证和处理输入的 searchType
+  const validColumns = ['academic_year', 'period', 'date', 'course_name', 'leave_reason', 'description', 'title'];
+  if (!validColumns.includes(searchType)) {
+    return res.status(400).send('Invalid search type');
+  }
+
+  // 构建查询语句，移除了 leave_form 列的查询
+  const query = `SELECT * FROM history_records WHERE ${searchType} LIKE ?`;
+
+  // 生成通配符关键字
   const keywordWithWildcards = `%${keyword}%`;
 
-  connection.query(query, Array(9).fill(keywordWithWildcards), (error, results) => {
-    if (error) {
-      console.error('Error executing query:', error);
-      res.status(500).send('Error executing query');
-      return;
+  connection.query(
+    query,
+    [keywordWithWildcards],
+    (error, results) => {
+      if (error) {
+        console.error('Error executing query:', error); // 输出详细的错误信息到控制台
+        res.status(500).send('Error executing query');
+        return;
+      }
+      res.json(results);
     }
-    res.json(results);
-  });
+  );
 });
+
 
 app.listen(port, () => {
   console.log(`Server is running on http://localhost:${port}`);
