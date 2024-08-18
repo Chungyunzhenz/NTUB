@@ -105,22 +105,7 @@ class _TeacherPageState extends State<TeacherPage> {
         ),
         ListTile(
           leading: const Icon(Icons.upload_file),
-          title: const Text('審核假單'),
-          onTap: () => _navigateTo(context, const ReviewLeavePage()),
-        ),
-        ListTile(
-          leading: const Icon(Icons.upload_file),
-          title: const Text('審核通知'),
-          trailing: notificationCount > 0
-              ? CircleAvatar(
-                  backgroundColor: Colors.red,
-                  radius: 10,
-                  child: Text(
-                    '$notificationCount',
-                    style: TextStyle(color: Colors.white, fontSize: 12),
-                  ),
-                )
-              : null,
+          title: const Text('審核假單通知'),
           onTap: () => _navigateTo(context, const ReviewLeavePage()),
         ),
         ListTile(
@@ -183,16 +168,8 @@ class _TeacherPageState extends State<TeacherPage> {
             _buildFeatureCard(
               context,
               icon: Icons.upload_file,
-              text: '審核請假單',
+              text: '審核請假單通知',
               page: const ReviewLeavePage(),
-            ),
-            SizedBox(height: 16.0),
-            _buildFeatureCard(
-              context,
-              icon: Icons.upload_file,
-              text: '審核通知',
-              page: const ReviewLeavePage(),
-              notificationCount: notificationCount, // 傳遞通知數量
             ),
             SizedBox(height: 16.0),
             _buildFeatureCard(

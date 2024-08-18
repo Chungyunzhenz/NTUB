@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:provider/provider.dart';
-import 'ReviewLeavePage.dart';
-import 'ReviewCourseSelectionPage.dart';
+import 'ReviewCoursePage.dart';
 import 'manual_page.dart';
 import 'form_download_page.dart';
 import 'login_page.dart';
@@ -112,13 +111,8 @@ class _AssistantPageState extends State<AssistantPage> {
         ),
         ListTile(
           leading: const Icon(Icons.upload_file),
-          title: const Text('審核假單'),
-          onTap: () => _navigateTo(context, const ReviewLeavePage()),
-        ),
-        ListTile(
-          leading: const Icon(Icons.upload_file),
-          title: const Text('審核選課單'),
-          onTap: () => _navigateTo(context, const ReviewCourseSelectionPage()),
+          title: const Text('審核選課單通知'),
+          onTap: () => _navigateTo(context, const ReviewCoursePage()),
         ),
         ListTile(
           leading: const Icon(Icons.download),
@@ -185,8 +179,8 @@ class _AssistantPageState extends State<AssistantPage> {
             _buildFeatureCard(
               context,
               icon: Icons.upload_file,
-              text: '審核選課單',
-              page: const ReviewCourseSelectionPage(),
+              text: '審核選課單通知',
+              page: const ReviewCoursePage(),
             ),
             SizedBox(height: 16.0),
             _buildFeatureCard(

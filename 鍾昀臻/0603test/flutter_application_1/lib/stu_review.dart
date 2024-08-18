@@ -10,6 +10,8 @@ class ReviewListPage extends StatefulWidget {
 class _ReviewListPageState extends State<ReviewListPage> {
   List<Map<String, dynamic>> reviewingReviews = [];
   List<Map<String, dynamic>> rejectedReviews = [];
+  List<Map<String, dynamic>> completedReviews = [];
+  bool isLoading = true;
 
   @override
   void initState() {
@@ -18,27 +20,59 @@ class _ReviewListPageState extends State<ReviewListPage> {
   }
 
   Future<void> fetchReviews() async {
+    setState(() {
+      isLoading = true; // 开始加载时设置为true
+    });
+
     try {
-      final response = await http.get(
-        Uri.parse('http://localhost:4000/review_progress'),
+      final responseLeave = await http.get(
+        Uri.parse('http://localhost:3000/getLeaveRequests?title=請假單'),
       );
 
-      if (response.statusCode == 200) {
-        List<Map<String, dynamic>> data = List<Map<String, dynamic>>.from(
-          json.decode(response.body),
+      final responseCourse = await http.get(
+        Uri.parse('http://localhost:3000/getLeaveRequests?title=選課單'),
+      );
+
+      if (responseLeave.statusCode == 200 && responseCourse.statusCode == 200) {
+        List<Map<String, dynamic>> leaveData = List<Map<String, dynamic>>.from(
+          json.decode(responseLeave.body),
+        );
+        List<Map<String, dynamic>> courseData = List<Map<String, dynamic>>.from(
+          json.decode(responseCourse.body),
         );
 
-        // 根據 review_status 分配數據
+        // 打印获取到的假单和选课单数据
+        print('Leave Data: $leaveData');
+        print('Course Data: $courseData');
+
+        List<Map<String, dynamic>> allData = leaveData + courseData;
+
         setState(() {
           reviewingReviews =
-              data.where((item) => item['review_status'] == '審核中').toList();
+              allData.where((item) => item['review_status'] == '審查中').toList();
           rejectedReviews =
-              data.where((item) => item['review_status'] == '被退回').toList();
+              allData.where((item) => item['review_status'] == '退回').toList();
+          completedReviews =
+              allData.where((item) => item['review_status'] == '完成').toList();
+
+          // 打印分类后的数据
+          print('Reviewing Reviews: $reviewingReviews');
+          print('Rejected Reviews: $rejectedReviews');
+          print('Completed Reviews: $completedReviews');
+
+          isLoading = false; // 加载完成时设置为false
         });
       } else {
-        print('Error: ${response.statusCode} - ${response.reasonPhrase}');
+        setState(() {
+          isLoading = false;
+        });
+        print(
+            'Error fetching data: ${responseLeave.statusCode} - ${responseLeave.reasonPhrase}');
       }
     } catch (e) {
+      setState(() {
+        isLoading = false;
+      });
       print('Exception caught: $e');
     }
   }
@@ -46,41 +80,57 @@ class _ReviewListPageState extends State<ReviewListPage> {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-      length: 2,
+      length: 3, // 将 Tab 数量增加到3
       child: Scaffold(
         appBar: AppBar(
           title: Text('查看所有審查進度'),
           bottom: TabBar(
+            indicatorColor: Colors.white,
             tabs: [
-              Tab(text: '審核中'),
-              Tab(text: '被退回'),
+              Tab(text: '審查中'),
+              Tab(text: '退回'),
+              Tab(text: '完成'),
             ],
           ),
         ),
-        body: TabBarView(
-          children: [
-            buildReviewList(reviewingReviews),
-            buildReviewList(rejectedReviews),
-          ],
-        ),
+        body: isLoading
+            ? Center(child: CircularProgressIndicator())
+            : TabBarView(
+                children: [
+                  buildReviewList(reviewingReviews, Colors.teal[100]!),
+                  buildReviewList(rejectedReviews, Colors.red[100]!),
+                  buildReviewList(completedReviews, Colors.green[100]!),
+                ],
+              ),
       ),
     );
   }
 
-  Widget buildReviewList(List<Map<String, dynamic>> reviews) {
+  Widget buildReviewList(List<Map<String, dynamic>> reviews, Color color) {
+    // 打印当前Tab显示的数据
+    print('Building review list for: ${reviews.length} items.');
+
     if (reviews.isEmpty) {
-      return Center(child: Text('沒有項目'));
+      return Center(
+        child: Text(
+          '沒有項目',
+          style: TextStyle(fontSize: 18, color: Colors.grey),
+        ),
+      );
     }
 
     return ListView.builder(
+      padding: const EdgeInsets.all(12),
       itemCount: reviews.length,
       itemBuilder: (context, index) {
         return Card(
-          margin: EdgeInsets.symmetric(vertical: 10, horizontal: 16),
+          color: color,
+          margin: EdgeInsets.symmetric(vertical: 8),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(15),
           ),
-          elevation: 4,
+          elevation: 6,
+          shadowColor: Colors.black54,
           child: ListTile(
             contentPadding: EdgeInsets.all(16),
             leading: CircleAvatar(
@@ -98,14 +148,14 @@ class _ReviewListPageState extends State<ReviewListPage> {
               ),
             ),
             subtitle: Text('審核狀態: ${reviews[index]['review_status']}'),
-            trailing: Icon(Icons.arrow_forward_ios),
+            trailing: Icon(Icons.arrow_forward_ios, color: Colors.teal),
             onTap: () {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => LeaveRequestPage(
+                  builder: (context) => ReviewDetailPage(
                     title: reviews[index]['title'],
-                    courseDetails: reviews[index],
+                    reviewDetails: reviews[index],
                   ),
                 ),
               );
@@ -117,18 +167,21 @@ class _ReviewListPageState extends State<ReviewListPage> {
   }
 }
 
-class LeaveRequestPage extends StatelessWidget {
+class ReviewDetailPage extends StatelessWidget {
   final String title;
-  final Map<String, dynamic> courseDetails;
+  final Map<String, dynamic> reviewDetails;
 
-  const LeaveRequestPage({
+  const ReviewDetailPage({
     super.key,
     required this.title,
-    required this.courseDetails,
+    required this.reviewDetails,
   });
 
   @override
   Widget build(BuildContext context) {
+    // 打印详细页面的数据
+    print('Review Details for $title: $reviewDetails');
+
     return Scaffold(
       appBar: AppBar(
         title: Text(title),
@@ -137,13 +190,12 @@ class LeaveRequestPage extends StatelessWidget {
         padding: const EdgeInsets.all(16.0),
         child: SingleChildScrollView(
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Card(
-                elevation: 4,
+                elevation: 6,
                 shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10.0),
+                  borderRadius: BorderRadius.circular(15.0),
                 ),
                 child: Padding(
                   padding: const EdgeInsets.all(16.0),
@@ -159,10 +211,10 @@ class LeaveRequestPage extends StatelessWidget {
                         ),
                       ),
                       const SizedBox(height: 20),
-                      _buildDetailRow('請假內容', courseDetails['description']),
-                      _buildDetailRow('提交時間', courseDetails['submission_date']),
-                      _buildDetailRow('審核時間', courseDetails['review_date']),
-                      _buildDetailRow('審核狀態', courseDetails['review_status']),
+                      _buildDetailRow('請假內容', reviewDetails['description']),
+                      _buildDetailRow('提交時間', reviewDetails['submission_date']),
+                      _buildDetailRow('審核時間', reviewDetails['review_date']),
+                      _buildDetailRow('審核狀態', reviewDetails['review_status']),
                       const SizedBox(height: 20),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -184,7 +236,7 @@ class LeaveRequestPage extends StatelessWidget {
                           ),
                           ElevatedButton.icon(
                             onPressed: () {
-                              // 在這裡添加撤回提交的邏輯
+                              // 添加撤回提交的邏輯
                             },
                             icon: Icon(Icons.undo),
                             label: Text('撤回提交'),
