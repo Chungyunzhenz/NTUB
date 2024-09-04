@@ -3,7 +3,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:provider/provider.dart';
 import 'ReviewCoursePage.dart';
 import 'manual_page.dart';
-import 'form_download_page.dart';
+import 'z_download_page.dart';
 import 'login_page.dart';
 import 'theme_notifier.dart';
 import 'announcement_page.dart';
@@ -116,7 +116,7 @@ class _AssistantPageState extends State<AssistantPage> {
         ),
         ListTile(
           leading: const Icon(Icons.download),
-          title: const Text('查看班級檔案'),
+          title: const Text('所有班級選課單歷史紀錄'),
           onTap: () => _navigateTo(context, const FormDownloadPage()),
         ),
         ListTile(
@@ -186,7 +186,7 @@ class _AssistantPageState extends State<AssistantPage> {
             _buildFeatureCard(
               context,
               icon: Icons.download,
-              text: '查看班級檔案',
+              text: '所有班級選課單歷史紀錄',
               page: const FormDownloadPage(),
             ),
             // Add more feature cards as needed

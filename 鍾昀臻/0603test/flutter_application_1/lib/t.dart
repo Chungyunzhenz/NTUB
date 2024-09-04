@@ -3,7 +3,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:provider/provider.dart';
 import 'ReviewLeavePage.dart';
 import 'manual_page.dart';
-import 'form_download_page.dart';
+import 't_download_page.dart';
 import 'login_page.dart';
 import 'theme_notifier.dart';
 import 'announcement_page.dart';
@@ -110,7 +110,7 @@ class _TeacherPageState extends State<TeacherPage> {
         ),
         ListTile(
           leading: const Icon(Icons.download),
-          title: const Text('查看班級檔案'),
+          title: const Text('所有班級請假單歷史紀錄'),
           onTap: () => _navigateTo(context, const FormDownloadPage()),
         ),
         ListTile(
@@ -175,7 +175,7 @@ class _TeacherPageState extends State<TeacherPage> {
             _buildFeatureCard(
               context,
               icon: Icons.download,
-              text: '查看班級檔案',
+              text: '所有班級請假單歷史紀錄',
               page: const FormDownloadPage(),
             ),
             SizedBox(height: 16.0),

@@ -29,6 +29,10 @@ class _ReviewLeavePageState extends State<ReviewLeavePage> {
     });
 
     try {
+      _pendingRequests.clear();
+      _returnedRequests.clear();
+      _completedRequests.clear();
+
       final pendingResponse = await http.get(
         Uri.parse(
             'http://$serverIp:3000/getLeaveRequests?status=審查中&title=請假單'),
@@ -39,11 +43,6 @@ class _ReviewLeavePageState extends State<ReviewLeavePage> {
       final completedResponse = await http.get(
         Uri.parse('http://$serverIp:3000/getLeaveRequests?status=完成&title=請假單'),
       );
-
-      // Debug output
-      print('Pending Response: ${pendingResponse.body}');
-      print('Returned Response: ${returnedResponse.body}');
-      print('Completed Response: ${completedResponse.body}');
 
       if (pendingResponse.statusCode == 200 &&
           returnedResponse.statusCode == 200 &&
@@ -61,7 +60,7 @@ class _ReviewLeavePageState extends State<ReviewLeavePage> {
           _isLoading = false;
         });
       } else {
-        throw Exception('加载请假单失败');
+        throw Exception('加載請假單失敗');
       }
     } catch (e) {
       setState(() {
@@ -69,7 +68,7 @@ class _ReviewLeavePageState extends State<ReviewLeavePage> {
       });
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('错误: $e'),
+          content: Text('錯誤: $e'),
           backgroundColor: Colors.red,
         ),
       );
@@ -151,6 +150,7 @@ class _ReviewLeavePageState extends State<ReviewLeavePage> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final isDarkMode = theme.brightness == Brightness.dark;
 
     return DefaultTabController(
       length: 3,
@@ -185,7 +185,7 @@ class _ReviewLeavePageState extends State<ReviewLeavePage> {
 
   Widget _buildTabContent(List<Map<String, dynamic>> requests, String status) {
     if (requests.isEmpty) {
-      return const Center(child: Text('沒有請假單'));
+      return const Center(child: Text('没有請假單'));
     }
 
     return ListView.builder(
@@ -193,7 +193,7 @@ class _ReviewLeavePageState extends State<ReviewLeavePage> {
       itemCount: requests.length,
       itemBuilder: (context, index) {
         final request = requests[index];
-        return _buildCourseSelectionCard(
+        return _buildLeaveRequestCard(
           context,
           request['title'],
           request['description'],
@@ -204,31 +204,26 @@ class _ReviewLeavePageState extends State<ReviewLeavePage> {
     );
   }
 
-  Widget _buildCourseSelectionCard(BuildContext context, String title,
+  Widget _buildLeaveRequestCard(BuildContext context, String title,
       String subtitle, Map<String, dynamic> details, String status) {
     final theme = Theme.of(context);
+    final isDarkMode = theme.brightness == Brightness.dark;
 
     return Card(
       elevation: 5,
       margin: const EdgeInsets.symmetric(vertical: 12.0),
-      color: Colors.green.shade200,
+      color: Colors.green.shade400,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
       child: ListTile(
         title: Text(title,
             style: TextStyle(
                 fontWeight: FontWeight.bold,
-                color: theme.brightness == Brightness.dark
-                    ? Colors.white
-                    : Colors.black87)),
+                color: isDarkMode ? Colors.white : Colors.black87)),
         subtitle: Text(subtitle,
-            style: TextStyle(
-                color: theme.brightness == Brightness.dark
-                    ? Colors.white70
-                    : Colors.black54)),
+            style:
+                TextStyle(color: isDarkMode ? Colors.white70 : Colors.black54)),
         trailing: Icon(Icons.arrow_forward_ios,
-            color: theme.brightness == Brightness.dark
-                ? Colors.white70
-                : Colors.black54),
+            color: isDarkMode ? Colors.white70 : Colors.black54),
         onTap: () {
           showDialog(
             context: context,
@@ -248,10 +243,9 @@ class _ReviewLeavePageState extends State<ReviewLeavePage> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    Text('課程名稱: ${details['course_name']}'),
-                    Text('選課時間: ${details['period']}'),
+                    Text('請假原因: ${details['leave_reason']}'),
+                    Text('請假時間: ${details['period']}'),
                     Text('學期: ${details['academic_year']}'),
-                    Text('請假理由: ${details['leave_reason']}'),
                     Text('申請日期: ${details['submission_date']}'),
                     Text('審核狀態: ${details['review_status']}'),
                     if (status == '退回' && details.containsKey('return_reason'))
