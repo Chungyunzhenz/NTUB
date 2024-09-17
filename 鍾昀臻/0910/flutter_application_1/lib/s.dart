@@ -217,11 +217,11 @@ class _StudentPageState extends State<StudentPage> {
   }
 
   Future<void> _launchLineBot() async {
-    const url = 'https://line.me/R/ti/p/YOUR_LINE_BOT_ID';
-    if (!await canLaunch(url)) {
+    const url =
+        'https://line.me/R/ti/p/YOUR_LINE_BOT_ID'; // 修改為正確的 LINE Bot URL
+    if (!await launchUrl(Uri.parse(url))) {
       throw '無法打開 $url';
     }
-    await launch(url);
   }
 
   void _logout(BuildContext context) {
@@ -266,7 +266,8 @@ class _StudentPageState extends State<StudentPage> {
     return GestureDetector(
       onTap: () {
         setState(() {
-          selectedProfileImage = imagePath;
+          selectedProfileImage =
+              widget.user['ProfileImage'] ?? 'lib/assets/a.png';
         });
         Navigator.of(context).pop();
       },

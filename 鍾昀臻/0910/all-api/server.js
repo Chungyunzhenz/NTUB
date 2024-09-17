@@ -1,14 +1,12 @@
 const express = require('express');
 const mysql = require('mysql');
 const bodyParser = require('body-parser');
-
+const cors = require('cors');
 
 const app = express();
 const port = 4000; // 設定伺服器端口
 
-const cors = require('cors');
-app.use(cors());  // 允許所有請求
-
+app.use(cors()); // 允許所有請求
 app.use(bodyParser.json());
 
 const dbConfig = {
@@ -20,6 +18,7 @@ const dbConfig = {
 
 let db;
 
+// 自動重連 MySQL 資料庫
 function handleDisconnect() {
   db = mysql.createConnection(dbConfig);
 
@@ -56,7 +55,6 @@ function checkDbConnection(req, res, next) {
   next();
 }
 
-// 在每個請求前檢查資料庫連線狀態
 app.use(checkDbConnection);
 
 // API 1: 獲取歷史紀錄
