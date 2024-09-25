@@ -41,7 +41,7 @@ class _FileUploadPageState extends State<FileUploadPage> {
   Future<void> uploadFile() async {
     if (_file != null) {
       var request = http.MultipartRequest(
-          'POST', Uri.parse('http://zctool.8bit.ca:5002/upload'));
+          'POST', Uri.parse('http://zct.us.kg:5000/upload'));
       request.files.add(await http.MultipartFile.fromPath('file', _file!.path));
       var response = await request.send();
 

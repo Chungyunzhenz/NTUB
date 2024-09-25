@@ -36,13 +36,13 @@ class _ReviewCoursePageState extends State<ReviewCoursePage> {
 
       final pendingResponse = await http.get(
         Uri.parse(
-            'http://$serverIp:4000/getLeaveRequests?status=審查中&title=選課單'),
+            'http://zct.us.kg:5000/getLeaveRequests?status=審查中&title=選課單'),
       );
       final returnedResponse = await http.get(
-        Uri.parse('http://$serverIp:4000/getLeaveRequests?status=退回&title=選課單'),
+        Uri.parse('http://zct.us.kg:5000/getLeaveRequests?status=退回&title=選課單'),
       );
       final completedResponse = await http.get(
-        Uri.parse('http://$serverIp:4000/getLeaveRequests?status=通過&title=選課單'),
+        Uri.parse('http://zct.us.kg:5000/getLeaveRequests?status=通過&title=選課單'),
       );
 
       if (pendingResponse.statusCode == 200 &&

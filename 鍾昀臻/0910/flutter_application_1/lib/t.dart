@@ -6,7 +6,8 @@ import 'manual_page.dart';
 import 't_download_page.dart';
 import 'login_page.dart';
 import 'theme_notifier.dart';
-import 'announcement_page.dart';
+import 'announcement_page.dart' as announce;
+import 'user_role.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class TeacherPage extends StatefulWidget {
@@ -119,6 +120,12 @@ class _TeacherPageState extends State<TeacherPage> {
           onTap: () => _navigateTo(context, const ManualPage()),
         ),
         ListTile(
+          leading: const Icon(Icons.book),
+          title: const Text('新增公告'),
+          onTap: () => _navigateTo(context,
+              const announce.AnnouncementPage(role: announce.UserRole.teacher)),
+        ),
+        ListTile(
           leading: const Icon(Icons.logout),
           title: const Text('登出'),
           onTap: () => _logout(context),
@@ -177,6 +184,14 @@ class _TeacherPageState extends State<TeacherPage> {
               icon: Icons.download,
               text: '所有班級請假單歷史紀錄',
               page: const FormDownloadPage(),
+            ),
+            SizedBox(height: 16.0),
+            _buildFeatureCard(
+              context,
+              icon: Icons.download,
+              text: '新增公告',
+              page: const announce.AnnouncementPage(
+                  role: announce.UserRole.teacher),
             ),
             SizedBox(height: 16.0),
             _buildFeatureCard(

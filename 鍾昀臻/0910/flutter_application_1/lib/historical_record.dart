@@ -28,8 +28,8 @@ class _HistoryPageState extends State<HistoryPage> {
 
   Future<void> fetchHistoryData() async {
     try {
-      final response =
-          await http.get(Uri.parse('http://localhost:4000/history'));//zct.us.kg:5000
+      final response = await http
+          .get(Uri.parse('http://zct.us.kg:5000/history')); //zct.us.kg:5000
 
       if (response.statusCode == 200) {
         setState(() {

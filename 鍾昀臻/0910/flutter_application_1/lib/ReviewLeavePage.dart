@@ -37,13 +37,13 @@ class _ReviewLeavePageState extends State<ReviewLeavePage> {
 
       final pendingResponse = await http.get(
         Uri.parse(
-            'http://$serverIp:4000/getLeaveRequests?status=審查中&title=請假單'),
+            'http://zct.us.kg:5000/getLeaveRequests?status=審查中&title=請假單'),
       );
       final returnedResponse = await http.get(
-        Uri.parse('http://$serverIp:4000/getLeaveRequests?status=退回&title=請假單'),
+        Uri.parse('http://zct.us.kg:5000/getLeaveRequests?status=退回&title=請假單'),
       );
       final completedResponse = await http.get(
-        Uri.parse('http://$serverIp:4000/getLeaveRequests?status=完成&title=請假單'),
+        Uri.parse('http://zct.us.kg:5000/getLeaveRequests?status=完成&title=請假單'),
       );
 
       if (pendingResponse.statusCode == 200 &&

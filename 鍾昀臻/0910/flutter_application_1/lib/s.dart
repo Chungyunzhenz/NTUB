@@ -2,12 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'theme_notifier.dart';
 import 'form_upload_page.dart';
-import 'announcement_page.dart';
+import 'announcement_page.dart' as announce;
 import 'manual_page.dart';
 import 'historical_record.dart';
 import 'stu_review.dart';
-import 'login_page.dart'; // 確保正確引用 LoginPage
-import 'package:url_launcher/url_launcher.dart'; // 確保導入 url_launcher
+import 'login_page.dart'; // 确保正确引用 LoginPage
+import 'user_role.dart';
+import 'package:url_launcher/url_launcher.dart'; // 确保导入 url_launcher
 
 class StudentPage extends StatefulWidget {
   final String title;
@@ -75,8 +76,8 @@ class _StudentPageState extends State<StudentPage> {
             _buildListTile(
                 context, Icons.verified_user, '審查進度', ReviewListPage()),
             _buildListTile(context, Icons.history, '歷史紀錄', HistoryPage()),
-            _buildListTile(
-                context, Icons.announcement, '公告', AnnouncementPage()),
+            _buildListTile(context, Icons.announcement, '公告',
+                announce.AnnouncementPage(role: announce.UserRole.student)),
             _buildListTile(context, Icons.book, '使用手冊', ManualPage()),
             ListTile(
               leading: const Icon(Icons.logout),
@@ -109,7 +110,7 @@ class _StudentPageState extends State<StudentPage> {
                   borderRadius: BorderRadius.circular(15.0),
                 ),
                 child: SingleChildScrollView(
-                  // 使用 SingleChildScrollView 來避免溢出
+                  // 使用 SingleChildScrollView 来避免溢出
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -159,8 +160,12 @@ class _StudentPageState extends State<StudentPage> {
                       context, Icons.verified_user, '審查進度', ReviewListPage()),
                   _buildListTileCard(
                       context, Icons.history, '歷史紀錄', HistoryPage()),
-                  _buildListTileCard(
-                      context, Icons.announcement, '公告', AnnouncementPage()),
+                  _buildListTile(
+                      context,
+                      Icons.announcement,
+                      '公告',
+                      announce.AnnouncementPage(
+                          role: announce.UserRole.student)),
                   _buildListTileCard(context, Icons.book, '使用手冊', ManualPage()),
                 ],
               ),
@@ -218,9 +223,9 @@ class _StudentPageState extends State<StudentPage> {
 
   Future<void> _launchLineBot() async {
     const url =
-        'https://line.me/R/ti/p/YOUR_LINE_BOT_ID'; // 修改為正確的 LINE Bot URL
+        'https://line.me/R/ti/p/YOUR_LINE_BOT_ID'; // 修改为正确的 LINE Bot URL
     if (!await launchUrl(Uri.parse(url))) {
-      throw '無法打開 $url';
+      throw '无法打开 $url';
     }
   }
 
@@ -238,7 +243,7 @@ class _StudentPageState extends State<StudentPage> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('選擇頭貼'),
+          title: Text('选择头像'),
           content: SingleChildScrollView(
             child: Column(
               children: [
@@ -266,8 +271,7 @@ class _StudentPageState extends State<StudentPage> {
     return GestureDetector(
       onTap: () {
         setState(() {
-          selectedProfileImage =
-              widget.user['ProfileImage'] ?? 'lib/assets/a.png';
+          selectedProfileImage = imagePath;
         });
         Navigator.of(context).pop();
       },

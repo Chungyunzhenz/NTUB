@@ -14,7 +14,7 @@ class _ReviewListPageState extends State<ReviewListPage> {
   bool isLoading = true;
 
   //final String serverIp = '192.168.0.166';
-  final String serverIp = '172.20.10.3';
+  //final String serverIp = '172.20.10.3';
 
   @override
   void initState() {
@@ -29,11 +29,11 @@ class _ReviewListPageState extends State<ReviewListPage> {
 
     try {
       final responseLeave = await http.get(
-        Uri.parse('http://$serverIp:4000/getLeaveRequests?title=請假單'),
+        Uri.parse('http://zct.us.kg:5000/getLeaveRequests?title=請假單'),
       );
 
       final responseCourse = await http.get(
-        Uri.parse('http://$serverIp:4000/getLeaveRequests?title=選課單'),
+        Uri.parse('http://zct.us.kg:5000/getLeaveRequests?title=選課單'),
       );
 
       if (responseLeave.statusCode == 200 && responseCourse.statusCode == 200) {
