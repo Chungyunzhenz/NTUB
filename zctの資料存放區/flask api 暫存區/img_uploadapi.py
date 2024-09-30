@@ -1,6 +1,7 @@
 import os
-from flask import Flask, request, jsonify, Blueprint
+import tempfile
 import mysql.connector
+from flask import Flask, request, jsonify, Blueprint
 from werkzeug.utils import secure_filename
 from datetime import datetime
 from paddleocr import PaddleOCR
@@ -14,7 +15,7 @@ config = {
     'user': 'root',
     'password': 'thispass',
     'database': '113-Ntub_113205DB',
-    'raise_on_warnings': True,
+
 }
 
 # 初始化OCR模型
@@ -26,13 +27,16 @@ def upload_file():
     if file:
         filename = secure_filename(file.filename)
 
-        # 强制将文件内容读取为二进制格式
         try:
+            # 读取文件内容
             content = file.read()  # 读取文件内容
 
             # 确保内容是二进制
             if not isinstance(content, bytes):
                 return jsonify({'error': 'File content is not in binary format'}), 400
+
+            # 强制转换为二进制
+            content = bytes(content)  # 确保以字节格式存储
 
             uploaded_by = '213030'  # 假设此值有效
             cnx = mysql.connector.connect(**config)
@@ -52,15 +56,19 @@ def upload_file():
             cursor.execute(add_document, data_document)
             cnx.commit()
 
-            imageupload_id = cursor.lastrowid  # 获取插入的ID
+            # 通过查询获取上一个插入的 ID
+            cursor.execute("SELECT id FROM imageuploads ORDER BY UploadDate DESC LIMIT 1")
+            result = cursor.fetchone()  # 获取最近插入记录的 ID
+            if result is None:
+                return jsonify({'error': 'Failed to retrieve the last inserted ID'}), 500
 
-            # 使用当前工作目录创建临时图像路径
-            temp_image_path = os.path.join(os.getcwd(), 'temp', filename)
-            os.makedirs(os.path.dirname(temp_image_path), exist_ok=True)  # 确保临时目录存在
+            imageupload_id = result[0]  # 获取 ID
+            print(f"Image upload ID: {imageupload_id}")  # 调试输出，确认 ID
 
-            # 保存接收到的图像到临时目录
-            with open(temp_image_path, 'wb') as temp_file:
-                temp_file.write(content)
+            # 使用 tempfile 创建临时文件
+            with tempfile.NamedTemporaryFile(delete=False, suffix='.jpg') as temp_file:
+                temp_image_path = temp_file.name  # 获取临时文件的路径
+                temp_file.write(content)  # 写入文件内容
 
             # 进行OCR识别
             result = ocr.ocr(temp_image_path, cls=True)
@@ -83,8 +91,9 @@ def upload_file():
             add_json_data = (
                 "INSERT INTO json_data (data, UploadDate, UploadedBy, id) VALUES (%s, %s, %s, %s)"
             )
-            data_json = (json_data, datetime.now(), uploaded_by, imageupload_id)
+            data_json = (json_data, datetime.now(), uploaded_by, imageupload_id)  # 使用上面获取的ID
 
+            print(f"Inserting JSON data with ID: {imageupload_id}")  # 调试输出，确认要插入的 ID
             cursor.execute(add_json_data, data_json)
             cnx.commit()
 
@@ -99,6 +108,7 @@ def upload_file():
             print("SQL Error:", err)
             return jsonify({'error': str(err)}), 500
         except Exception as e:
+            print("Exception:", e)  # 添加异常调试输出
             return jsonify({'error': str(e)}), 500
 
     return jsonify({'error': 'No file provided'}), 400
