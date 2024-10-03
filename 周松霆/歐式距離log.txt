@@ -1,0 +1,91 @@
+twins network3
+
+
+ocr_white_background_red_box_result
+ocr_white_background_red_box_result_for_course
+1/1 ━━━━━━━━━━━━━━━━━━━━ 2s 2s/step
+兩張圖片的距離: 0.0
+這兩張圖片相似（可能是同類型表單）
+
+
+ocr_white_background_red_box_result
+ocr_white_background_red_box_result_forTest1_leave.jpg
+兩張圖片的距離: 0.09077763557434082
+這兩張圖片相似（可能是同類型表單）
+
+
+
+ocr_white_background_red_box_result
+ocr_white_background_red_box_result_forTest_course2.jpg
+1/1 ━━━━━━━━━━━━━━━━━━━━ 2s 2s/step
+兩張圖片的距離: 0.04810500144958496
+這兩張圖片相似（可能是同類型表單）
+
+
+ocr_white_background_red_box_result
+ocr_white_background_red_box_result_forTest_leave2.jpg
+1/1 ━━━━━━━━━━━━━━━━━━━━ 2s 2s/step
+兩張圖片的距離: 0.22352349758148193
+這兩張圖片相似（可能是同類型表單）
+
+
+
+twins network4
+
+
+ocr_white_background_red_box_result
+ocr_white_background_red_box_result_forTest_leave2.jpg
+兩張圖片的距離: 0.11905008554458618
+這兩張圖片相似（可能是同類型表單）
+
+
+
+twins network5
+
+ocr_white_background_red_box_result
+ocr_white_background_red_box_result_forTest_leave2.jpg
+平均距離: 0.03858065605163574
+這兩張圖片相似（可能是同類型表單）
+
+
+ocr_white_background_red_box_result
+ocr_white_background_red_box_result_forTest1_leave
+平均距離: 0.014662027359008789
+這兩張圖片相似（可能是同類型表單）
+
+
+ocr_white_background_red_box_result
+ocr_white_background_red_box_result_for_course.jpg
+平均距離: 0.013641119003295898
+這兩張圖片相似（可能是同類型表單）
+
+
+
+
+
+ocr_white_background_red_box_result
+ocr_white_background_red_box_result_forTest_course2.jpg
+平均距離: 0.036026060581207275
+這兩張圖片相似（可能是同類型表單）
+
+
+
+ocr_white_background_red_box_result_S_course.jpg 比
+ocr_white_background_red_box_result_forTest_leave3.jpg
+
+結果
+兩張圖片的距離: 0.014600515365600586
+這兩張圖片相似（可能是同類型表單）
+
+
+ocr_white_background_red_box_result_S_course.jpg比
+ocr_white_background_red_box_result_forTest_course3.jpg
+結果
+兩張圖片的距離: 0.03588813543319702
+這兩張圖片不同（可能是不同類型表單）
+
+
+
+
+
+
