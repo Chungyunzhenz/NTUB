@@ -83,7 +83,6 @@ class _AssistantPageState extends State<AssistantPage> {
           ),
         ],
       ),
-      
       drawer: Drawer(
         child: _buildDrawer(),
       ),

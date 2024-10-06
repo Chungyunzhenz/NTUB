@@ -13,9 +13,6 @@ class _ReviewListPageState extends State<ReviewListPage> {
   List<Map<String, dynamic>> completedReviews = [];
   bool isLoading = true;
 
-  //final String serverIp = '192.168.0.166';
-  //final String serverIp = '172.20.10.3';
-
   @override
   void initState() {
     super.initState();
@@ -24,31 +21,18 @@ class _ReviewListPageState extends State<ReviewListPage> {
 
   Future<void> fetchReviews() async {
     setState(() {
-      isLoading = true; // 开始加载时设置为true
+      isLoading = true; // Start loading
     });
 
     try {
-      final responseLeave = await http.get(
-        Uri.parse('http://zct.us.kg:5000/getLeaveRequests?title=請假單'),
+      final response = await http.get(
+        Uri.parse('http://192.168.0.166:5002/getStudentReviews'),
       );
 
-      final responseCourse = await http.get(
-        Uri.parse('http://zct.us.kg:5000/getLeaveRequests?title=選課單'),
-      );
-
-      if (responseLeave.statusCode == 200 && responseCourse.statusCode == 200) {
-        List<Map<String, dynamic>> leaveData = List<Map<String, dynamic>>.from(
-          json.decode(responseLeave.body),
+      if (response.statusCode == 200) {
+        List<Map<String, dynamic>> allData = List<Map<String, dynamic>>.from(
+          json.decode(response.body),
         );
-        List<Map<String, dynamic>> courseData = List<Map<String, dynamic>>.from(
-          json.decode(responseCourse.body),
-        );
-
-        // 打印获取到的假单和选课单数据
-        print('Leave Data: $leaveData');
-        print('Course Data: $courseData');
-
-        List<Map<String, dynamic>> allData = leaveData + courseData;
 
         setState(() {
           reviewingReviews =
@@ -57,20 +41,14 @@ class _ReviewListPageState extends State<ReviewListPage> {
               allData.where((item) => item['review_status'] == '退回').toList();
           completedReviews =
               allData.where((item) => item['review_status'] == '完成').toList();
-
-          // 打印分类后的数据
-          print('Reviewing Reviews: $reviewingReviews');
-          print('Rejected Reviews: $rejectedReviews');
-          print('Completed Reviews: $completedReviews');
-
-          isLoading = false; // 加载完成时设置为false
+          isLoading = false; // Loading complete
         });
       } else {
         setState(() {
           isLoading = false;
         });
         print(
-            'Error fetching data: ${responseLeave.statusCode} - ${responseLeave.reasonPhrase}');
+            'Error fetching data: ${response.statusCode} - ${response.reasonPhrase}');
       }
     } catch (e) {
       setState(() {
@@ -83,7 +61,7 @@ class _ReviewListPageState extends State<ReviewListPage> {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-      length: 3, // 将 Tab 数量增加到3
+      length: 3, // Increase Tab count to 3
       child: Scaffold(
         appBar: AppBar(
           title: Text('查看所有審查進度'),
@@ -110,9 +88,6 @@ class _ReviewListPageState extends State<ReviewListPage> {
   }
 
   Widget buildReviewList(List<Map<String, dynamic>> reviews, Color color) {
-    // 打印当前Tab显示的数据
-    print('Building review list for: ${reviews.length} items.');
-
     if (reviews.isEmpty) {
       return Center(
         child: Text(
@@ -159,6 +134,7 @@ class _ReviewListPageState extends State<ReviewListPage> {
                   builder: (context) => ReviewDetailPage(
                     title: reviews[index]['title'],
                     reviewDetails: reviews[index],
+                    onWithdraw: () => _handleWithdraw(reviews[index]),
                   ),
                 ),
               );
@@ -168,23 +144,45 @@ class _ReviewListPageState extends State<ReviewListPage> {
       },
     );
   }
+
+  void _handleWithdraw(Map<String, dynamic> review) async {
+    try {
+      final response = await http.post(
+        Uri.parse('http://192.168.0.166:5002/withdrawReview'),
+        headers: {'Content-Type': 'application/json'},
+        body: jsonEncode({'review_id': review['id']}),
+      );
+
+      if (response.statusCode == 200) {
+        setState(() {
+          reviewingReviews.removeWhere((item) => item['id'] == review['id']);
+          review['review_status'] = '退回';
+          rejectedReviews.add(review);
+        });
+        print('Review withdrawn successfully');
+      } else {
+        print('Failed to withdraw review: ${response.statusCode}');
+      }
+    } catch (e) {
+      print('Exception caught while withdrawing review: $e');
+    }
+  }
 }
 
 class ReviewDetailPage extends StatelessWidget {
   final String title;
   final Map<String, dynamic> reviewDetails;
+  final VoidCallback onWithdraw;
 
   const ReviewDetailPage({
-    super.key,
+    Key? key,
     required this.title,
     required this.reviewDetails,
-  });
+    required this.onWithdraw,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    // 打印详细页面的数据
-    print('Review Details for $title: $reviewDetails');
-
     return Scaffold(
       appBar: AppBar(
         title: Text(title),
@@ -226,8 +224,8 @@ class ReviewDetailPage extends StatelessWidget {
                             onPressed: () {
                               Navigator.pop(context);
                             },
-                            icon: Icon(Icons.check),
-                            label: Text('返回'),
+                            icon: Icon(Icons.close),
+                            label: Text('關閉'),
                             style: ElevatedButton.styleFrom(
                               backgroundColor: Colors.teal,
                               padding: EdgeInsets.symmetric(
@@ -239,12 +237,13 @@ class ReviewDetailPage extends StatelessWidget {
                           ),
                           ElevatedButton.icon(
                             onPressed: () {
-                              // 添加撤回提交的邏輯
+                              onWithdraw();
+                              Navigator.pop(context);
                             },
                             icon: Icon(Icons.undo),
-                            label: Text('撤回提交'),
+                            label: Text('撤回審核'),
                             style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.red,
+                              backgroundColor: Colors.orange[400],
                               padding: EdgeInsets.symmetric(
                                   horizontal: 24, vertical: 12),
                               shape: RoundedRectangleBorder(

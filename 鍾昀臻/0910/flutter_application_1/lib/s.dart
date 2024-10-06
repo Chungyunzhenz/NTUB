@@ -2,13 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'theme_notifier.dart';
 import 'form_upload_page.dart';
-import 'announcement_page.dart' as announce;
+import 'announcement_page.dart';
 import 'manual_page.dart';
 import 'historical_record.dart';
 import 'stu_review.dart';
-import 'login_page.dart'; // 确保正确引用 LoginPage
-import 'user_role.dart';
-import 'package:url_launcher/url_launcher.dart'; // 确保导入 url_launcher
+import 'login_page.dart'; // 確保正確引用 LoginPage
+import 'package:url_launcher/url_launcher.dart'; // 確保導入 url_launcher
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 class StudentPage extends StatefulWidget {
   final String title;
@@ -30,6 +31,7 @@ class StudentPage extends StatefulWidget {
 
 class _StudentPageState extends State<StudentPage> {
   late String selectedProfileImage;
+  String? userUUID; // 用於存儲生成的 UUID
 
   @override
   void initState() {
@@ -77,8 +79,14 @@ class _StudentPageState extends State<StudentPage> {
                 context, Icons.verified_user, '審查進度', ReviewListPage()),
             _buildListTile(context, Icons.history, '歷史紀錄', HistoryPage()),
             _buildListTile(context, Icons.announcement, '公告',
-                announce.AnnouncementPage(role: announce.UserRole.student)),
+                AnnouncementPage(role: UserRole.student)),
             _buildListTile(context, Icons.book, '使用手冊', ManualPage()),
+            // 新增個人ID按鈕
+            ListTile(
+              leading: const Icon(Icons.perm_identity),
+              title: const Text('個人ID'),
+              onTap: () => _showUUIDDialog(context),
+            ),
             ListTile(
               leading: const Icon(Icons.logout),
               title: const Text('登出'),
@@ -110,7 +118,6 @@ class _StudentPageState extends State<StudentPage> {
                   borderRadius: BorderRadius.circular(15.0),
                 ),
                 child: SingleChildScrollView(
-                  // 使用 SingleChildScrollView 来避免溢出
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -160,12 +167,8 @@ class _StudentPageState extends State<StudentPage> {
                       context, Icons.verified_user, '審查進度', ReviewListPage()),
                   _buildListTileCard(
                       context, Icons.history, '歷史紀錄', HistoryPage()),
-                  _buildListTile(
-                      context,
-                      Icons.announcement,
-                      '公告',
-                      announce.AnnouncementPage(
-                          role: announce.UserRole.student)),
+                  _buildListTileCard(context, Icons.announcement, '公告',
+                      AnnouncementPage(role: UserRole.student)),
                   _buildListTileCard(context, Icons.book, '使用手冊', ManualPage()),
                 ],
               ),
@@ -223,9 +226,9 @@ class _StudentPageState extends State<StudentPage> {
 
   Future<void> _launchLineBot() async {
     const url =
-        'https://line.me/R/ti/p/YOUR_LINE_BOT_ID'; // 修改为正确的 LINE Bot URL
+        'https://line.me/R/ti/p/YOUR_LINE_BOT_ID'; // 修改為正確的 LINE Bot URL
     if (!await launchUrl(Uri.parse(url))) {
-      throw '无法打开 $url';
+      throw '無法打開 $url';
     }
   }
 
@@ -238,12 +241,112 @@ class _StudentPageState extends State<StudentPage> {
     );
   }
 
+  // 顯示個人UUID的彈跳視窗
+  void _showUUIDDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return StatefulBuilder(
+          builder: (context, setState) {
+            return AlertDialog(
+              title: const Text('個人ID'),
+              content: FutureBuilder<String?>(
+                future: _fetchUserUUID(),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const CircularProgressIndicator();
+                  } else if (snapshot.hasError) {
+                    return const Text('查詢失敗，請稍後再試。');
+                  } else if (snapshot.hasData && snapshot.data != null) {
+                    userUUID = snapshot.data!; // 更新本地 UUID 變數
+                    return Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text('您的個人 UUID 是：$userUUID'),
+                      ],
+                    );
+                  } else {
+                    return Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        const Text('尚未生成個人 UUID。'),
+                        const SizedBox(height: 10),
+                        ElevatedButton(
+                          onPressed: () async {
+                            await _generateUUID(context, setState);
+                          },
+                          child: const Text('生成個人UUID'),
+                        ),
+                      ],
+                    );
+                  }
+                },
+              ),
+              actions: [
+                TextButton(
+                  child: const Text('關閉'),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                ),
+              ],
+            );
+          },
+        );
+      },
+    );
+  }
+
+  // 查詢用戶UUID
+  Future<String?> _fetchUserUUID() async {
+    if (widget.user['verification_code'] == null) {
+      return null; // 若 UUID 尚未生成，直接返回 null
+    }
+    final response = await http.get(
+      Uri.parse(
+          'http://10.0.2.2:5000/get_user_info/${widget.user['verification_code']}'),
+    );
+    if (response.statusCode == 200) {
+      final data = jsonDecode(response.body);
+      return data['verification_code'];
+    } else {
+      return null;
+    }
+  }
+
+  // 生成UUID並上傳到資料庫
+  Future<void> _generateUUID(BuildContext context, StateSetter setState) async {
+    final response = await http.post(
+      Uri.parse('http://10.0.2.2:5000/generate_code'),
+      headers: {'Content-Type': 'application/json'},
+      body: jsonEncode({
+        'user_name': widget.user['Name'],
+        'email': widget.user['Email'],
+      }),
+    );
+
+    if (response.statusCode == 200) {
+      final data = jsonDecode(response.body);
+      setState(() {
+        widget.user['verification_code'] =
+            data['verification_code']; // 更新本地 UUID 變數
+      });
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('生成成功，您的 UUID 是：$userUUID')),
+      );
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('生成失敗，請稍後再試。')),
+      );
+    }
+  }
+
   void _showProfileImageDialog(BuildContext context) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('选择头像'),
+          title: Text('選擇頭貼'),
           content: SingleChildScrollView(
             child: Column(
               children: [
@@ -271,7 +374,8 @@ class _StudentPageState extends State<StudentPage> {
     return GestureDetector(
       onTap: () {
         setState(() {
-          selectedProfileImage = imagePath;
+          selectedProfileImage =
+              widget.user['ProfileImage'] ?? 'lib/assets/a.png';
         });
         Navigator.of(context).pop();
       },
