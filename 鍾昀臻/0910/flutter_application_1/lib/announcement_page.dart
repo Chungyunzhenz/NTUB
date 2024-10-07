@@ -32,7 +32,7 @@ class AnnouncementPageState extends State<AnnouncementPage> {
   Future<void> _fetchAnnouncements() async {
     try {
       final response =
-          await http.get(Uri.parse('http://127.0.0.1:5001/announcements'));
+          await http.get(Uri.parse('http://zct.us.kg:5000/announcements_o'));
       if (response.statusCode == 200) {
         final data = jsonDecode(utf8.decode(response.bodyBytes));
         if (data['announcements'] is List) {

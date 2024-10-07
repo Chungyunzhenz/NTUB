@@ -41,7 +41,7 @@ class FormDownloadPageState extends State<FormDownloadPage> {
   Future<void> _fetchClassData() async {
     try {
       final response =
-          await http.get(Uri.parse('http://192.168.0.166:5000/api/class_data'));
+          await http.get(Uri.parse('http://zct.us.kg:5000/api/class_data'));
       if (response.statusCode == 200) {
         setState(() {
           _classData =
@@ -63,7 +63,7 @@ class FormDownloadPageState extends State<FormDownloadPage> {
   Future<void> _fetchStudentData(String className) async {
     try {
       final response = await http.get(Uri.parse(
-          'http://192.168.0.166:5000/api/class_students/$className?user_role=$userRole'));
+          'http://zct.us.kg:5000/api/class_students/$className?user_role=$userRole'));
       if (response.statusCode == 200) {
         setState(() {
           _studentData =
@@ -119,7 +119,7 @@ class FormDownloadPageState extends State<FormDownloadPage> {
 
       // 發送 HTTP GET 請求到 API 來下載檔案
       final response = await http
-          .get(Uri.parse('http://192.168.0.166:5000/api/download_history'));
+          .get(Uri.parse('http://zct.us.kg:5000/api/download_history'));
 
       if (response.statusCode == 200) {
         // 獲取應用程序文件目錄
