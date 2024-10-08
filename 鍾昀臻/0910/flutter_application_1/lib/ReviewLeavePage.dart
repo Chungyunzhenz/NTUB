@@ -92,7 +92,7 @@ class _ReviewLeavePageState extends State<ReviewLeavePage> {
       );
 
       if (response.statusCode == 200) {
-        await _fetchLeaveRequests();
+        await _fetchLeaveRequests(); // 成功更新狀態後重新載入數據
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text('請假單已更新為 $status'),

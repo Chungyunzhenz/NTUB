@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart'; 
 import 'dart:io';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:path_provider/path_provider.dart';
@@ -81,20 +81,13 @@ class FormDownloadPageState extends State<FormDownloadPage> {
     }
   }
 
+  // 根据表单状态过滤学生
   List<Map<String, dynamic>> get _filteredStudents {
     if (_selectedClass == null) return [];
     var students = _studentData;
 
-    // 根据 userRole 过滤不同的表单
-    if (userRole == 'teacher') {
-      // 教师只看请假单
-      students =
-          students.where((student) => student['title'] == '請假單').toList();
-    } else if (userRole == 'assistant') {
-      // 助教只看選課单
-      students =
-          students.where((student) => student['title'] == '選課單').toList();
-    }
+    // 过滤表单状态，根据需要显示已完成的表单
+    students = students.where((student) => student['form_status'] == '完成').toList();
 
     if (_searchKeyword.isNotEmpty) {
       students = students

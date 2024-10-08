@@ -91,7 +91,7 @@ class _ReviewCoursePageState extends State<ReviewCoursePage> {
       );
 
       if (response.statusCode == 200) {
-        await _fetchCourseRequests();
+        await _fetchCourseRequests(); // 成功更新狀態後重新載入數據
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text('選課單已更新為 $status'),

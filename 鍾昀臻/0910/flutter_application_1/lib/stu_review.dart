@@ -26,7 +26,7 @@ class _ReviewListPageState extends State<ReviewListPage> {
 
     try {
       final response = await http.get(
-        Uri.parse('http://zct.us.kg:5000/getStudentReviews'),
+        Uri.parse('http://192.168.0.166:5002/getStudentReviews'),
       );
 
       if (response.statusCode == 200) {
@@ -148,17 +148,14 @@ class _ReviewListPageState extends State<ReviewListPage> {
   void _handleWithdraw(Map<String, dynamic> review) async {
     try {
       final response = await http.post(
-        Uri.parse('http://zct.us.kg:5000/withdrawReview'),
+        Uri.parse('http://192.168.0.166:5002/withdrawReview'),
         headers: {'Content-Type': 'application/json'},
         body: jsonEncode({'review_id': review['id']}),
       );
 
       if (response.statusCode == 200) {
-        setState(() {
-          reviewingReviews.removeWhere((item) => item['id'] == review['id']);
-          review['review_status'] = '退回';
-          rejectedReviews.add(review);
-        });
+        // 撤回成功後，重新獲取數據更新 UI
+        await fetchReviews();
         print('Review withdrawn successfully');
       } else {
         print('Failed to withdraw review: ${response.statusCode}');
