@@ -32,7 +32,7 @@ class AnnouncementPageState extends State<AnnouncementPage> {
   Future<void> _fetchAnnouncements() async {
     try {
       final response =
-          await http.get(Uri.parse('http://zct.us.kg:5000/announcements_o'));
+          await http.get(Uri.parse('http://zct.us.kg:5000/announcements'));
       if (response.statusCode == 200) {
         final data = jsonDecode(utf8.decode(response.bodyBytes));
         if (data['announcements'] is List) {
@@ -71,18 +71,14 @@ class AnnouncementPageState extends State<AnnouncementPage> {
     required String purpose,
     required String content,
   }) async {
-    final DateTime now = DateTime.now();
-    final String formattedTime =
-        DateFormat('EEE, dd MMM yyyy HH:mm:ss zzz').format(now);
     try {
-      final uri = Uri.parse('http://127.0.0.1:5001/save_announcement');
+      final uri = Uri.parse('http://zct.us.kg:5000/save_announcement');
       final response = await http.post(
         uri,
         headers: {'Content-Type': 'application/json'},
         body: jsonEncode({
           'Purpose': purpose,
           'content': content,
-          'time': formattedTime,
           'sender': widget.role.toString().split('.').last,
         }),
       );
