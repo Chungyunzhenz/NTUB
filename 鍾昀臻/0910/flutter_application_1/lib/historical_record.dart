@@ -59,7 +59,7 @@ class _HistoryPageState extends State<HistoryPage> {
 
     try {
       final response = await http.post(
-        Uri.parse('http://localhost:4000/filter_history'),
+        Uri.parse('http://zct.us.kg:5000/filter_history'),
         headers: {'Content-Type': 'application/json'},
         body: json.encode({'type': searchType, 'keyword': keyword}),
       );
