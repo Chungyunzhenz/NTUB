@@ -304,7 +304,7 @@ class _StudentPageState extends State<StudentPage> {
     }
     final response = await http.get(
       Uri.parse(
-          'http://10.0.2.2:5000/get_user_info/${widget.user['verification_code']}'),
+          'http://zct.us.kg:5005/get_user_info/${widget.user['verification_code']}'),
     );
     if (response.statusCode == 200) {
       final data = jsonDecode(response.body);
@@ -317,7 +317,7 @@ class _StudentPageState extends State<StudentPage> {
   // 生成UUID並上傳到資料庫
   Future<void> _generateUUID(BuildContext context, StateSetter setState) async {
     final response = await http.post(
-      Uri.parse('http://10.0.2.2:5000/generate_code'),
+      Uri.parse('http://zct.us.kg:5005/generate_code'),
       headers: {'Content-Type': 'application/json'},
       body: jsonEncode({
         'user_name': widget.user['Name'],
