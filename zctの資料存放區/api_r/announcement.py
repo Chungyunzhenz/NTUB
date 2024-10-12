@@ -11,7 +11,7 @@ db_config = {
     'database': '113-Ntub_113205DB'
 }
 
-@announcement_bp.route('/announcements', methods=['GET'])
+@announcement_bp.route('/announcements_o', methods=['GET'])
 def get_announcements():
     try:
         cnx = mysql.connector.connect(**db_config)
