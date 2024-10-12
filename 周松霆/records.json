@@ -1,0 +1,912 @@
+﻿[
+  {
+    "n": {
+      "identity": 0,
+      "labels": [
+        "Class"
+      ],
+      "properties": {
+        "name": "資料庫管理",
+        "id": "0"
+      },
+      "elementId": "0"
+    }
+  },
+  {
+    "n": {
+      "identity": 1,
+      "labels": [
+        "Ctime"
+      ],
+      "properties": {
+        "name": "星期一",
+        "id": "1"
+      },
+      "elementId": "1"
+    }
+  },
+  {
+    "n": {
+      "identity": 2,
+      "labels": [
+        "Table"
+      ],
+      "properties": {
+        "name": "317461317864",
+        "id": "2"
+      },
+      "elementId": "2"
+    }
+  },
+  {
+    "n": {
+      "identity": 3,
+      "labels": [
+        "State"
+      ],
+      "properties": {
+        "name": "待審核",
+        "id": "3"
+      },
+      "elementId": "3"
+    }
+  },
+  {
+    "n": {
+      "identity": 4,
+      "labels": [
+        "Lable"
+      ],
+      "properties": {
+        "name": "選課單",
+        "id": "4"
+      },
+      "elementId": "4"
+    }
+  },
+  {
+    "n": {
+      "identity": 5,
+      "labels": [
+        "Teacher"
+      ],
+      "properties": {
+        "name": "謝文欽",
+        "id": "5"
+      },
+      "elementId": "5"
+    }
+  },
+  {
+    "n": {
+      "identity": 6,
+      "labels": [
+        "User"
+      ],
+      "properties": {
+        "name": "王大明",
+        "id": "6"
+      },
+      "elementId": "6"
+    }
+  },
+  {
+    "n": {
+      "identity": 7,
+      "labels": [
+        "Translate"
+      ],
+      "properties": {
+        "name": "資訊管理系",
+        "id": "7"
+      },
+      "elementId": "7"
+    }
+  },
+  {
+    "n": {
+      "identity": 8,
+      "labels": [
+        "Ad"
+      ],
+      "properties": {
+        "name": "null",
+        "id": "8"
+      },
+      "elementId": "8"
+    }
+  },
+  {
+    "n": {
+      "identity": 9,
+      "labels": [
+        "Class"
+      ],
+      "properties": {
+        "name": "應用統計學",
+        "id": "9"
+      },
+      "elementId": "9"
+    }
+  },
+  {
+    "n": {
+      "identity": 10,
+      "labels": [
+        "Ctime"
+      ],
+      "properties": {
+        "name": "星期三",
+        "id": "10"
+      },
+      "elementId": "10"
+    }
+  },
+  {
+    "n": {
+      "identity": 11,
+      "labels": [
+        "Table"
+      ],
+      "properties": {
+        "name": "764645348697",
+        "id": "11"
+      },
+      "elementId": "11"
+    }
+  },
+  {
+    "n": {
+      "identity": 12,
+      "labels": [
+        "State"
+      ],
+      "properties": {
+        "name": "退回",
+        "id": "12"
+      },
+      "elementId": "12"
+    }
+  },
+  {
+    "n": {
+      "identity": 13,
+      "labels": [
+        "Teacher"
+      ],
+      "properties": {
+        "name": "唐嘉宏",
+        "id": "13"
+      },
+      "elementId": "13"
+    }
+  },
+  {
+    "n": {
+      "identity": 14,
+      "labels": [
+        "User"
+      ],
+      "properties": {
+        "name": "王二名",
+        "id": "14"
+      },
+      "elementId": "14"
+    }
+  },
+  {
+    "n": {
+      "identity": 15,
+      "labels": [
+        "Ad"
+      ],
+      "properties": {
+        "name": "張助教",
+        "id": "15"
+      },
+      "elementId": "15"
+    }
+  },
+  {
+    "n": {
+      "identity": 16,
+      "labels": [
+        "Class"
+      ],
+      "properties": {
+        "name": "企業倫理",
+        "id": "16"
+      },
+      "elementId": "16"
+    }
+  },
+  {
+    "n": {
+      "identity": 17,
+      "labels": [
+        "Ctime"
+      ],
+      "properties": {
+        "name": "星期四",
+        "id": "17"
+      },
+      "elementId": "17"
+    }
+  },
+  {
+    "n": {
+      "identity": 18,
+      "labels": [
+        "Table"
+      ],
+      "properties": {
+        "name": "16846434144543",
+        "id": "18"
+      },
+      "elementId": "18"
+    }
+  },
+  {
+    "n": {
+      "identity": 19,
+      "labels": [
+        "State"
+      ],
+      "properties": {
+        "name": "審核通過",
+        "id": "19"
+      },
+      "elementId": "19"
+    }
+  },
+  {
+    "n": {
+      "identity": 20,
+      "labels": [
+        "Lable"
+      ],
+      "properties": {
+        "name": "請假單",
+        "id": "20"
+      },
+      "elementId": "20"
+    }
+  },
+  {
+    "n": {
+      "identity": 21,
+      "labels": [
+        "Teacher"
+      ],
+      "properties": {
+        "name": "李祥銘",
+        "id": "21"
+      },
+      "elementId": "21"
+    }
+  },
+  {
+    "n": {
+      "identity": 22,
+      "labels": [
+        "Class"
+      ],
+      "properties": {
+        "name": "行動應用開發",
+        "id": "22"
+      },
+      "elementId": "22"
+    }
+  },
+  {
+    "n": {
+      "identity": 23,
+      "labels": [
+        "Ctime"
+      ],
+      "properties": {
+        "name": "星期五",
+        "id": "23"
+      },
+      "elementId": "23"
+    }
+  },
+  {
+    "n": {
+      "identity": 24,
+      "labels": [
+        "Table"
+      ],
+      "properties": {
+        "name": "16489461314",
+        "id": "24"
+      },
+      "elementId": "24"
+    }
+  },
+  {
+    "n": {
+      "identity": 25,
+      "labels": [
+        "Teacher"
+      ],
+      "properties": {
+        "name": "張隆君",
+        "id": "25"
+      },
+      "elementId": "25"
+    }
+  },
+  {
+    "n": {
+      "identity": 26,
+      "labels": [
+        "User"
+      ],
+      "properties": {
+        "name": "張曉明",
+        "id": "26"
+      },
+      "elementId": "26"
+    }
+  },
+  {
+    "n": {
+      "identity": 27,
+      "labels": [
+        "Class"
+      ],
+      "properties": {
+        "name": "生活藝術賞析",
+        "id": "27"
+      },
+      "elementId": "27"
+    }
+  },
+  {
+    "n": {
+      "identity": 28,
+      "labels": [
+        "Ctime"
+      ],
+      "properties": {
+        "name": "星期二",
+        "id": "28"
+      },
+      "elementId": "28"
+    }
+  },
+  {
+    "n": {
+      "identity": 29,
+      "labels": [
+        "Table"
+      ],
+      "properties": {
+        "name": "49644517844",
+        "id": "29"
+      },
+      "elementId": "29"
+    }
+  },
+  {
+    "n": {
+      "identity": 30,
+      "labels": [
+        "Teacher"
+      ],
+      "properties": {
+        "name": "蕭文杰",
+        "id": "30"
+      },
+      "elementId": "30"
+    }
+  },
+  {
+    "n": {
+      "identity": 31,
+      "labels": [
+        "Class"
+      ],
+      "properties": {
+        "name": "智慧綠能",
+        "id": "31"
+      },
+      "elementId": "31"
+    }
+  },
+  {
+    "n": {
+      "identity": 32,
+      "labels": [
+        "Table"
+      ],
+      "properties": {
+        "name": "14684684231",
+        "id": "32"
+      },
+      "elementId": "32"
+    }
+  },
+  {
+    "n": {
+      "identity": 33,
+      "labels": [
+        "Teacher"
+      ],
+      "properties": {
+        "name": "魏明治",
+        "id": "33"
+      },
+      "elementId": "33"
+    }
+  },
+  {
+    "n": {
+      "identity": 34,
+      "labels": [
+        "User"
+      ],
+      "properties": {
+        "name": "李四",
+        "id": "34"
+      },
+      "elementId": "34"
+    }
+  },
+  {
+    "n": {
+      "identity": 35,
+      "labels": [
+        "Class"
+      ],
+      "properties": {
+        "name": "資訊網路",
+        "id": "35"
+      },
+      "elementId": "35"
+    }
+  },
+  {
+    "n": {
+      "identity": 36,
+      "labels": [
+        "Table"
+      ],
+      "properties": {
+        "name": "74643515342",
+        "id": "36"
+      },
+      "elementId": "36"
+    }
+  },
+  {
+    "n": {
+      "identity": 37,
+      "labels": [
+        "Teacher"
+      ],
+      "properties": {
+        "name": "歐陽起鵬",
+        "id": "37"
+      },
+      "elementId": "37"
+    }
+  },
+  {
+    "n": {
+      "identity": 38,
+      "labels": [
+        "Class"
+      ],
+      "properties": {
+        "name": "國文",
+        "id": "38"
+      },
+      "elementId": "38"
+    }
+  },
+  {
+    "n": {
+      "identity": 39,
+      "labels": [
+        "Table"
+      ],
+      "properties": {
+        "name": "24658464134",
+        "id": "39"
+      },
+      "elementId": "39"
+    }
+  },
+  {
+    "n": {
+      "identity": 40,
+      "labels": [
+        "Teacher"
+      ],
+      "properties": {
+        "name": "邱宜文",
+        "id": "40"
+      },
+      "elementId": "40"
+    }
+  },
+  {
+    "n": {
+      "identity": 41,
+      "labels": [
+        "User"
+      ],
+      "properties": {
+        "name": "廖武",
+        "id": "41"
+      },
+      "elementId": "41"
+    }
+  },
+  {
+    "n": {
+      "identity": 42,
+      "labels": [
+        "Translate"
+      ],
+      "properties": {
+        "name": "通識中心",
+        "id": "42"
+      },
+      "elementId": "42"
+    }
+  },
+  {
+    "n": {
+      "identity": 43,
+      "labels": [
+        "Ad"
+      ],
+      "properties": {
+        "name": "王主任",
+        "id": "43"
+      },
+      "elementId": "43"
+    }
+  },
+  {
+    "n": {
+      "identity": 44,
+      "labels": [
+        "Table"
+      ],
+      "properties": {
+        "name": "845456346844",
+        "id": "44"
+      },
+      "elementId": "44"
+    }
+  },
+  {
+    "n": {
+      "identity": 45,
+      "labels": [
+        "Class"
+      ],
+      "properties": {
+        "name": "英文",
+        "id": "45"
+      },
+      "elementId": "45"
+    }
+  },
+  {
+    "n": {
+      "identity": 46,
+      "labels": [
+        "Table"
+      ],
+      "properties": {
+        "name": "5684867413464",
+        "id": "46"
+      },
+      "elementId": "46"
+    }
+  },
+  {
+    "n": {
+      "identity": 47,
+      "labels": [
+        "Teacher"
+      ],
+      "properties": {
+        "name": "賴淑麗",
+        "id": "47"
+      },
+      "elementId": "47"
+    }
+  },
+  {
+    "n": {
+      "identity": 48,
+      "labels": [
+        "Class"
+      ],
+      "properties": {
+        "name": "羽球(下)",
+        "id": "48"
+      },
+      "elementId": "48"
+    }
+  },
+  {
+    "n": {
+      "identity": 49,
+      "labels": [
+        "Table"
+      ],
+      "properties": {
+        "name": "764684614984",
+        "id": "49"
+      },
+      "elementId": "49"
+    }
+  },
+  {
+    "n": {
+      "identity": 50,
+      "labels": [
+        "Teacher"
+      ],
+      "properties": {
+        "name": "孫彩卿",
+        "id": "50"
+      },
+      "elementId": "50"
+    }
+  },
+  {
+    "n": {
+      "identity": 51,
+      "labels": [
+        "Translate"
+      ],
+      "properties": {
+        "name": "體育室",
+        "id": "51"
+      },
+      "elementId": "51"
+    }
+  },
+  {
+    "n": {
+      "identity": 52,
+      "labels": [
+        "Ad"
+      ],
+      "properties": {
+        "name": "林老師",
+        "id": "52"
+      },
+      "elementId": "52"
+    }
+  },
+  {
+    "n": {
+      "identity": 53,
+      "labels": [
+        "Class"
+      ],
+      "properties": {
+        "name": "電子商務與網路行銷",
+        "id": "53"
+      },
+      "elementId": "53"
+    }
+  },
+  {
+    "n": {
+      "identity": 54,
+      "labels": [
+        "Table"
+      ],
+      "properties": {
+        "name": "468464346468413",
+        "id": "54"
+      },
+      "elementId": "54"
+    }
+  },
+  {
+    "n": {
+      "identity": 55,
+      "labels": [
+        "Teacher"
+      ],
+      "properties": {
+        "name": "唐日新",
+        "id": "55"
+      },
+      "elementId": "55"
+    }
+  },
+  {
+    "n": {
+      "identity": 56,
+      "labels": [
+        "Translate"
+      ],
+      "properties": {
+        "name": "企業管理系",
+        "id": "56"
+      },
+      "elementId": "56"
+    }
+  },
+  {
+    "n": {
+      "identity": 57,
+      "labels": [
+        "Ad"
+      ],
+      "properties": {
+        "name": "蔣助教",
+        "id": "57"
+      },
+      "elementId": "57"
+    }
+  },
+  {
+    "n": {
+      "identity": 58,
+      "labels": [
+        "Table"
+      ],
+      "properties": {
+        "name": "534165464411",
+        "id": "58"
+      },
+      "elementId": "58"
+    }
+  },
+  {
+    "n": {
+      "identity": 59,
+      "labels": [
+        "Table"
+      ],
+      "properties": {
+        "name": "6484165168461",
+        "id": "59"
+      },
+      "elementId": "59"
+    }
+  },
+  {
+    "n": {
+      "identity": 60,
+      "labels": [
+        "Table"
+      ],
+      "properties": {
+        "name": "5648461416412",
+        "id": "60"
+      },
+      "elementId": "60"
+    }
+  },
+  {
+    "n": {
+      "identity": 61,
+      "labels": [
+        "Class"
+      ],
+      "properties": {
+        "name": "文化資產與藝術產業經營",
+        "id": "61"
+      },
+      "elementId": "61"
+    }
+  },
+  {
+    "n": {
+      "identity": 62,
+      "labels": [
+        "Table"
+      ],
+      "properties": {
+        "name": "76464618464162",
+        "id": "62"
+      },
+      "elementId": "62"
+    }
+  },
+  {
+    "n": {
+      "identity": 63,
+      "labels": [
+        "Class"
+      ],
+      "properties": {
+        "name": "休閒運動(上)",
+        "id": "63"
+      },
+      "elementId": "63"
+    }
+  },
+  {
+    "n": {
+      "identity": 64,
+      "labels": [
+        "Table"
+      ],
+      "properties": {
+        "name": "789464465416",
+        "id": "64"
+      },
+      "elementId": "64"
+    }
+  },
+  {
+    "n": {
+      "identity": 65,
+      "labels": [
+        "Teacher"
+      ],
+      "properties": {
+        "name": "方竹君",
+        "id": "65"
+      },
+      "elementId": "65"
+    }
+  },
+  {
+    "n": {
+      "identity": 66,
+      "labels": [
+        "Table"
+      ],
+      "properties": {
+        "name": "84642316431",
+        "id": "66"
+      },
+      "elementId": "66"
+    }
+  },
+  {
+    "n": {
+      "identity": 67,
+      "labels": [
+        "Table"
+      ],
+      "properties": {
+        "name": "163461531531264",
+        "id": "67"
+      },
+      "elementId": "67"
+    }
+  },
+  {
+    "n": {
+      "identity": 68,
+      "labels": [
+        "User"
+      ],
+      "properties": {
+        "name": "羅南",
+        "id": "68"
+      },
+      "elementId": "68"
+    }
+  },
+  {
+    "n": {
+      "identity": 69,
+      "labels": [
+        "Table"
+      ],
+      "properties": {
+        "name": "765416488943",
+        "id": "69"
+      },
+      "elementId": "69"
+    }
+  }
+]

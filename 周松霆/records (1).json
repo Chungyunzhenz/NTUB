@@ -1,0 +1,2144 @@
+﻿[
+  {
+    "r": {
+      "identity": 0,
+      "start": 4,
+      "end": 2,
+      "type": "表單類型",
+      "properties": {
+
+      },
+      "elementId": "0",
+      "startNodeElementId": "4",
+      "endNodeElementId": "2"
+    }
+  },
+  {
+    "r": {
+      "identity": 1,
+      "start": 2,
+      "end": 3,
+      "type": "目前狀態",
+      "properties": {
+
+      },
+      "elementId": "1",
+      "startNodeElementId": "2",
+      "endNodeElementId": "3"
+    }
+  },
+  {
+    "r": {
+      "identity": 2,
+      "start": 6,
+      "end": 2,
+      "type": "送出用戶",
+      "properties": {
+
+      },
+      "elementId": "2",
+      "startNodeElementId": "6",
+      "endNodeElementId": "2"
+    }
+  },
+  {
+    "r": {
+      "identity": 3,
+      "start": 6,
+      "end": 7,
+      "type": "就讀科系",
+      "properties": {
+
+      },
+      "elementId": "3",
+      "startNodeElementId": "6",
+      "endNodeElementId": "7"
+    }
+  },
+  {
+    "r": {
+      "identity": 4,
+      "start": 5,
+      "end": 7,
+      "type": "所屬科系",
+      "properties": {
+
+      },
+      "elementId": "4",
+      "startNodeElementId": "5",
+      "endNodeElementId": "7"
+    }
+  },
+  {
+    "r": {
+      "identity": 5,
+      "start": 2,
+      "end": 0,
+      "type": "選擇課程",
+      "properties": {
+
+      },
+      "elementId": "5",
+      "startNodeElementId": "2",
+      "endNodeElementId": "0"
+    }
+  },
+  {
+    "r": {
+      "identity": 6,
+      "start": 0,
+      "end": 1,
+      "type": "上課時間",
+      "properties": {
+
+      },
+      "elementId": "6",
+      "startNodeElementId": "0",
+      "endNodeElementId": "1"
+    }
+  },
+  {
+    "r": {
+      "identity": 7,
+      "start": 0,
+      "end": 5,
+      "type": "授課教師",
+      "properties": {
+
+      },
+      "elementId": "7",
+      "startNodeElementId": "0",
+      "endNodeElementId": "5"
+    }
+  },
+  {
+    "r": {
+      "identity": 8,
+      "start": 0,
+      "end": 7,
+      "type": "開課科系",
+      "properties": {
+
+      },
+      "elementId": "8",
+      "startNodeElementId": "0",
+      "endNodeElementId": "7"
+    }
+  },
+  {
+    "r": {
+      "identity": 9,
+      "start": 3,
+      "end": 8,
+      "type": "審核人員",
+      "properties": {
+
+      },
+      "elementId": "9",
+      "startNodeElementId": "3",
+      "endNodeElementId": "8"
+    }
+  },
+  {
+    "r": {
+      "identity": 10,
+      "start": 4,
+      "end": 11,
+      "type": "表單類型",
+      "properties": {
+
+      },
+      "elementId": "10",
+      "startNodeElementId": "4",
+      "endNodeElementId": "11"
+    }
+  },
+  {
+    "r": {
+      "identity": 11,
+      "start": 11,
+      "end": 12,
+      "type": "目前狀態",
+      "properties": {
+
+      },
+      "elementId": "11",
+      "startNodeElementId": "11",
+      "endNodeElementId": "12"
+    }
+  },
+  {
+    "r": {
+      "identity": 12,
+      "start": 14,
+      "end": 11,
+      "type": "送出用戶",
+      "properties": {
+
+      },
+      "elementId": "12",
+      "startNodeElementId": "14",
+      "endNodeElementId": "11"
+    }
+  },
+  {
+    "r": {
+      "identity": 13,
+      "start": 14,
+      "end": 7,
+      "type": "就讀科系",
+      "properties": {
+
+      },
+      "elementId": "13",
+      "startNodeElementId": "14",
+      "endNodeElementId": "7"
+    }
+  },
+  {
+    "r": {
+      "identity": 14,
+      "start": 13,
+      "end": 7,
+      "type": "所屬科系",
+      "properties": {
+
+      },
+      "elementId": "14",
+      "startNodeElementId": "13",
+      "endNodeElementId": "7"
+    }
+  },
+  {
+    "r": {
+      "identity": 15,
+      "start": 11,
+      "end": 9,
+      "type": "選擇課程",
+      "properties": {
+
+      },
+      "elementId": "15",
+      "startNodeElementId": "11",
+      "endNodeElementId": "9"
+    }
+  },
+  {
+    "r": {
+      "identity": 16,
+      "start": 9,
+      "end": 10,
+      "type": "上課時間",
+      "properties": {
+
+      },
+      "elementId": "16",
+      "startNodeElementId": "9",
+      "endNodeElementId": "10"
+    }
+  },
+  {
+    "r": {
+      "identity": 17,
+      "start": 9,
+      "end": 13,
+      "type": "授課教師",
+      "properties": {
+
+      },
+      "elementId": "17",
+      "startNodeElementId": "9",
+      "endNodeElementId": "13"
+    }
+  },
+  {
+    "r": {
+      "identity": 18,
+      "start": 9,
+      "end": 7,
+      "type": "開課科系",
+      "properties": {
+
+      },
+      "elementId": "18",
+      "startNodeElementId": "9",
+      "endNodeElementId": "7"
+    }
+  },
+  {
+    "r": {
+      "identity": 19,
+      "start": 12,
+      "end": 15,
+      "type": "審核人員",
+      "properties": {
+
+      },
+      "elementId": "19",
+      "startNodeElementId": "12",
+      "endNodeElementId": "15"
+    }
+  },
+  {
+    "r": {
+      "identity": 20,
+      "start": 20,
+      "end": 18,
+      "type": "表單類型",
+      "properties": {
+
+      },
+      "elementId": "20",
+      "startNodeElementId": "20",
+      "endNodeElementId": "18"
+    }
+  },
+  {
+    "r": {
+      "identity": 21,
+      "start": 18,
+      "end": 19,
+      "type": "目前狀態",
+      "properties": {
+
+      },
+      "elementId": "21",
+      "startNodeElementId": "18",
+      "endNodeElementId": "19"
+    }
+  },
+  {
+    "r": {
+      "identity": 22,
+      "start": 6,
+      "end": 18,
+      "type": "送出用戶",
+      "properties": {
+
+      },
+      "elementId": "22",
+      "startNodeElementId": "6",
+      "endNodeElementId": "18"
+    }
+  },
+  {
+    "r": {
+      "identity": 23,
+      "start": 21,
+      "end": 7,
+      "type": "所屬科系",
+      "properties": {
+
+      },
+      "elementId": "23",
+      "startNodeElementId": "21",
+      "endNodeElementId": "7"
+    }
+  },
+  {
+    "r": {
+      "identity": 24,
+      "start": 18,
+      "end": 16,
+      "type": "選擇課程",
+      "properties": {
+
+      },
+      "elementId": "24",
+      "startNodeElementId": "18",
+      "endNodeElementId": "16"
+    }
+  },
+  {
+    "r": {
+      "identity": 25,
+      "start": 16,
+      "end": 17,
+      "type": "上課時間",
+      "properties": {
+
+      },
+      "elementId": "25",
+      "startNodeElementId": "16",
+      "endNodeElementId": "17"
+    }
+  },
+  {
+    "r": {
+      "identity": 26,
+      "start": 16,
+      "end": 21,
+      "type": "授課教師",
+      "properties": {
+
+      },
+      "elementId": "26",
+      "startNodeElementId": "16",
+      "endNodeElementId": "21"
+    }
+  },
+  {
+    "r": {
+      "identity": 27,
+      "start": 16,
+      "end": 7,
+      "type": "開課科系",
+      "properties": {
+
+      },
+      "elementId": "27",
+      "startNodeElementId": "16",
+      "endNodeElementId": "7"
+    }
+  },
+  {
+    "r": {
+      "identity": 28,
+      "start": 19,
+      "end": 15,
+      "type": "審核人員",
+      "properties": {
+
+      },
+      "elementId": "28",
+      "startNodeElementId": "19",
+      "endNodeElementId": "15"
+    }
+  },
+  {
+    "r": {
+      "identity": 29,
+      "start": 4,
+      "end": 24,
+      "type": "表單類型",
+      "properties": {
+
+      },
+      "elementId": "29",
+      "startNodeElementId": "4",
+      "endNodeElementId": "24"
+    }
+  },
+  {
+    "r": {
+      "identity": 30,
+      "start": 24,
+      "end": 3,
+      "type": "目前狀態",
+      "properties": {
+
+      },
+      "elementId": "30",
+      "startNodeElementId": "24",
+      "endNodeElementId": "3"
+    }
+  },
+  {
+    "r": {
+      "identity": 31,
+      "start": 26,
+      "end": 24,
+      "type": "送出用戶",
+      "properties": {
+
+      },
+      "elementId": "31",
+      "startNodeElementId": "26",
+      "endNodeElementId": "24"
+    }
+  },
+  {
+    "r": {
+      "identity": 32,
+      "start": 26,
+      "end": 7,
+      "type": "就讀科系",
+      "properties": {
+
+      },
+      "elementId": "32",
+      "startNodeElementId": "26",
+      "endNodeElementId": "7"
+    }
+  },
+  {
+    "r": {
+      "identity": 33,
+      "start": 25,
+      "end": 7,
+      "type": "所屬科系",
+      "properties": {
+
+      },
+      "elementId": "33",
+      "startNodeElementId": "25",
+      "endNodeElementId": "7"
+    }
+  },
+  {
+    "r": {
+      "identity": 34,
+      "start": 24,
+      "end": 22,
+      "type": "選擇課程",
+      "properties": {
+
+      },
+      "elementId": "34",
+      "startNodeElementId": "24",
+      "endNodeElementId": "22"
+    }
+  },
+  {
+    "r": {
+      "identity": 35,
+      "start": 22,
+      "end": 23,
+      "type": "上課時間",
+      "properties": {
+
+      },
+      "elementId": "35",
+      "startNodeElementId": "22",
+      "endNodeElementId": "23"
+    }
+  },
+  {
+    "r": {
+      "identity": 36,
+      "start": 22,
+      "end": 25,
+      "type": "授課教師",
+      "properties": {
+
+      },
+      "elementId": "36",
+      "startNodeElementId": "22",
+      "endNodeElementId": "25"
+    }
+  },
+  {
+    "r": {
+      "identity": 37,
+      "start": 22,
+      "end": 7,
+      "type": "開課科系",
+      "properties": {
+
+      },
+      "elementId": "37",
+      "startNodeElementId": "22",
+      "endNodeElementId": "7"
+    }
+  },
+  {
+    "r": {
+      "identity": 38,
+      "start": 20,
+      "end": 29,
+      "type": "表單類型",
+      "properties": {
+
+      },
+      "elementId": "38",
+      "startNodeElementId": "20",
+      "endNodeElementId": "29"
+    }
+  },
+  {
+    "r": {
+      "identity": 39,
+      "start": 29,
+      "end": 12,
+      "type": "目前狀態",
+      "properties": {
+
+      },
+      "elementId": "39",
+      "startNodeElementId": "29",
+      "endNodeElementId": "12"
+    }
+  },
+  {
+    "r": {
+      "identity": 40,
+      "start": 6,
+      "end": 29,
+      "type": "送出用戶",
+      "properties": {
+
+      },
+      "elementId": "40",
+      "startNodeElementId": "6",
+      "endNodeElementId": "29"
+    }
+  },
+  {
+    "r": {
+      "identity": 41,
+      "start": 30,
+      "end": 7,
+      "type": "所屬科系",
+      "properties": {
+
+      },
+      "elementId": "41",
+      "startNodeElementId": "30",
+      "endNodeElementId": "7"
+    }
+  },
+  {
+    "r": {
+      "identity": 42,
+      "start": 29,
+      "end": 27,
+      "type": "選擇課程",
+      "properties": {
+
+      },
+      "elementId": "42",
+      "startNodeElementId": "29",
+      "endNodeElementId": "27"
+    }
+  },
+  {
+    "r": {
+      "identity": 43,
+      "start": 27,
+      "end": 28,
+      "type": "上課時間",
+      "properties": {
+
+      },
+      "elementId": "43",
+      "startNodeElementId": "27",
+      "endNodeElementId": "28"
+    }
+  },
+  {
+    "r": {
+      "identity": 44,
+      "start": 27,
+      "end": 30,
+      "type": "授課教師",
+      "properties": {
+
+      },
+      "elementId": "44",
+      "startNodeElementId": "27",
+      "endNodeElementId": "30"
+    }
+  },
+  {
+    "r": {
+      "identity": 45,
+      "start": 27,
+      "end": 7,
+      "type": "開課科系",
+      "properties": {
+
+      },
+      "elementId": "45",
+      "startNodeElementId": "27",
+      "endNodeElementId": "7"
+    }
+  },
+  {
+    "r": {
+      "identity": 46,
+      "start": 4,
+      "end": 32,
+      "type": "表單類型",
+      "properties": {
+
+      },
+      "elementId": "46",
+      "startNodeElementId": "4",
+      "endNodeElementId": "32"
+    }
+  },
+  {
+    "r": {
+      "identity": 47,
+      "start": 32,
+      "end": 19,
+      "type": "目前狀態",
+      "properties": {
+
+      },
+      "elementId": "47",
+      "startNodeElementId": "32",
+      "endNodeElementId": "19"
+    }
+  },
+  {
+    "r": {
+      "identity": 48,
+      "start": 34,
+      "end": 32,
+      "type": "送出用戶",
+      "properties": {
+
+      },
+      "elementId": "48",
+      "startNodeElementId": "34",
+      "endNodeElementId": "32"
+    }
+  },
+  {
+    "r": {
+      "identity": 49,
+      "start": 34,
+      "end": 7,
+      "type": "就讀科系",
+      "properties": {
+
+      },
+      "elementId": "49",
+      "startNodeElementId": "34",
+      "endNodeElementId": "7"
+    }
+  },
+  {
+    "r": {
+      "identity": 50,
+      "start": 33,
+      "end": 7,
+      "type": "所屬科系",
+      "properties": {
+
+      },
+      "elementId": "50",
+      "startNodeElementId": "33",
+      "endNodeElementId": "7"
+    }
+  },
+  {
+    "r": {
+      "identity": 51,
+      "start": 32,
+      "end": 31,
+      "type": "選擇課程",
+      "properties": {
+
+      },
+      "elementId": "51",
+      "startNodeElementId": "32",
+      "endNodeElementId": "31"
+    }
+  },
+  {
+    "r": {
+      "identity": 52,
+      "start": 31,
+      "end": 28,
+      "type": "上課時間",
+      "properties": {
+
+      },
+      "elementId": "52",
+      "startNodeElementId": "31",
+      "endNodeElementId": "28"
+    }
+  },
+  {
+    "r": {
+      "identity": 53,
+      "start": 31,
+      "end": 33,
+      "type": "授課教師",
+      "properties": {
+
+      },
+      "elementId": "53",
+      "startNodeElementId": "31",
+      "endNodeElementId": "33"
+    }
+  },
+  {
+    "r": {
+      "identity": 54,
+      "start": 31,
+      "end": 7,
+      "type": "開課科系",
+      "properties": {
+
+      },
+      "elementId": "54",
+      "startNodeElementId": "31",
+      "endNodeElementId": "7"
+    }
+  },
+  {
+    "r": {
+      "identity": 55,
+      "start": 20,
+      "end": 36,
+      "type": "表單類型",
+      "properties": {
+
+      },
+      "elementId": "55",
+      "startNodeElementId": "20",
+      "endNodeElementId": "36"
+    }
+  },
+  {
+    "r": {
+      "identity": 56,
+      "start": 36,
+      "end": 3,
+      "type": "目前狀態",
+      "properties": {
+
+      },
+      "elementId": "56",
+      "startNodeElementId": "36",
+      "endNodeElementId": "3"
+    }
+  },
+  {
+    "r": {
+      "identity": 57,
+      "start": 6,
+      "end": 36,
+      "type": "送出用戶",
+      "properties": {
+
+      },
+      "elementId": "57",
+      "startNodeElementId": "6",
+      "endNodeElementId": "36"
+    }
+  },
+  {
+    "r": {
+      "identity": 58,
+      "start": 37,
+      "end": 7,
+      "type": "所屬科系",
+      "properties": {
+
+      },
+      "elementId": "58",
+      "startNodeElementId": "37",
+      "endNodeElementId": "7"
+    }
+  },
+  {
+    "r": {
+      "identity": 59,
+      "start": 36,
+      "end": 35,
+      "type": "選擇課程",
+      "properties": {
+
+      },
+      "elementId": "59",
+      "startNodeElementId": "36",
+      "endNodeElementId": "35"
+    }
+  },
+  {
+    "r": {
+      "identity": 60,
+      "start": 35,
+      "end": 10,
+      "type": "上課時間",
+      "properties": {
+
+      },
+      "elementId": "60",
+      "startNodeElementId": "35",
+      "endNodeElementId": "10"
+    }
+  },
+  {
+    "r": {
+      "identity": 61,
+      "start": 35,
+      "end": 37,
+      "type": "授課教師",
+      "properties": {
+
+      },
+      "elementId": "61",
+      "startNodeElementId": "35",
+      "endNodeElementId": "37"
+    }
+  },
+  {
+    "r": {
+      "identity": 62,
+      "start": 35,
+      "end": 7,
+      "type": "開課科系",
+      "properties": {
+
+      },
+      "elementId": "62",
+      "startNodeElementId": "35",
+      "endNodeElementId": "7"
+    }
+  },
+  {
+    "r": {
+      "identity": 63,
+      "start": 4,
+      "end": 39,
+      "type": "表單類型",
+      "properties": {
+
+      },
+      "elementId": "63",
+      "startNodeElementId": "4",
+      "endNodeElementId": "39"
+    }
+  },
+  {
+    "r": {
+      "identity": 64,
+      "start": 39,
+      "end": 19,
+      "type": "目前狀態",
+      "properties": {
+
+      },
+      "elementId": "64",
+      "startNodeElementId": "39",
+      "endNodeElementId": "19"
+    }
+  },
+  {
+    "r": {
+      "identity": 65,
+      "start": 41,
+      "end": 39,
+      "type": "送出用戶",
+      "properties": {
+
+      },
+      "elementId": "65",
+      "startNodeElementId": "41",
+      "endNodeElementId": "39"
+    }
+  },
+  {
+    "r": {
+      "identity": 66,
+      "start": 41,
+      "end": 42,
+      "type": "就讀科系",
+      "properties": {
+
+      },
+      "elementId": "66",
+      "startNodeElementId": "41",
+      "endNodeElementId": "42"
+    }
+  },
+  {
+    "r": {
+      "identity": 67,
+      "start": 40,
+      "end": 42,
+      "type": "所屬科系",
+      "properties": {
+
+      },
+      "elementId": "67",
+      "startNodeElementId": "40",
+      "endNodeElementId": "42"
+    }
+  },
+  {
+    "r": {
+      "identity": 68,
+      "start": 39,
+      "end": 38,
+      "type": "選擇課程",
+      "properties": {
+
+      },
+      "elementId": "68",
+      "startNodeElementId": "39",
+      "endNodeElementId": "38"
+    }
+  },
+  {
+    "r": {
+      "identity": 69,
+      "start": 38,
+      "end": 28,
+      "type": "上課時間",
+      "properties": {
+
+      },
+      "elementId": "69",
+      "startNodeElementId": "38",
+      "endNodeElementId": "28"
+    }
+  },
+  {
+    "r": {
+      "identity": 70,
+      "start": 38,
+      "end": 40,
+      "type": "授課教師",
+      "properties": {
+
+      },
+      "elementId": "70",
+      "startNodeElementId": "38",
+      "endNodeElementId": "40"
+    }
+  },
+  {
+    "r": {
+      "identity": 71,
+      "start": 38,
+      "end": 42,
+      "type": "開課科系",
+      "properties": {
+
+      },
+      "elementId": "71",
+      "startNodeElementId": "38",
+      "endNodeElementId": "42"
+    }
+  },
+  {
+    "r": {
+      "identity": 72,
+      "start": 19,
+      "end": 43,
+      "type": "審核人員",
+      "properties": {
+
+      },
+      "elementId": "72",
+      "startNodeElementId": "19",
+      "endNodeElementId": "43"
+    }
+  },
+  {
+    "r": {
+      "identity": 73,
+      "start": 20,
+      "end": 44,
+      "type": "表單類型",
+      "properties": {
+
+      },
+      "elementId": "73",
+      "startNodeElementId": "20",
+      "endNodeElementId": "44"
+    }
+  },
+  {
+    "r": {
+      "identity": 74,
+      "start": 44,
+      "end": 12,
+      "type": "目前狀態",
+      "properties": {
+
+      },
+      "elementId": "74",
+      "startNodeElementId": "44",
+      "endNodeElementId": "12"
+    }
+  },
+  {
+    "r": {
+      "identity": 75,
+      "start": 41,
+      "end": 44,
+      "type": "送出用戶",
+      "properties": {
+
+      },
+      "elementId": "75",
+      "startNodeElementId": "41",
+      "endNodeElementId": "44"
+    }
+  },
+  {
+    "r": {
+      "identity": 76,
+      "start": 44,
+      "end": 38,
+      "type": "選擇課程",
+      "properties": {
+
+      },
+      "elementId": "76",
+      "startNodeElementId": "44",
+      "endNodeElementId": "38"
+    }
+  },
+  {
+    "r": {
+      "identity": 77,
+      "start": 20,
+      "end": 46,
+      "type": "表單類型",
+      "properties": {
+
+      },
+      "elementId": "77",
+      "startNodeElementId": "20",
+      "endNodeElementId": "46"
+    }
+  },
+  {
+    "r": {
+      "identity": 78,
+      "start": 46,
+      "end": 3,
+      "type": "目前狀態",
+      "properties": {
+
+      },
+      "elementId": "78",
+      "startNodeElementId": "46",
+      "endNodeElementId": "3"
+    }
+  },
+  {
+    "r": {
+      "identity": 79,
+      "start": 26,
+      "end": 46,
+      "type": "送出用戶",
+      "properties": {
+
+      },
+      "elementId": "79",
+      "startNodeElementId": "26",
+      "endNodeElementId": "46"
+    }
+  },
+  {
+    "r": {
+      "identity": 80,
+      "start": 26,
+      "end": 42,
+      "type": "就讀科系",
+      "properties": {
+
+      },
+      "elementId": "80",
+      "startNodeElementId": "26",
+      "endNodeElementId": "42"
+    }
+  },
+  {
+    "r": {
+      "identity": 81,
+      "start": 47,
+      "end": 42,
+      "type": "所屬科系",
+      "properties": {
+
+      },
+      "elementId": "81",
+      "startNodeElementId": "47",
+      "endNodeElementId": "42"
+    }
+  },
+  {
+    "r": {
+      "identity": 82,
+      "start": 46,
+      "end": 45,
+      "type": "選擇課程",
+      "properties": {
+
+      },
+      "elementId": "82",
+      "startNodeElementId": "46",
+      "endNodeElementId": "45"
+    }
+  },
+  {
+    "r": {
+      "identity": 83,
+      "start": 45,
+      "end": 28,
+      "type": "上課時間",
+      "properties": {
+
+      },
+      "elementId": "83",
+      "startNodeElementId": "45",
+      "endNodeElementId": "28"
+    }
+  },
+  {
+    "r": {
+      "identity": 84,
+      "start": 45,
+      "end": 47,
+      "type": "授課教師",
+      "properties": {
+
+      },
+      "elementId": "84",
+      "startNodeElementId": "45",
+      "endNodeElementId": "47"
+    }
+  },
+  {
+    "r": {
+      "identity": 85,
+      "start": 45,
+      "end": 42,
+      "type": "開課科系",
+      "properties": {
+
+      },
+      "elementId": "85",
+      "startNodeElementId": "45",
+      "endNodeElementId": "42"
+    }
+  },
+  {
+    "r": {
+      "identity": 86,
+      "start": 20,
+      "end": 49,
+      "type": "表單類型",
+      "properties": {
+
+      },
+      "elementId": "86",
+      "startNodeElementId": "20",
+      "endNodeElementId": "49"
+    }
+  },
+  {
+    "r": {
+      "identity": 87,
+      "start": 49,
+      "end": 12,
+      "type": "目前狀態",
+      "properties": {
+
+      },
+      "elementId": "87",
+      "startNodeElementId": "49",
+      "endNodeElementId": "12"
+    }
+  },
+  {
+    "r": {
+      "identity": 88,
+      "start": 14,
+      "end": 49,
+      "type": "送出用戶",
+      "properties": {
+
+      },
+      "elementId": "88",
+      "startNodeElementId": "14",
+      "endNodeElementId": "49"
+    }
+  },
+  {
+    "r": {
+      "identity": 89,
+      "start": 14,
+      "end": 51,
+      "type": "就讀科系",
+      "properties": {
+
+      },
+      "elementId": "89",
+      "startNodeElementId": "14",
+      "endNodeElementId": "51"
+    }
+  },
+  {
+    "r": {
+      "identity": 90,
+      "start": 50,
+      "end": 51,
+      "type": "所屬科系",
+      "properties": {
+
+      },
+      "elementId": "90",
+      "startNodeElementId": "50",
+      "endNodeElementId": "51"
+    }
+  },
+  {
+    "r": {
+      "identity": 91,
+      "start": 49,
+      "end": 48,
+      "type": "選擇課程",
+      "properties": {
+
+      },
+      "elementId": "91",
+      "startNodeElementId": "49",
+      "endNodeElementId": "48"
+    }
+  },
+  {
+    "r": {
+      "identity": 92,
+      "start": 48,
+      "end": 1,
+      "type": "上課時間",
+      "properties": {
+
+      },
+      "elementId": "92",
+      "startNodeElementId": "48",
+      "endNodeElementId": "1"
+    }
+  },
+  {
+    "r": {
+      "identity": 93,
+      "start": 48,
+      "end": 50,
+      "type": "授課教師",
+      "properties": {
+
+      },
+      "elementId": "93",
+      "startNodeElementId": "48",
+      "endNodeElementId": "50"
+    }
+  },
+  {
+    "r": {
+      "identity": 94,
+      "start": 48,
+      "end": 51,
+      "type": "開課科系",
+      "properties": {
+
+      },
+      "elementId": "94",
+      "startNodeElementId": "48",
+      "endNodeElementId": "51"
+    }
+  },
+  {
+    "r": {
+      "identity": 95,
+      "start": 12,
+      "end": 52,
+      "type": "審核人員",
+      "properties": {
+
+      },
+      "elementId": "95",
+      "startNodeElementId": "12",
+      "endNodeElementId": "52"
+    }
+  },
+  {
+    "r": {
+      "identity": 96,
+      "start": 20,
+      "end": 54,
+      "type": "表單類型",
+      "properties": {
+
+      },
+      "elementId": "96",
+      "startNodeElementId": "20",
+      "endNodeElementId": "54"
+    }
+  },
+  {
+    "r": {
+      "identity": 97,
+      "start": 54,
+      "end": 19,
+      "type": "目前狀態",
+      "properties": {
+
+      },
+      "elementId": "97",
+      "startNodeElementId": "54",
+      "endNodeElementId": "19"
+    }
+  },
+  {
+    "r": {
+      "identity": 98,
+      "start": 34,
+      "end": 54,
+      "type": "送出用戶",
+      "properties": {
+
+      },
+      "elementId": "98",
+      "startNodeElementId": "34",
+      "endNodeElementId": "54"
+    }
+  },
+  {
+    "r": {
+      "identity": 99,
+      "start": 34,
+      "end": 56,
+      "type": "就讀科系",
+      "properties": {
+
+      },
+      "elementId": "99",
+      "startNodeElementId": "34",
+      "endNodeElementId": "56"
+    }
+  },
+  {
+    "r": {
+      "identity": 100,
+      "start": 55,
+      "end": 56,
+      "type": "所屬科系",
+      "properties": {
+
+      },
+      "elementId": "100",
+      "startNodeElementId": "55",
+      "endNodeElementId": "56"
+    }
+  },
+  {
+    "r": {
+      "identity": 101,
+      "start": 54,
+      "end": 53,
+      "type": "選擇課程",
+      "properties": {
+
+      },
+      "elementId": "101",
+      "startNodeElementId": "54",
+      "endNodeElementId": "53"
+    }
+  },
+  {
+    "r": {
+      "identity": 102,
+      "start": 53,
+      "end": 1,
+      "type": "上課時間",
+      "properties": {
+
+      },
+      "elementId": "102",
+      "startNodeElementId": "53",
+      "endNodeElementId": "1"
+    }
+  },
+  {
+    "r": {
+      "identity": 103,
+      "start": 53,
+      "end": 55,
+      "type": "授課教師",
+      "properties": {
+
+      },
+      "elementId": "103",
+      "startNodeElementId": "53",
+      "endNodeElementId": "55"
+    }
+  },
+  {
+    "r": {
+      "identity": 104,
+      "start": 53,
+      "end": 56,
+      "type": "開課科系",
+      "properties": {
+
+      },
+      "elementId": "104",
+      "startNodeElementId": "53",
+      "endNodeElementId": "56"
+    }
+  },
+  {
+    "r": {
+      "identity": 105,
+      "start": 19,
+      "end": 57,
+      "type": "審核人員",
+      "properties": {
+
+      },
+      "elementId": "105",
+      "startNodeElementId": "19",
+      "endNodeElementId": "57"
+    }
+  },
+  {
+    "r": {
+      "identity": 106,
+      "start": 20,
+      "end": 58,
+      "type": "表單類型",
+      "properties": {
+
+      },
+      "elementId": "106",
+      "startNodeElementId": "20",
+      "endNodeElementId": "58"
+    }
+  },
+  {
+    "r": {
+      "identity": 107,
+      "start": 58,
+      "end": 3,
+      "type": "目前狀態",
+      "properties": {
+
+      },
+      "elementId": "107",
+      "startNodeElementId": "58",
+      "endNodeElementId": "3"
+    }
+  },
+  {
+    "r": {
+      "identity": 108,
+      "start": 14,
+      "end": 58,
+      "type": "送出用戶",
+      "properties": {
+
+      },
+      "elementId": "108",
+      "startNodeElementId": "14",
+      "endNodeElementId": "58"
+    }
+  },
+  {
+    "r": {
+      "identity": 109,
+      "start": 58,
+      "end": 0,
+      "type": "選擇課程",
+      "properties": {
+
+      },
+      "elementId": "109",
+      "startNodeElementId": "58",
+      "endNodeElementId": "0"
+    }
+  },
+  {
+    "r": {
+      "identity": 110,
+      "start": 20,
+      "end": 59,
+      "type": "表單類型",
+      "properties": {
+
+      },
+      "elementId": "110",
+      "startNodeElementId": "20",
+      "endNodeElementId": "59"
+    }
+  },
+  {
+    "r": {
+      "identity": 111,
+      "start": 59,
+      "end": 19,
+      "type": "目前狀態",
+      "properties": {
+
+      },
+      "elementId": "111",
+      "startNodeElementId": "59",
+      "endNodeElementId": "19"
+    }
+  },
+  {
+    "r": {
+      "identity": 112,
+      "start": 41,
+      "end": 59,
+      "type": "送出用戶",
+      "properties": {
+
+      },
+      "elementId": "112",
+      "startNodeElementId": "41",
+      "endNodeElementId": "59"
+    }
+  },
+  {
+    "r": {
+      "identity": 113,
+      "start": 59,
+      "end": 45,
+      "type": "選擇課程",
+      "properties": {
+
+      },
+      "elementId": "113",
+      "startNodeElementId": "59",
+      "endNodeElementId": "45"
+    }
+  },
+  {
+    "r": {
+      "identity": 114,
+      "start": 20,
+      "end": 60,
+      "type": "表單類型",
+      "properties": {
+
+      },
+      "elementId": "114",
+      "startNodeElementId": "20",
+      "endNodeElementId": "60"
+    }
+  },
+  {
+    "r": {
+      "identity": 115,
+      "start": 60,
+      "end": 19,
+      "type": "目前狀態",
+      "properties": {
+
+      },
+      "elementId": "115",
+      "startNodeElementId": "60",
+      "endNodeElementId": "19"
+    }
+  },
+  {
+    "r": {
+      "identity": 116,
+      "start": 41,
+      "end": 60,
+      "type": "送出用戶",
+      "properties": {
+
+      },
+      "elementId": "116",
+      "startNodeElementId": "41",
+      "endNodeElementId": "60"
+    }
+  },
+  {
+    "r": {
+      "identity": 117,
+      "start": 41,
+      "end": 51,
+      "type": "就讀科系",
+      "properties": {
+
+      },
+      "elementId": "117",
+      "startNodeElementId": "41",
+      "endNodeElementId": "51"
+    }
+  },
+  {
+    "r": {
+      "identity": 118,
+      "start": 60,
+      "end": 48,
+      "type": "選擇課程",
+      "properties": {
+
+      },
+      "elementId": "118",
+      "startNodeElementId": "60",
+      "endNodeElementId": "48"
+    }
+  },
+  {
+    "r": {
+      "identity": 119,
+      "start": 19,
+      "end": 52,
+      "type": "審核人員",
+      "properties": {
+
+      },
+      "elementId": "119",
+      "startNodeElementId": "19",
+      "endNodeElementId": "52"
+    }
+  },
+  {
+    "r": {
+      "identity": 120,
+      "start": 4,
+      "end": 62,
+      "type": "表單類型",
+      "properties": {
+
+      },
+      "elementId": "120",
+      "startNodeElementId": "4",
+      "endNodeElementId": "62"
+    }
+  },
+  {
+    "r": {
+      "identity": 121,
+      "start": 62,
+      "end": 3,
+      "type": "目前狀態",
+      "properties": {
+
+      },
+      "elementId": "121",
+      "startNodeElementId": "62",
+      "endNodeElementId": "3"
+    }
+  },
+  {
+    "r": {
+      "identity": 122,
+      "start": 34,
+      "end": 62,
+      "type": "送出用戶",
+      "properties": {
+
+      },
+      "elementId": "122",
+      "startNodeElementId": "34",
+      "endNodeElementId": "62"
+    }
+  },
+  {
+    "r": {
+      "identity": 123,
+      "start": 34,
+      "end": 42,
+      "type": "就讀科系",
+      "properties": {
+
+      },
+      "elementId": "123",
+      "startNodeElementId": "34",
+      "endNodeElementId": "42"
+    }
+  },
+  {
+    "r": {
+      "identity": 124,
+      "start": 30,
+      "end": 42,
+      "type": "所屬科系",
+      "properties": {
+
+      },
+      "elementId": "124",
+      "startNodeElementId": "30",
+      "endNodeElementId": "42"
+    }
+  },
+  {
+    "r": {
+      "identity": 125,
+      "start": 62,
+      "end": 61,
+      "type": "選擇課程",
+      "properties": {
+
+      },
+      "elementId": "125",
+      "startNodeElementId": "62",
+      "endNodeElementId": "61"
+    }
+  },
+  {
+    "r": {
+      "identity": 126,
+      "start": 61,
+      "end": 10,
+      "type": "上課時間",
+      "properties": {
+
+      },
+      "elementId": "126",
+      "startNodeElementId": "61",
+      "endNodeElementId": "10"
+    }
+  },
+  {
+    "r": {
+      "identity": 127,
+      "start": 61,
+      "end": 30,
+      "type": "授課教師",
+      "properties": {
+
+      },
+      "elementId": "127",
+      "startNodeElementId": "61",
+      "endNodeElementId": "30"
+    }
+  },
+  {
+    "r": {
+      "identity": 128,
+      "start": 61,
+      "end": 42,
+      "type": "開課科系",
+      "properties": {
+
+      },
+      "elementId": "128",
+      "startNodeElementId": "61",
+      "endNodeElementId": "42"
+    }
+  },
+  {
+    "r": {
+      "identity": 129,
+      "start": 20,
+      "end": 64,
+      "type": "表單類型",
+      "properties": {
+
+      },
+      "elementId": "129",
+      "startNodeElementId": "20",
+      "endNodeElementId": "64"
+    }
+  },
+  {
+    "r": {
+      "identity": 130,
+      "start": 64,
+      "end": 19,
+      "type": "目前狀態",
+      "properties": {
+
+      },
+      "elementId": "130",
+      "startNodeElementId": "64",
+      "endNodeElementId": "19"
+    }
+  },
+  {
+    "r": {
+      "identity": 131,
+      "start": 14,
+      "end": 64,
+      "type": "送出用戶",
+      "properties": {
+
+      },
+      "elementId": "131",
+      "startNodeElementId": "14",
+      "endNodeElementId": "64"
+    }
+  },
+  {
+    "r": {
+      "identity": 132,
+      "start": 65,
+      "end": 51,
+      "type": "所屬科系",
+      "properties": {
+
+      },
+      "elementId": "132",
+      "startNodeElementId": "65",
+      "endNodeElementId": "51"
+    }
+  },
+  {
+    "r": {
+      "identity": 133,
+      "start": 64,
+      "end": 63,
+      "type": "選擇課程",
+      "properties": {
+
+      },
+      "elementId": "133",
+      "startNodeElementId": "64",
+      "endNodeElementId": "63"
+    }
+  },
+  {
+    "r": {
+      "identity": 134,
+      "start": 63,
+      "end": 1,
+      "type": "上課時間",
+      "properties": {
+
+      },
+      "elementId": "134",
+      "startNodeElementId": "63",
+      "endNodeElementId": "1"
+    }
+  },
+  {
+    "r": {
+      "identity": 135,
+      "start": 63,
+      "end": 65,
+      "type": "授課教師",
+      "properties": {
+
+      },
+      "elementId": "135",
+      "startNodeElementId": "63",
+      "endNodeElementId": "65"
+    }
+  },
+  {
+    "r": {
+      "identity": 136,
+      "start": 63,
+      "end": 51,
+      "type": "開課科系",
+      "properties": {
+
+      },
+      "elementId": "136",
+      "startNodeElementId": "63",
+      "endNodeElementId": "51"
+    }
+  },
+  {
+    "r": {
+      "identity": 137,
+      "start": 20,
+      "end": 66,
+      "type": "表單類型",
+      "properties": {
+
+      },
+      "elementId": "137",
+      "startNodeElementId": "20",
+      "endNodeElementId": "66"
+    }
+  },
+  {
+    "r": {
+      "identity": 138,
+      "start": 66,
+      "end": 3,
+      "type": "目前狀態",
+      "properties": {
+
+      },
+      "elementId": "138",
+      "startNodeElementId": "66",
+      "endNodeElementId": "3"
+    }
+  },
+  {
+    "r": {
+      "identity": 139,
+      "start": 34,
+      "end": 66,
+      "type": "送出用戶",
+      "properties": {
+
+      },
+      "elementId": "139",
+      "startNodeElementId": "34",
+      "endNodeElementId": "66"
+    }
+  },
+  {
+    "r": {
+      "identity": 140,
+      "start": 34,
+      "end": 51,
+      "type": "就讀科系",
+      "properties": {
+
+      },
+      "elementId": "140",
+      "startNodeElementId": "34",
+      "endNodeElementId": "51"
+    }
+  },
+  {
+    "r": {
+      "identity": 141,
+      "start": 66,
+      "end": 63,
+      "type": "選擇課程",
+      "properties": {
+
+      },
+      "elementId": "141",
+      "startNodeElementId": "66",
+      "endNodeElementId": "63"
+    }
+  },
+  {
+    "r": {
+      "identity": 142,
+      "start": 20,
+      "end": 67,
+      "type": "表單類型",
+      "properties": {
+
+      },
+      "elementId": "142",
+      "startNodeElementId": "20",
+      "endNodeElementId": "67"
+    }
+  },
+  {
+    "r": {
+      "identity": 143,
+      "start": 67,
+      "end": 3,
+      "type": "目前狀態",
+      "properties": {
+
+      },
+      "elementId": "143",
+      "startNodeElementId": "67",
+      "endNodeElementId": "3"
+    }
+  },
+  {
+    "r": {
+      "identity": 144,
+      "start": 68,
+      "end": 67,
+      "type": "送出用戶",
+      "properties": {
+
+      },
+      "elementId": "144",
+      "startNodeElementId": "68",
+      "endNodeElementId": "67"
+    }
+  },
+  {
+    "r": {
+      "identity": 145,
+      "start": 68,
+      "end": 51,
+      "type": "就讀科系",
+      "properties": {
+
+      },
+      "elementId": "145",
+      "startNodeElementId": "68",
+      "endNodeElementId": "51"
+    }
+  },
+  {
+    "r": {
+      "identity": 146,
+      "start": 67,
+      "end": 63,
+      "type": "選擇課程",
+      "properties": {
+
+      },
+      "elementId": "146",
+      "startNodeElementId": "67",
+      "endNodeElementId": "63"
+    }
+  },
+  {
+    "r": {
+      "identity": 147,
+      "start": 20,
+      "end": 69,
+      "type": "表單類型",
+      "properties": {
+
+      },
+      "elementId": "147",
+      "startNodeElementId": "20",
+      "endNodeElementId": "69"
+    }
+  },
+  {
+    "r": {
+      "identity": 148,
+      "start": 69,
+      "end": 12,
+      "type": "目前狀態",
+      "properties": {
+
+      },
+      "elementId": "148",
+      "startNodeElementId": "69",
+      "endNodeElementId": "12"
+    }
+  },
+  {
+    "r": {
+      "identity": 149,
+      "start": 6,
+      "end": 69,
+      "type": "送出用戶",
+      "properties": {
+
+      },
+      "elementId": "149",
+      "startNodeElementId": "6",
+      "endNodeElementId": "69"
+    }
+  },
+  {
+    "r": {
+      "identity": 150,
+      "start": 6,
+      "end": 51,
+      "type": "就讀科系",
+      "properties": {
+
+      },
+      "elementId": "150",
+      "startNodeElementId": "6",
+      "endNodeElementId": "51"
+    }
+  },
+  {
+    "r": {
+      "identity": 151,
+      "start": 69,
+      "end": 63,
+      "type": "選擇課程",
+      "properties": {
+
+      },
+      "elementId": "151",
+      "startNodeElementId": "69",
+      "endNodeElementId": "63"
+    }
+  },
+  {
+    "r": {
+      "identity": 152,
+      "start": 12,
+      "end": 57,
+      "type": "審核人員",
+      "properties": {
+
+      },
+      "elementId": "152",
+      "startNodeElementId": "12",
+      "endNodeElementId": "57"
+    }
+  }
+]
