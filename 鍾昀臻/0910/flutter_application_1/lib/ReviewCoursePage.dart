@@ -166,7 +166,7 @@ class _ReviewCoursePageState extends State<ReviewCoursePage> {
             tabs: [
               Tab(text: '審查中'),
               Tab(text: '退回'),
-              Tab(text: '已完成'),
+              Tab(text: '通過'),
             ],
           ),
           backgroundColor: Colors.orange,
@@ -177,7 +177,7 @@ class _ReviewCoursePageState extends State<ReviewCoursePage> {
                 children: [
                   _buildTabContent(_pendingRequests, '審查中'),
                   _buildTabContent(_returnedRequests, '退回'),
-                  _buildTabContent(_completedRequests, '已完成'),
+                  _buildTabContent(_completedRequests, '通過'),
                 ],
               ),
       ),

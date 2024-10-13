@@ -32,13 +32,14 @@ class AnnouncementPageState extends State<AnnouncementPage> {
   Future<void> _fetchAnnouncements() async {
     try {
       final response =
-          await http.get(Uri.parse('http://zct.us.kg:5000/announcements'));
+          await http.get(Uri.parse('http://192.168.0.166:5001/announcement'));
       if (response.statusCode == 200) {
         final data = jsonDecode(utf8.decode(response.bodyBytes));
-        if (data['announcements'] is List) {
+        if (data['announcement'] is List) {
+          // 修正這裡，應該是 'announcement'
           setState(() {
             announcements =
-                List<Map<String, dynamic>>.from(data['announcements']);
+                List<Map<String, dynamic>>.from(data['announcement']);
             _sortAnnouncements();
             isLoading = false;
           });
@@ -70,16 +71,17 @@ class AnnouncementPageState extends State<AnnouncementPage> {
   Future<void> _saveAnnouncement({
     required String purpose,
     required String content,
+    required String sender, // 傳遞 sender
   }) async {
     try {
-      final uri = Uri.parse('http://zct.us.kg:5000/save_announcement');
+      final uri = Uri.parse('http://192.168.0.166:5001/save_announcement');
       final response = await http.post(
         uri,
         headers: {'Content-Type': 'application/json'},
         body: jsonEncode({
-          'Purpose': purpose,
+          'Purpose': purpose, // 修正這裡，確保字段名稱與後端一致
           'content': content,
-          'sender': widget.role.toString().split('.').last,
+          'sender': sender,
         }),
       );
 
@@ -87,7 +89,7 @@ class AnnouncementPageState extends State<AnnouncementPage> {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Announcement saved successfully.')),
         );
-        _fetchAnnouncements();
+        _fetchAnnouncements(); // 重新加載公告
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Failed to save announcement.')),
@@ -105,6 +107,10 @@ class AnnouncementPageState extends State<AnnouncementPage> {
     TextEditingController purposeController = TextEditingController();
     TextEditingController contentController = TextEditingController();
 
+    // 預設 sender 根據當前角色決定，僅允許助教和教師選擇
+    String selectedSender =
+        widget.role == UserRole.teacher ? 'teacher' : 'assistant';
+
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -120,6 +126,23 @@ class AnnouncementPageState extends State<AnnouncementPage> {
                 TextField(
                   controller: contentController,
                   decoration: const InputDecoration(hintText: "公告内容"),
+                ),
+                const SizedBox(height: 16),
+                // 發送者選擇下拉選單，只能選擇助教或教師
+                DropdownButton<String>(
+                  value: selectedSender,
+                  items: <String>['assistant', 'teacher']
+                      .map<DropdownMenuItem<String>>((String value) {
+                    return DropdownMenuItem<String>(
+                      value: value,
+                      child: Text(value),
+                    );
+                  }).toList(),
+                  onChanged: (String? newValue) {
+                    setState(() {
+                      selectedSender = newValue!;
+                    });
+                  },
                 ),
               ],
             ),
@@ -139,6 +162,7 @@ class AnnouncementPageState extends State<AnnouncementPage> {
                   _saveAnnouncement(
                     purpose: purposeController.text,
                     content: contentController.text,
+                    sender: selectedSender, // 傳遞選擇的 sender
                   );
                   Navigator.of(context).pop();
                 } else {
@@ -156,8 +180,7 @@ class AnnouncementPageState extends State<AnnouncementPage> {
 
   void _sortAnnouncements() {
     announcements.sort((a, b) {
-      final DateFormat inputFormat =
-          DateFormat('EEE, dd MMM yyyy HH:mm:ss zzz');
+      final DateFormat inputFormat = DateFormat('yyyy-MM-dd HH:mm:ss');
       final DateTime timeA = inputFormat.parse(a['time']);
       final DateTime timeB = inputFormat.parse(b['time']);
       return isAscending ? timeA.compareTo(timeB) : timeB.compareTo(timeA);
@@ -207,7 +230,7 @@ class AnnouncementPageState extends State<AnnouncementPage> {
                   itemBuilder: (context, index) {
                     final announcement = announcements[index];
                     final DateFormat inputFormat =
-                        DateFormat('EEE, dd MMM yyyy HH:mm:ss zzz');
+                        DateFormat('yyyy-MM-dd HH:mm:ss');
                     final DateTime time =
                         inputFormat.parse(announcement['time']);
                     final DateFormat outputFormat =
@@ -262,7 +285,7 @@ class AnnouncementDetailPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final DateFormat inputFormat = DateFormat('EEE, dd MMM yyyy HH:mm:ss zzz');
+    final DateFormat inputFormat = DateFormat('yyyy-MM-dd HH:mm:ss');
     final DateTime time = inputFormat.parse(announcement['time']);
     final DateFormat outputFormat =
         DateFormat('yyyy/MM/dd HH:mm EEEE', 'zh_TW');

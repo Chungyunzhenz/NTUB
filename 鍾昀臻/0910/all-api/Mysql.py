@@ -19,7 +19,7 @@ def get_student_reviews():
     review_status = request.args.get('review_status')
 
     # Validate the review_status parameter
-    valid_statuses = ["審查中", "退回", "完成"]
+    valid_statuses = ["審查中", "退回", "通過"]
     if review_status and review_status not in valid_statuses:
         return jsonify({'error': f'Invalid review_status parameter. Allowed values are {valid_statuses}'}), 400
 

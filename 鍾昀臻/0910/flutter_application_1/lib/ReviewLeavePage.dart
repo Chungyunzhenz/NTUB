@@ -15,9 +15,7 @@ class _ReviewLeavePageState extends State<ReviewLeavePage> {
   List<Map<String, dynamic>> _completedRequests = [];
   bool _isLoading = true;
 
-  //final String serverIp = '192.168.0.166';
   final String serverIp = '172.20.10.3';
-  // 對於 Android 模擬器
 
   @override
   void initState() {
@@ -43,7 +41,8 @@ class _ReviewLeavePageState extends State<ReviewLeavePage> {
         Uri.parse('http://zct.us.kg:5000/getLeaveRequests?status=退回&title=請假單'),
       );
       final completedResponse = await http.get(
-        Uri.parse('http://zct.us.kg:5000/getLeaveRequests?status=完成&title=請假單'),
+        Uri.parse(
+            'http://zct.us.kg:5000/getLeaveRequests?status=通過&title=請假單'), // 確認使用通過
       );
 
       if (pendingResponse.statusCode == 200 &&
@@ -59,6 +58,9 @@ class _ReviewLeavePageState extends State<ReviewLeavePage> {
           _completedRequests = List<Map<String, dynamic>>.from(
             json.decode(completedResponse.body),
           );
+
+          // 打印已完成請求筆數檢查
+          print('Completed Requests Count: ${_completedRequests.length}');
           _isLoading = false;
         });
       } else {
@@ -92,7 +94,20 @@ class _ReviewLeavePageState extends State<ReviewLeavePage> {
       );
 
       if (response.statusCode == 200) {
-        await _fetchLeaveRequests(); // 成功更新狀態後重新載入數據
+        setState(() {
+          // 更新本地資料：從 pending 中移除，添加到相應的列表
+          final updatedRequest =
+              _pendingRequests.firstWhere((element) => element['id'] == id);
+
+          if (status == '退回') {
+            _returnedRequests.add(updatedRequest);
+          } else if (status == '通過') {
+            _completedRequests.add(updatedRequest); // 確保加入通過列表
+          }
+
+          _pendingRequests.removeWhere((element) => element['id'] == id);
+        });
+
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text('請假單已更新為 $status'),
@@ -167,7 +182,7 @@ class _ReviewLeavePageState extends State<ReviewLeavePage> {
             tabs: [
               Tab(text: '審查中'),
               Tab(text: '退回'),
-              Tab(text: '已完成'),
+              Tab(text: '通過'), // 修改為通過
             ],
           ),
           backgroundColor: Colors.green,
@@ -178,7 +193,7 @@ class _ReviewLeavePageState extends State<ReviewLeavePage> {
                 children: [
                   _buildTabContent(_pendingRequests, '審查中'),
                   _buildTabContent(_returnedRequests, '退回'),
-                  _buildTabContent(_completedRequests, '已完成'),
+                  _buildTabContent(_completedRequests, '通過'), // 修改為通過
                 ],
               ),
       ),
@@ -259,7 +274,8 @@ class _ReviewLeavePageState extends State<ReviewLeavePage> {
                         TextButton(
                           onPressed: () async {
                             Navigator.of(context).pop();
-                            await _updateReviewStatus(details['id'], '通過');
+                            await _updateReviewStatus(
+                                details['id'], '通過'); // 修改為通過
                           },
                           child: Container(
                             decoration: BoxDecoration(

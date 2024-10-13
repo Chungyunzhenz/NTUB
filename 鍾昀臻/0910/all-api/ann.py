@@ -2,50 +2,91 @@ from flask import Flask, request, Response, jsonify
 import datetime
 import json
 from flask_cors import CORS
+import mysql.connector
 
 app = Flask(__name__)
 CORS(app, resources={r"/*": {"origins": "*"}})
 
-# 公告存儲
-announcements = []
+# 設定資料庫連接
+db_config = {
+    'host': '140.131.114.242',
+    'user': 'ntub_finalProject',
+    'password': 'Nttub$Eas0nZct',
+    'database': '113-Ntub_113205DB'
+}
 
-# 路由：獲取所有公告
-@app.route('/announcements', methods=['GET'])
+def get_db_connection():
+    connection = mysql.connector.connect(**db_config)
+    return connection
+
+# 定義允許的發送者名單
+ALLOWED_SENDERS = ['WET8644GS346', 'ADMIN', 'SYSTEM']
+
+# 獲取公告
+@app.route('/announcement', methods=['GET'])
 def get_announcements():
-    # 使用 json.dumps 並設置 ensure_ascii=False 以保證中文字符顯示正常
-    response_data = json.dumps({"announcements": announcements}, ensure_ascii=False)
-    return Response(response_data, content_type='application/json; charset=utf-8')
+    try:
+        conn = get_db_connection()
+        cursor = conn.cursor(dictionary=True)
+        cursor.execute("SELECT * FROM announcement")
+        announcements = cursor.fetchall()
 
-# 路由：保存或更新公告
+        for announcement in announcements:
+            if isinstance(announcement['time'], datetime.datetime):
+                announcement['time'] = announcement['time'].strftime('%Y-%m-%d %H:%M:%S')
+
+        cursor.close()
+        conn.close()
+        response_data = json.dumps({"announcement": announcements}, ensure_ascii=False)
+        return Response(response_data, content_type='application/json; charset=utf-8')
+
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
 @app.route('/save_announcement', methods=['POST'])
 def save_announcement():
-    data = request.get_json()  # 獲取請求中的 JSON 數據
-    purpose = data.get('Purpose')  # 公告標題
-    content = data.get('content')  # 公告內容
-    sender = data.get('sender')  # 發送者
+    try:
+        data = request.get_json()
+        purpose = data.get('Purpose')
+        content = data.get('content')
+        
+        # 固定 sender 為指定的值
+        sender = 'WET8644G3S46'
 
-    # 驗證必填字段是否存在
-    if not all([purpose, content, sender]):
-        return "Missing required fields", 400
+        # 檢查必填字段
+        if not all([purpose, content]):
+            return "Missing required fields", 400
 
-    # 創建當前時間作為公告時間
-    time = datetime.datetime.now().strftime('%a, %d %b %Y %H:%M:%S %Z')
+        # 自動生成時間戳
+        time = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
 
-    # 生成公告的唯一 ID
-    announcement_id = len(announcements) + 1
+        conn = get_db_connection()
+        cursor = conn.cursor()
 
-    # 保存公告
-    announcement = {
-        "id": announcement_id,
-        "Purpose": purpose,
-        "content": content,
-        "time": time,
-        "sender": sender
-    }
-    announcements.append(announcement)
+        # SQL 插入公告
+        sql = "INSERT INTO announcement (Purpose, content, time, sender) VALUES (%s, %s, %s, %s)"
+        cursor.execute(sql, (purpose, content, time, sender))
+        conn.commit()
 
-    return jsonify({"message": "Announcement saved successfully", "announcement": announcement}), 200
+        announcement_id = cursor.lastrowid
+
+        cursor.close()
+        conn.close()
+
+        announcement = {
+            "id": announcement_id,
+            "Purpose": purpose,
+            "content": content,
+            "time": time,
+            "sender": sender
+        }
+
+        return jsonify({"message": "Announcement saved successfully", "announcement": announcement}), 200
+
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+
 
 if __name__ == '__main__':
-    # app.run(host='zct.us.kg', port=5000, debug=True)
     app.run(host='0.0.0.0', port=5001, debug=True)
