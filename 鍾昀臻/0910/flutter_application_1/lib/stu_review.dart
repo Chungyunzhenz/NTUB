@@ -11,6 +11,7 @@ class _ReviewListPageState extends State<ReviewListPage> {
   List<Map<String, dynamic>> reviewingReviews = [];
   List<Map<String, dynamic>> rejectedReviews = [];
   List<Map<String, dynamic>> completedReviews = [];
+  List<Map<String, dynamic>> withdrawnReviews = [];
   bool isLoading = true;
 
   @override
@@ -40,7 +41,9 @@ class _ReviewListPageState extends State<ReviewListPage> {
           rejectedReviews =
               allData.where((item) => item['review_status'] == '退回').toList();
           completedReviews =
-              allData.where((item) => item['review_status'] == '完成').toList();
+              allData.where((item) => item['review_status'] == '通過').toList();
+          withdrawnReviews =
+              allData.where((item) => item['review_status'] == '撤回').toList();
           isLoading = false; // Loading complete
         });
       } else {
@@ -61,7 +64,7 @@ class _ReviewListPageState extends State<ReviewListPage> {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-      length: 3, // Increase Tab count to 3
+      length: 4, // Increase Tab count to 4
       child: Scaffold(
         appBar: AppBar(
           title: Text('查看所有審查進度'),
@@ -70,7 +73,8 @@ class _ReviewListPageState extends State<ReviewListPage> {
             tabs: [
               Tab(text: '審查中'),
               Tab(text: '退回'),
-              Tab(text: '完成'),
+              Tab(text: '通過'),
+              Tab(text: '撤回'),
             ],
           ),
         ),
@@ -81,6 +85,7 @@ class _ReviewListPageState extends State<ReviewListPage> {
                   buildReviewList(reviewingReviews, Colors.teal[100]!),
                   buildReviewList(rejectedReviews, Colors.red[100]!),
                   buildReviewList(completedReviews, Colors.green[100]!),
+                  buildReviewList(withdrawnReviews, Colors.orange[100]!),
                 ],
               ),
       ),
@@ -105,34 +110,42 @@ class _ReviewListPageState extends State<ReviewListPage> {
           color: color,
           margin: EdgeInsets.symmetric(vertical: 8),
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(15),
+            borderRadius: BorderRadius.circular(20),
           ),
-          elevation: 6,
-          shadowColor: Colors.black54,
+          elevation: 8,
+          shadowColor: Colors.black38,
           child: ListTile(
             contentPadding: EdgeInsets.all(16),
             leading: CircleAvatar(
-              backgroundColor: Colors.teal,
+              backgroundColor: Colors.teal[800],
               child: Text(
-                reviews[index]['title'][0],
-                style: TextStyle(color: Colors.white),
+                reviews[index]['title'] != null &&
+                        reviews[index]['title'].isNotEmpty
+                    ? reviews[index]['title'][0]
+                    : '',
+                style:
+                    TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
               ),
             ),
             title: Text(
-              reviews[index]['title'],
+              reviews[index]['title'] ?? '未知標題',
               style: TextStyle(
                 fontWeight: FontWeight.bold,
-                fontSize: 18,
+                fontSize: 20,
+                color: Colors.black,
               ),
             ),
-            subtitle: Text('審核狀態: ${reviews[index]['review_status']}'),
-            trailing: Icon(Icons.arrow_forward_ios, color: Colors.teal),
+            subtitle: Text(
+              '審核狀態: ${reviews[index]['review_status'] ?? '未知狀態'}',
+              style: TextStyle(fontSize: 16, color: Colors.grey[700]),
+            ),
+            trailing: Icon(Icons.arrow_forward_ios, color: Colors.teal[800]),
             onTap: () {
               Navigator.push(
                 context,
                 MaterialPageRoute(
                   builder: (context) => ReviewDetailPage(
-                    title: reviews[index]['title'],
+                    title: reviews[index]['title'] ?? '未知標題',
                     reviewDetails: reviews[index],
                     onWithdraw: () => _handleWithdraw(reviews[index]),
                   ),
@@ -148,9 +161,9 @@ class _ReviewListPageState extends State<ReviewListPage> {
   void _handleWithdraw(Map<String, dynamic> review) async {
     try {
       final response = await http.post(
-        Uri.parse('http://zct.us.kg:5000/withdrawReview'),
+        Uri.parse('http://192.168.0.166:5002/updateReviewStatus'),
         headers: {'Content-Type': 'application/json'},
-        body: jsonEncode({'review_id': review['id']}),
+        body: jsonEncode({'id': review['id'], 'new_status': '撤回'}),
       );
 
       if (response.statusCode == 200) {
@@ -185,35 +198,39 @@ class ReviewDetailPage extends StatelessWidget {
         title: Text(title),
       ),
       body: Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(20.0),
         child: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Card(
-                elevation: 6,
+                elevation: 10,
                 shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(15.0),
+                  borderRadius: BorderRadius.circular(20.0),
                 ),
                 child: Padding(
-                  padding: const EdgeInsets.all(16.0),
+                  padding: const EdgeInsets.all(20.0),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
                         title,
                         style: TextStyle(
-                          fontSize: 22,
+                          fontSize: 24,
                           fontWeight: FontWeight.bold,
-                          color: Colors.teal,
+                          color: Colors.teal[800],
                         ),
                       ),
                       const SizedBox(height: 20),
-                      _buildDetailRow('請假內容', reviewDetails['description']),
-                      _buildDetailRow('提交時間', reviewDetails['submission_date']),
-                      _buildDetailRow('審核時間', reviewDetails['review_date']),
-                      _buildDetailRow('審核狀態', reviewDetails['review_status']),
-                      const SizedBox(height: 20),
+                      _buildDetailRow(
+                          '請假內容', reviewDetails['description'] ?? '無描述'),
+                      _buildDetailRow(
+                          '提交時間', reviewDetails['submission_date'] ?? '無提交時間'),
+                      _buildDetailRow(
+                          '審核時間', reviewDetails['review_date'] ?? '無審核時間'),
+                      _buildDetailRow(
+                          '審核狀態', reviewDetails['review_status'] ?? '未知狀態'),
+                      const SizedBox(height: 30),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -222,13 +239,14 @@ class ReviewDetailPage extends StatelessWidget {
                               Navigator.pop(context);
                             },
                             icon: Icon(Icons.close),
-                            label: Text('關閉'),
+                            label: Text('關閉',
+                                style: TextStyle(color: Colors.black)),
                             style: ElevatedButton.styleFrom(
                               backgroundColor: Colors.teal,
                               padding: EdgeInsets.symmetric(
                                   horizontal: 24, vertical: 12),
                               shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(8),
+                                borderRadius: BorderRadius.circular(12),
                               ),
                             ),
                           ),
@@ -238,13 +256,14 @@ class ReviewDetailPage extends StatelessWidget {
                               Navigator.pop(context);
                             },
                             icon: Icon(Icons.undo),
-                            label: Text('撤回審核'),
+                            label: Text('撤回審核',
+                                style: TextStyle(color: Colors.black)),
                             style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.orange[400],
+                              backgroundColor: Colors.orange[600],
                               padding: EdgeInsets.symmetric(
                                   horizontal: 24, vertical: 12),
                               shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(8),
+                                borderRadius: BorderRadius.circular(12),
                               ),
                             ),
                           ),
@@ -263,22 +282,22 @@ class ReviewDetailPage extends StatelessWidget {
 
   Widget _buildDetailRow(String label, String? value) {
     return Padding(
-      padding: const EdgeInsets.only(bottom: 12.0),
+      padding: const EdgeInsets.only(bottom: 16.0),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
             '$label: ',
             style: TextStyle(
-              fontSize: 16,
+              fontSize: 18,
               fontWeight: FontWeight.w600,
-              color: Colors.black87,
+              color: Colors.black,
             ),
           ),
           Expanded(
             child: Text(
               value ?? 'N/A',
-              style: TextStyle(fontSize: 16, color: Colors.black54),
+              style: TextStyle(fontSize: 18, color: Colors.grey[700]),
             ),
           ),
         ],
@@ -297,5 +316,4 @@ void main() {
         foregroundColor: Colors.white,
       ),
     ),
-  ));
-}
+  ));}

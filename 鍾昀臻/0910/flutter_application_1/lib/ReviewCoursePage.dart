@@ -15,9 +15,6 @@ class _ReviewCoursePageState extends State<ReviewCoursePage> {
   List<Map<String, dynamic>> _completedRequests = [];
   bool _isLoading = true;
 
-  //final String serverIp = '192.168.0.166';
-  final String serverIp = '172.20.10.3';
-
   @override
   void initState() {
     super.initState();
@@ -36,13 +33,15 @@ class _ReviewCoursePageState extends State<ReviewCoursePage> {
 
       final pendingResponse = await http.get(
         Uri.parse(
-            'http://zct.us.kg:5000/getLeaveRequests?status=審查中&title=選課單'),
+            'http://192.168.0.166:5002/getStudentReviews?review_status=審查中&type=選課單'),
       );
       final returnedResponse = await http.get(
-        Uri.parse('http://zct.us.kg:5000/getLeaveRequests?status=退回&title=選課單'),
+        Uri.parse(
+            'http://192.168.0.166:5002/getStudentReviews?review_status=退回&type=選課單'),
       );
       final completedResponse = await http.get(
-        Uri.parse('http://zct.us.kg:5000/getLeaveRequests?status=通過&title=選課單'),
+        Uri.parse(
+            'http://192.168.0.166:5002/getStudentReviews?review_status=通過&type=選課單'),
       );
 
       if (pendingResponse.statusCode == 200 &&
@@ -51,17 +50,20 @@ class _ReviewCoursePageState extends State<ReviewCoursePage> {
         setState(() {
           _pendingRequests = List<Map<String, dynamic>>.from(
             json.decode(pendingResponse.body),
-          );
+          ).where((request) => request['title'] == '選課單').toList();
+
           _returnedRequests = List<Map<String, dynamic>>.from(
             json.decode(returnedResponse.body),
-          );
+          ).where((request) => request['title'] == '選課單').toList();
+
           _completedRequests = List<Map<String, dynamic>>.from(
             json.decode(completedResponse.body),
-          );
+          ).where((request) => request['title'] == '選課單').toList();
+
           _isLoading = false;
         });
       } else {
-        throw Exception('加载选课单失败');
+        throw Exception('加載選課單失敗');
       }
     } catch (e) {
       setState(() {
@@ -69,7 +71,7 @@ class _ReviewCoursePageState extends State<ReviewCoursePage> {
       });
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('错误: $e'),
+          content: Text('錯誤: $e'),
           backgroundColor: Colors.red,
         ),
       );
@@ -80,18 +82,30 @@ class _ReviewCoursePageState extends State<ReviewCoursePage> {
       {String? reason}) async {
     try {
       final response = await http.post(
-        Uri.parse('http://$serverIp:4000/updateReviewStatus'),
+        Uri.parse('http://192.168.0.166:5002/updateReviewStatus'),
         headers: {'Content-Type': 'application/json'},
         body: json.encode({
           'id': id,
-          'status': status,
+          'new_status': status,
           'return_reason': reason,
-          'returned_by': 'ta',
         }),
       );
 
       if (response.statusCode == 200) {
-        await _fetchCourseRequests(); // 成功更新狀態後重新載入數據
+        setState(() {
+          // 更新本地資料：從 pending 中移除，添加到相應的列表
+          final updatedRequest =
+              _pendingRequests.firstWhere((element) => element['id'] == id);
+
+          if (status == '退回') {
+            _returnedRequests.add(updatedRequest);
+          } else if (status == '通過') {
+            _completedRequests.add(updatedRequest);
+          }
+
+          _pendingRequests.removeWhere((element) => element['id'] == id);
+        });
+
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text('選課單已更新為 $status'),
@@ -151,7 +165,6 @@ class _ReviewCoursePageState extends State<ReviewCoursePage> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final isDarkMode = theme.brightness == Brightness.dark;
 
     return DefaultTabController(
       length: 3,
@@ -194,13 +207,17 @@ class _ReviewCoursePageState extends State<ReviewCoursePage> {
       itemCount: requests.length,
       itemBuilder: (context, index) {
         final request = requests[index];
-        return _buildCourseSelectionCard(
-          context,
-          request['title'],
-          request['description'],
-          request,
-          status,
-        );
+        if (request['title'] == '選課單') {
+          return _buildCourseSelectionCard(
+            context,
+            request['title'],
+            request['description'],
+            request,
+            status,
+          );
+        } else {
+          return const SizedBox.shrink();
+        }
       },
     );
   }
@@ -282,7 +299,7 @@ class _ReviewCoursePageState extends State<ReviewCoursePage> {
                                 borderRadius: BorderRadius.circular(8)),
                             padding: const EdgeInsets.symmetric(
                                 vertical: 8.0, horizontal: 16.0),
-                            child: const Text('返回審核',
+                            child: const Text('退回審核',
                                 style: TextStyle(color: Colors.white)),
                           ),
                         ),

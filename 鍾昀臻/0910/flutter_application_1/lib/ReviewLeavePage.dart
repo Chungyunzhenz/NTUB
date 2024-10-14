@@ -15,8 +15,6 @@ class _ReviewLeavePageState extends State<ReviewLeavePage> {
   List<Map<String, dynamic>> _completedRequests = [];
   bool _isLoading = true;
 
-  final String serverIp = '172.20.10.3';
-
   @override
   void initState() {
     super.initState();
@@ -35,14 +33,15 @@ class _ReviewLeavePageState extends State<ReviewLeavePage> {
 
       final pendingResponse = await http.get(
         Uri.parse(
-            'http://zct.us.kg:5000/getLeaveRequests?status=審查中&title=請假單'),
+            'http://192.168.0.166:5002/getStudentReviews?review_status=審查中&type=請假單'),
       );
       final returnedResponse = await http.get(
-        Uri.parse('http://zct.us.kg:5000/getLeaveRequests?status=退回&title=請假單'),
+        Uri.parse(
+            'http://192.168.0.166:5002/getStudentReviews?review_status=退回&type=請假單'),
       );
       final completedResponse = await http.get(
         Uri.parse(
-            'http://zct.us.kg:5000/getLeaveRequests?status=通過&title=請假單'), // 確認使用通過
+            'http://192.168.0.166:5002/getStudentReviews?review_status=通過&type=請假單'),
       );
 
       if (pendingResponse.statusCode == 200 &&
@@ -51,16 +50,16 @@ class _ReviewLeavePageState extends State<ReviewLeavePage> {
         setState(() {
           _pendingRequests = List<Map<String, dynamic>>.from(
             json.decode(pendingResponse.body),
-          );
+          ).where((request) => request['title'] == '請假單').toList();
+
           _returnedRequests = List<Map<String, dynamic>>.from(
             json.decode(returnedResponse.body),
-          );
+          ).where((request) => request['title'] == '請假單').toList();
+
           _completedRequests = List<Map<String, dynamic>>.from(
             json.decode(completedResponse.body),
-          );
+          ).where((request) => request['title'] == '請假單').toList();
 
-          // 打印已完成請求筆數檢查
-          print('Completed Requests Count: ${_completedRequests.length}');
           _isLoading = false;
         });
       } else {
@@ -83,13 +82,12 @@ class _ReviewLeavePageState extends State<ReviewLeavePage> {
       {String? reason}) async {
     try {
       final response = await http.post(
-        Uri.parse('http://$serverIp:4000/updateReviewStatus'),
+        Uri.parse('http://192.168.0.166:5002/updateReviewStatus'),
         headers: {'Content-Type': 'application/json'},
         body: json.encode({
           'id': id,
-          'status': status,
+          'new_status': status,
           'return_reason': reason,
-          'returned_by': 'teacher',
         }),
       );
 
@@ -102,7 +100,7 @@ class _ReviewLeavePageState extends State<ReviewLeavePage> {
           if (status == '退回') {
             _returnedRequests.add(updatedRequest);
           } else if (status == '通過') {
-            _completedRequests.add(updatedRequest); // 確保加入通過列表
+            _completedRequests.add(updatedRequest);
           }
 
           _pendingRequests.removeWhere((element) => element['id'] == id);
@@ -167,7 +165,6 @@ class _ReviewLeavePageState extends State<ReviewLeavePage> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final isDarkMode = theme.brightness == Brightness.dark;
 
     return DefaultTabController(
       length: 3,
@@ -182,7 +179,7 @@ class _ReviewLeavePageState extends State<ReviewLeavePage> {
             tabs: [
               Tab(text: '審查中'),
               Tab(text: '退回'),
-              Tab(text: '通過'), // 修改為通過
+              Tab(text: '通過'),
             ],
           ),
           backgroundColor: Colors.green,
@@ -193,7 +190,7 @@ class _ReviewLeavePageState extends State<ReviewLeavePage> {
                 children: [
                   _buildTabContent(_pendingRequests, '審查中'),
                   _buildTabContent(_returnedRequests, '退回'),
-                  _buildTabContent(_completedRequests, '通過'), // 修改為通過
+                  _buildTabContent(_completedRequests, '通過'),
                 ],
               ),
       ),
@@ -202,7 +199,7 @@ class _ReviewLeavePageState extends State<ReviewLeavePage> {
 
   Widget _buildTabContent(List<Map<String, dynamic>> requests, String status) {
     if (requests.isEmpty) {
-      return const Center(child: Text('没有請假單'));
+      return const Center(child: Text('沒有請假單'));
     }
 
     return ListView.builder(
@@ -210,13 +207,17 @@ class _ReviewLeavePageState extends State<ReviewLeavePage> {
       itemCount: requests.length,
       itemBuilder: (context, index) {
         final request = requests[index];
-        return _buildLeaveRequestCard(
-          context,
-          request['title'],
-          request['description'],
-          request,
-          status,
-        );
+        if (request['title'] == '請假單') {
+          return _buildLeaveRequestCard(
+            context,
+            request['title'],
+            request['description'],
+            request,
+            status,
+          );
+        } else {
+          return const SizedBox.shrink();
+        }
       },
     );
   }
@@ -274,8 +275,7 @@ class _ReviewLeavePageState extends State<ReviewLeavePage> {
                         TextButton(
                           onPressed: () async {
                             Navigator.of(context).pop();
-                            await _updateReviewStatus(
-                                details['id'], '通過'); // 修改為通過
+                            await _updateReviewStatus(details['id'], '通過');
                           },
                           child: Container(
                             decoration: BoxDecoration(
@@ -298,7 +298,7 @@ class _ReviewLeavePageState extends State<ReviewLeavePage> {
                                 borderRadius: BorderRadius.circular(8)),
                             padding: const EdgeInsets.symmetric(
                                 vertical: 8.0, horizontal: 16.0),
-                            child: const Text('返回審核',
+                            child: const Text('退回審核',
                                 style: TextStyle(color: Colors.white)),
                           ),
                         ),
