@@ -148,7 +148,7 @@ class _ReviewListPageState extends State<ReviewListPage> {
   void _handleWithdraw(Map<String, dynamic> review) async {
     try {
       final response = await http.post(
-        Uri.parse('http://192.168.0.166:5002/withdrawReview'),
+        Uri.parse('http://zct.us.kg:5000/withdrawReview'),
         headers: {'Content-Type': 'application/json'},
         body: jsonEncode({'review_id': review['id']}),
       );

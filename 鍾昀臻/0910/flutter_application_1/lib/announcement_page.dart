@@ -3,7 +3,6 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:intl/intl.dart';
 import 'package:intl/date_symbol_data_local.dart';
-import 'user_role.dart';
 
 enum UserRole { student, assistant, teacher }
 
@@ -32,11 +31,10 @@ class AnnouncementPageState extends State<AnnouncementPage> {
   Future<void> _fetchAnnouncements() async {
     try {
       final response =
-          await http.get(Uri.parse('http://192.168.0.166:5001/announcement'));
+          await http.get(Uri.parse('http://zct.us.kg:5000/announcement'));
       if (response.statusCode == 200) {
         final data = jsonDecode(utf8.decode(response.bodyBytes));
         if (data['announcement'] is List) {
-          // 修正這裡，應該是 'announcement'
           setState(() {
             announcements =
                 List<Map<String, dynamic>>.from(data['announcement']);
@@ -50,8 +48,13 @@ class AnnouncementPageState extends State<AnnouncementPage> {
             isLoading = false;
           });
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-                content: Text('Failed to load announcements. Server error.')),
+            SnackBar(
+              content: Text(
+                'Failed to load announcements. Server error.',
+                style: TextStyle(color: Colors.white),
+              ),
+              backgroundColor: Colors.red,
+            ),
           );
         }
       }
@@ -61,8 +64,13 @@ class AnnouncementPageState extends State<AnnouncementPage> {
           isLoading = false;
         });
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-              content: Text('Failed to load announcements. Network error.')),
+          SnackBar(
+            content: Text(
+              'Failed to load announcements. Network error.',
+              style: TextStyle(color: Colors.white),
+            ),
+            backgroundColor: Colors.red,
+          ),
         );
       }
     }
@@ -71,15 +79,15 @@ class AnnouncementPageState extends State<AnnouncementPage> {
   Future<void> _saveAnnouncement({
     required String purpose,
     required String content,
-    required String sender, // 傳遞 sender
+    required String sender,
   }) async {
     try {
-      final uri = Uri.parse('http://192.168.0.166:5001/save_announcement');
+      final uri = Uri.parse('http://zct.us.kg:5000/save_announcement');
       final response = await http.post(
         uri,
         headers: {'Content-Type': 'application/json'},
         body: jsonEncode({
-          'Purpose': purpose, // 修正這裡，確保字段名稱與後端一致
+          'Purpose': purpose,
           'content': content,
           'sender': sender,
         }),
@@ -87,18 +95,35 @@ class AnnouncementPageState extends State<AnnouncementPage> {
 
       if (response.statusCode == 200) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Announcement saved successfully.')),
+          SnackBar(
+            content: Text(
+              'Announcement saved successfully.',
+              style: TextStyle(color: Colors.white),
+            ),
+            backgroundColor: Colors.green,
+          ),
         );
-        _fetchAnnouncements(); // 重新加載公告
+        _fetchAnnouncements();
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Failed to save announcement.')),
+          SnackBar(
+            content: Text(
+              'Failed to save announcement.',
+              style: TextStyle(color: Colors.white),
+            ),
+            backgroundColor: Colors.red,
+          ),
         );
       }
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-            content: Text('Failed to save announcement. Network error.')),
+        SnackBar(
+          content: Text(
+            'Failed to save announcement. Network error.',
+            style: TextStyle(color: Colors.white),
+          ),
+          backgroundColor: Colors.red,
+        ),
       );
     }
   }
@@ -107,7 +132,6 @@ class AnnouncementPageState extends State<AnnouncementPage> {
     TextEditingController purposeController = TextEditingController();
     TextEditingController contentController = TextEditingController();
 
-    // 預設 sender 根據當前角色決定，僅允許助教和教師選擇
     String selectedSender =
         widget.role == UserRole.teacher ? 'teacher' : 'assistant';
 
@@ -115,27 +139,41 @@ class AnnouncementPageState extends State<AnnouncementPage> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(15.0),
+          ),
           title: const Text('新增公告'),
           content: SingleChildScrollView(
             child: ListBody(
               children: <Widget>[
                 TextField(
                   controller: purposeController,
-                  decoration: const InputDecoration(hintText: "公告標題"),
-                ),
-                TextField(
-                  controller: contentController,
-                  decoration: const InputDecoration(hintText: "公告内容"),
+                  decoration: const InputDecoration(
+                    labelText: "公告標題",
+                    border: OutlineInputBorder(),
+                  ),
                 ),
                 const SizedBox(height: 16),
-                // 發送者選擇下拉選單，只能選擇助教或教師
-                DropdownButton<String>(
+                TextField(
+                  controller: contentController,
+                  decoration: const InputDecoration(
+                    labelText: "公告内容",
+                    border: OutlineInputBorder(),
+                  ),
+                  maxLines: 5,
+                ),
+                const SizedBox(height: 16),
+                DropdownButtonFormField<String>(
                   value: selectedSender,
+                  decoration: const InputDecoration(
+                    labelText: "發送者",
+                    border: OutlineInputBorder(),
+                  ),
                   items: <String>['assistant', 'teacher']
                       .map<DropdownMenuItem<String>>((String value) {
                     return DropdownMenuItem<String>(
                       value: value,
-                      child: Text(value),
+                      child: Text(value == 'assistant' ? '助教' : '教師'),
                     );
                   }).toList(),
                   onChanged: (String? newValue) {
@@ -154,7 +192,13 @@ class AnnouncementPageState extends State<AnnouncementPage> {
                 Navigator.of(context).pop();
               },
             ),
-            TextButton(
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.teal,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10.0),
+                ),
+              ),
               child: const Text('保存'),
               onPressed: () {
                 if (purposeController.text.isNotEmpty &&
@@ -162,12 +206,18 @@ class AnnouncementPageState extends State<AnnouncementPage> {
                   _saveAnnouncement(
                     purpose: purposeController.text,
                     content: contentController.text,
-                    sender: selectedSender, // 傳遞選擇的 sender
+                    sender: selectedSender,
                   );
                   Navigator.of(context).pop();
                 } else {
                   ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text('請填寫所有字段')),
+                    SnackBar(
+                      content: Text(
+                        '請填寫所有字段',
+                        style: TextStyle(color: Colors.white),
+                      ),
+                      backgroundColor: Colors.orange,
+                    ),
                   );
                 }
               },
@@ -202,7 +252,7 @@ class AnnouncementPageState extends State<AnnouncementPage> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('公告'),
-        backgroundColor: const Color.fromARGB(255, 248, 250, 250),
+        backgroundColor: Colors.teal,
         actions: [
           IconButton(
             icon: Icon(isAscending ? Icons.arrow_downward : Icons.arrow_upward),
@@ -213,7 +263,7 @@ class AnnouncementPageState extends State<AnnouncementPage> {
               });
             },
           ),
-          if (widget.role != UserRole.student) // 只有助教和教師可以添加公告
+          if (widget.role != UserRole.student)
             IconButton(
               icon: const Icon(Icons.add),
               onPressed: () => _showAddAnnouncementDialog(),
@@ -223,7 +273,8 @@ class AnnouncementPageState extends State<AnnouncementPage> {
       body: isLoading
           ? const Center(child: CircularProgressIndicator())
           : announcements.isEmpty
-              ? const Center(child: Text('目前沒有公告'))
+              ? const Center(
+                  child: Text('目前沒有公告', style: TextStyle(fontSize: 18)))
               : ListView.builder(
                   padding: const EdgeInsets.all(16.0),
                   itemCount: announcements.length,
@@ -240,32 +291,51 @@ class AnnouncementPageState extends State<AnnouncementPage> {
                     return GestureDetector(
                       onTap: () => _navigateToDetailPage(announcement),
                       child: Card(
-                        elevation: 4,
+                        elevation: 6,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(15.0),
+                        ),
                         margin: const EdgeInsets.only(bottom: 16.0),
-                        child: ListTile(
-                          contentPadding: const EdgeInsets.all(16.0),
-                          title: Text(
-                            announcement['Purpose'],
-                            style: const TextStyle(
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          subtitle: Column(
+                        child: Padding(
+                          padding: const EdgeInsets.all(16.0),
+                          child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                announcement['content'],
+                                announcement['Purpose'],
                                 style: const TextStyle(
-                                  color: Colors.grey,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 20,
                                 ),
                               ),
                               const SizedBox(height: 8),
                               Text(
-                                formattedTime,
+                                announcement['content'],
+                                maxLines: 2,
+                                overflow: TextOverflow.ellipsis,
                                 style: const TextStyle(
                                   color: Colors.grey,
-                                  fontSize: 12,
+                                  fontSize: 16,
                                 ),
+                              ),
+                              const SizedBox(height: 12),
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(
+                                    formattedTime,
+                                    style: const TextStyle(
+                                      color: Colors.grey,
+                                      fontSize: 14,
+                                    ),
+                                  ),
+                                  const Icon(
+                                    Icons.arrow_forward_ios,
+                                    size: 16,
+                                    color: Colors.teal,
+                                  ),
+                                ],
                               ),
                             ],
                           ),
@@ -294,6 +364,7 @@ class AnnouncementDetailPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text('公告詳情'),
+        backgroundColor: Colors.teal,
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -303,7 +374,7 @@ class AnnouncementDetailPage extends StatelessWidget {
             Text(
               announcement['Purpose'],
               style: const TextStyle(
-                fontSize: 24,
+                fontSize: 28,
                 fontWeight: FontWeight.bold,
               ),
             ),
@@ -312,14 +383,15 @@ class AnnouncementDetailPage extends StatelessWidget {
               formattedTime,
               style: const TextStyle(
                 color: Colors.grey,
-                fontSize: 16,
+                fontSize: 18,
               ),
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: 24),
             Text(
               announcement['content'],
               style: const TextStyle(
-                fontSize: 18,
+                fontSize: 20,
+                height: 1.5,
               ),
             ),
           ],
