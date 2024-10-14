@@ -4,10 +4,9 @@ import 'package:provider/provider.dart';
 import 'ReviewCoursePage.dart';
 import 'manual_page.dart';
 import 'z_download_page.dart';
-import 'login_page.dart';
+import 'main.dart';
 import 'theme_notifier.dart';
 import 'announcement_page.dart' as announce;
-import 'user_role.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class AssistantPage extends StatefulWidget {
@@ -66,7 +65,12 @@ class _AssistantPageState extends State<AssistantPage> {
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(
-        builder: (context) => const LoginPage(),
+        builder: (context) => LoginPage(
+          toggleTheme:
+              context.read<ThemeNotifier>().toggleTheme, // 傳遞 toggleTheme
+          isDarkMode:
+              context.watch<ThemeNotifier>().isDarkMode, // 傳遞 isDarkMode
+        ),
       ),
     );
   }

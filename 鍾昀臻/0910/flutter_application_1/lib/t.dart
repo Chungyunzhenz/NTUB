@@ -4,10 +4,9 @@ import 'package:provider/provider.dart';
 import 'ReviewLeavePage.dart';
 import 'manual_page.dart';
 import 't_download_page.dart';
-import 'login_page.dart';
+import 'main.dart';
 import 'theme_notifier.dart';
 import 'announcement_page.dart' as announce;
-import 'user_role.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class TeacherPage extends StatefulWidget {
@@ -56,14 +55,18 @@ class _TeacherPageState extends State<TeacherPage> {
     }
   }
 
-  void _logout(BuildContext context) {
-    Navigator.pushReplacement(
-      context,
-      MaterialPageRoute(
-        builder: (context) => const LoginPage(),
+void _logout(BuildContext context) {
+  Navigator.pushReplacement(
+    context,
+    MaterialPageRoute(
+      builder: (context) => LoginPage(
+        toggleTheme: context.read<ThemeNotifier>().toggleTheme, // 傳遞 toggleTheme
+        isDarkMode: context.watch<ThemeNotifier>().isDarkMode, // 傳遞 isDarkMode
       ),
-    );
-  }
+    ),
+  );
+}
+
 
   @override
   Widget build(BuildContext context) {

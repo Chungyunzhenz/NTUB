@@ -6,7 +6,7 @@ import 'announcement_page.dart';
 import 'manual_page.dart';
 import 'historical_record.dart';
 import 'stu_review.dart';
-import 'login_page.dart'; // 確保正確引用 LoginPage
+import 'main.dart'; // 確保正確引用 LoginPage
 import 'package:url_launcher/url_launcher.dart'; // 確保導入 url_launcher
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -74,7 +74,7 @@ class _StudentPageState extends State<StudentPage> {
               ),
             ),
             _buildListTile(
-                context, Icons.upload_file, '上傳圖片', FormUploadPage()),
+                context, Icons.upload_file, '上傳圖片', UnifiedUploadPage()),
             _buildListTile(
                 context, Icons.verified_user, '審查進度', ReviewListPage()),
             _buildListTile(context, Icons.history, '歷史紀錄', HistoryPage()),
@@ -162,7 +162,7 @@ class _StudentPageState extends State<StudentPage> {
               child: ListView(
                 children: <Widget>[
                   _buildListTileCard(
-                      context, Icons.upload_file, '上傳圖片', FormUploadPage()),
+                      context, Icons.upload_file, '上傳圖片', UnifiedUploadPage()),
                   _buildListTileCard(
                       context, Icons.verified_user, '審查進度', ReviewListPage()),
                   _buildListTileCard(
@@ -236,7 +236,12 @@ class _StudentPageState extends State<StudentPage> {
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(
-        builder: (context) => const LoginPage(),
+        builder: (context) => LoginPage(
+          toggleTheme:
+              context.read<ThemeNotifier>().toggleTheme, // 傳遞 toggleTheme
+          isDarkMode:
+              context.watch<ThemeNotifier>().isDarkMode, // 傳遞 isDarkMode
+        ),
       ),
     );
   }
