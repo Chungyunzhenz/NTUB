@@ -27,7 +27,7 @@ class _ReviewListPageState extends State<ReviewListPage> {
 
     try {
       final response = await http.get(
-        Uri.parse('http://192.168.0.166:5002/getStudentReviews'),
+        Uri.parse('http://zct.us.kg:5000/getStudentReviews'),
       );
 
       if (response.statusCode == 200) {
@@ -161,7 +161,7 @@ class _ReviewListPageState extends State<ReviewListPage> {
   void _handleWithdraw(Map<String, dynamic> review) async {
     try {
       final response = await http.post(
-        Uri.parse('http://192.168.0.166:5002/updateReviewStatus'),
+        Uri.parse('http://zct.us.kg:5000/updateReviewStatus'),
         headers: {'Content-Type': 'application/json'},
         body: jsonEncode({'id': review['id'], 'new_status': '撤回'}),
       );
@@ -316,4 +316,5 @@ void main() {
         foregroundColor: Colors.white,
       ),
     ),
-  ));}
+  ));
+}

@@ -33,15 +33,15 @@ class _ReviewCoursePageState extends State<ReviewCoursePage> {
 
       final pendingResponse = await http.get(
         Uri.parse(
-            'http://192.168.0.166:5002/getStudentReviews?review_status=審查中&type=選課單'),
+            'http://zct.us.kg:5000/getStudentReviews?review_status=審查中&type=選課單'),
       );
       final returnedResponse = await http.get(
         Uri.parse(
-            'http://192.168.0.166:5002/getStudentReviews?review_status=退回&type=選課單'),
+            'http://zct.us.kg:5000/getStudentReviews?review_status=退回&type=選課單'),
       );
       final completedResponse = await http.get(
         Uri.parse(
-            'http://192.168.0.166:5002/getStudentReviews?review_status=通過&type=選課單'),
+            'http://zct.us.kg:5000/getStudentReviews?review_status=通過&type=選課單'),
       );
 
       if (pendingResponse.statusCode == 200 &&
@@ -82,7 +82,7 @@ class _ReviewCoursePageState extends State<ReviewCoursePage> {
       {String? reason}) async {
     try {
       final response = await http.post(
-        Uri.parse('http://192.168.0.166:5002/updateReviewStatus'),
+        Uri.parse('http://zct.us.kg:5000/updateReviewStatus'),
         headers: {'Content-Type': 'application/json'},
         body: json.encode({
           'id': id,
