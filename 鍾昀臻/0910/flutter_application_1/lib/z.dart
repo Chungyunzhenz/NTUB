@@ -122,7 +122,7 @@ class _AssistantPageState extends State<AssistantPage> {
         ListTile(
           leading: const Icon(Icons.download),
           title: const Text('所有班級選課單歷史紀錄'),
-          onTap: () => _navigateTo(context, const FormDownloadPage()),
+          onTap: () => _navigateTo(context, const CourseFormViewPage()),
         ),
         ListTile(
           leading: const Icon(Icons.book),
@@ -195,7 +195,7 @@ class _AssistantPageState extends State<AssistantPage> {
               context,
               icon: Icons.download,
               text: '所有班級選課單歷史紀錄',
-              page: const FormDownloadPage(),
+              page: const CourseFormViewPage(),
             ),
             SizedBox(height: 16.0),
             _buildFeatureCard(

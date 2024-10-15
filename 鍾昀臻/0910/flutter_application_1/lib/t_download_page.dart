@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart'; 
+import 'package:flutter/material.dart';
 import 'dart:io';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:path_provider/path_provider.dart';
@@ -6,11 +6,11 @@ import 'package:path/path.dart' as path;
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
-class FormDownloadPage extends StatefulWidget {
-  const FormDownloadPage({super.key});
+class FormViewPage extends StatefulWidget {
+  const FormViewPage({super.key});
 
   @override
-  FormDownloadPageState createState() => FormDownloadPageState();
+  FormViewPageState createState() => FormViewPageState();
 }
 
 class MyHttpOverrides extends HttpOverrides {
@@ -22,11 +22,11 @@ class MyHttpOverrides extends HttpOverrides {
   }
 }
 
-class FormDownloadPageState extends State<FormDownloadPage> {
+class FormViewPageState extends State<FormViewPage> {
   String? _selectedClass;
   String _searchKeyword = '';
-  String _searchType = 'academic_year'; // 默认查询类型
-  String userRole = 'teacher'; // 新增的变量，代表用户的角色
+  String _searchType = 'academic_year'; // 默認查詢類型
+  String userRole = 'teacher'; // 用戶的角色
   List<Map<String, dynamic>> _classData = [];
   List<Map<String, dynamic>> _studentData = [];
 
@@ -41,7 +41,7 @@ class FormDownloadPageState extends State<FormDownloadPage> {
   Future<void> _fetchClassData() async {
     try {
       final response =
-          await http.get(Uri.parse('http://zct.us.kg:5000/api/class_data'));
+          await http.get(Uri.parse('http://172.20.10.3:5003/api/class_data'));
       if (response.statusCode == 200) {
         setState(() {
           _classData =
@@ -63,7 +63,7 @@ class FormDownloadPageState extends State<FormDownloadPage> {
   Future<void> _fetchStudentData(String className) async {
     try {
       final response = await http.get(Uri.parse(
-          'http://zct.us.kg:5000/api/class_students/$className?user_role=$userRole'));
+          'http://172.20.10.3:5003/api/class_students/$className?user_role=$userRole'));
       if (response.statusCode == 200) {
         setState(() {
           _studentData =
@@ -71,7 +71,9 @@ class FormDownloadPageState extends State<FormDownloadPage> {
         });
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('獲取學生資料失敗，狀態碼: ${response.statusCode}')),
+          SnackBar(
+              content: Text(
+                  '獲取學生資料失敗，狀態碼: ${response.statusCode}, 錯誤訊息: ${response.body}')),
         );
       }
     } catch (e) {
@@ -81,64 +83,32 @@ class FormDownloadPageState extends State<FormDownloadPage> {
     }
   }
 
-  // 根据表单状态过滤学生
-  List<Map<String, dynamic>> get _filteredStudents {
-    if (_selectedClass == null) return [];
-    var students = _studentData;
-
-    // 过滤表单状态，根据需要显示已完成的表单
-    students = students.where((student) => student['form_status'] == '完成').toList();
-
-    if (_searchKeyword.isNotEmpty) {
-      students = students
-          .where((student) =>
-              student['student_name'].toString().contains(_searchKeyword))
-          .toList();
-    }
-    return students;
-  }
-
-  Future<void> requestPermissions() async {
-    var status = await Permission.storage.status;
-    if (!status.isGranted) {
-      await Permission.storage.request();
-    }
-  }
-
-  Future<void> downloadFile() async {
+  // Fetch history data
+  Future<void> _fetchHistoryData() async {
     try {
-      // 確認權限
-      await requestPermissions();
-
-      // 發送 HTTP GET 請求到 API 來下載檔案
       final response = await http
-          .get(Uri.parse('http://zct.us.kg:5000/api/download_history'));
-
+          .get(Uri.parse('http://172.20.10.3:5003/api/download_history'));
       if (response.statusCode == 200) {
-        // 獲取應用程序文件目錄
-        final Directory directory = await getApplicationDocumentsDirectory();
-        final String filePath =
-            path.join(directory.path, 'history_records.csv');
-
-        // 將下載的資料寫入檔案
-        final File file = File(filePath);
-        await file.writeAsBytes(response.bodyBytes);
-
+        setState(() {
+          _studentData =
+              List<Map<String, dynamic>>.from(json.decode(response.body));
+        });
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('檔案已成功下載並儲存在 $filePath')),
+          SnackBar(content: Text('歷史資料已成功加載')),
         );
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('下載失敗，狀態碼: ${response.statusCode}')),
+          SnackBar(content: Text('加載歷史資料失敗，狀態碼: ${response.statusCode}')),
         );
       }
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('下載過程中發生錯誤: $e')),
+        SnackBar(content: Text('加載歷史資料過程中發生錯誤: $e')),
       );
     }
   }
 
+  // 查看用戶經過過歷表單
   void _showDetailsDialog(BuildContext context, String description) {
     showDialog(
       context: context,
@@ -147,10 +117,10 @@ class FormDownloadPageState extends State<FormDownloadPage> {
         content: Text('描述: $description'),
         actions: <Widget>[
           TextButton(
-            child: const Text('下載歷史資料'),
+            child: const Text('查看歷史資料'),
             onPressed: () {
               Navigator.of(context).pop();
-              downloadFile(); // 呼叫下載函數來下載歷史資料
+              _fetchHistoryData(); // 呼叫來加載歷史資料
             },
           ),
           TextButton(
@@ -312,9 +282,9 @@ class FormDownloadPageState extends State<FormDownloadPage> {
                   )
                 : Expanded(
                     child: ListView.builder(
-                      itemCount: _filteredStudents.length,
+                      itemCount: _studentData.length,
                       itemBuilder: (context, index) {
-                        var student = _filteredStudents[index];
+                        var student = _studentData[index];
                         return ListTile(
                           leading: Icon(
                             Icons.file_present,

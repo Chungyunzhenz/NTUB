@@ -55,18 +55,19 @@ class _TeacherPageState extends State<TeacherPage> {
     }
   }
 
-void _logout(BuildContext context) {
-  Navigator.pushReplacement(
-    context,
-    MaterialPageRoute(
-      builder: (context) => LoginPage(
-        toggleTheme: context.read<ThemeNotifier>().toggleTheme, // 傳遞 toggleTheme
-        isDarkMode: context.watch<ThemeNotifier>().isDarkMode, // 傳遞 isDarkMode
+  void _logout(BuildContext context) {
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(
+        builder: (context) => LoginPage(
+          toggleTheme:
+              context.read<ThemeNotifier>().toggleTheme, // 傳遞 toggleTheme
+          isDarkMode:
+              context.watch<ThemeNotifier>().isDarkMode, // 傳遞 isDarkMode
+        ),
       ),
-    ),
-  );
-}
-
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -115,7 +116,7 @@ void _logout(BuildContext context) {
         ListTile(
           leading: const Icon(Icons.download),
           title: const Text('所有班級請假單歷史紀錄'),
-          onTap: () => _navigateTo(context, const FormDownloadPage()),
+          onTap: () => _navigateTo(context, const FormViewPage()),
         ),
         ListTile(
           leading: const Icon(Icons.book),
@@ -186,7 +187,7 @@ void _logout(BuildContext context) {
               context,
               icon: Icons.download,
               text: '所有班級請假單歷史紀錄',
-              page: const FormDownloadPage(),
+              page: const FormViewPage(),
             ),
             SizedBox(height: 16.0),
             _buildFeatureCard(

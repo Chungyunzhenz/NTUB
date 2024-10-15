@@ -80,7 +80,7 @@ class AnnouncementPageState extends State<AnnouncementPage> {
     required String purpose,
     required String content,
     required String sender,
-  }) async {
+  }) async { 
     try {
       final uri = Uri.parse('http://zct.us.kg:5000/save_announcement');
       final response = await http.post(
