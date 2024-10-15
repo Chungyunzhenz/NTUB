@@ -20,33 +20,34 @@ from tensorflow.keras.applications import ResNet50
 from PIL import Image, ImageDraw, ImageFont
 import opencc  # 用於簡體轉繁體
 from py2neo import Graph
+import redis
+import time
+import sys
 
 # 設定 OpenAI API 金鑰
-openai.api_key = ''  # 請使用你自己的 OpenAI API 金鑰
+openai.api_key = 'sk--'  # 請使用你自己的 OpenAI API 金鑰
 
 # 連接到 Neo4j 資料庫
-graph = Graph("bolt://localhost:7687", auth=("", ""))  # 請使用你的 Neo4j 資料庫密碼
+graph = Graph("bolt://localhost:7687", auth=("neo4j", "thispass"))  # 請使用你的 Neo4j 資料庫密碼
+
+# 連接到 Redis 緩存
+redis_cache = redis.StrictRedis(host='localhost', port=6380, db=0)
 
 # 正确 OCR 結果的功能
 # 根據欄位和 OCR 結果生成 prompt
-def generate_prompt(field_name, original_text, correct_text=None):
-    if field_name == "學號":
-        prompt = f"我有一個學號是「{original_text}」，你能幫我檢查是否正確嗎？如果有誤，請幫我修正。"
-    elif field_name == "姓名":
-        prompt = f"姓名 OCR 辨識出來的結果是「{original_text}」，但我不確定是否正確，請幫我檢查並修正。"
-    elif field_name == "請假事由":
-        prompt = f"請假事由 OCR 辨識出來的結果是「{original_text}」，請幫我檢查這是否是一個正當的事由。"
-    elif field_name == "申請科目":
-        prompt = f"我有一個選課單的科目名稱是「{original_text}」，幫我確認它是否正確，或提供修正。"
-    else:
-        prompt = f"我有一個欄位「{field_name}」的 OCR 結果是「{original_text}」，幫我檢查一下它是否正確，如果錯了請幫我修正。"
-    
+def generate_prompt(field_name, original_text):
+    prompt = f"請幫我修正這段文字可能的錯誤或是錯別字，如果是簡體字請轉為繁體字，並避免過度解釋，僅返回修正後的文字：{original_text}"
     return prompt
 
-# 使用 ChatGPT API 進行文本修正
-def correct_with_chatgpt(field_name, original_text, correct_text=None):
-    prompt = generate_prompt(field_name, original_text, correct_text)
+# 使用 ChatGPT API 進行文本修正，並檢查緩存
+def correct_with_chatgpt(original_text):
+    # 先從 Redis 檢查是否有緩存結果
+    cached_result = redis_cache.get(original_text)
+    if cached_result:
+        return cached_result.decode('utf-8')
     
+    # 沒有緩存，調用 ChatGPT 進行修正
+    prompt = generate_prompt("欄位", original_text)
     response = openai.ChatCompletion.create(
         model="gpt-3.5-turbo",
         messages=[
@@ -55,7 +56,13 @@ def correct_with_chatgpt(field_name, original_text, correct_text=None):
         ]
     )
     
-    return response['choices'][0]['message']['content'].strip()
+    # 提取 ChatGPT 回應中的修正文本，並去掉多餘的描述
+    corrected_text = response['choices'][0]['message']['content'].strip()
+    
+    # 將結果存入緩存，設置過期時間為 24 小時
+    redis_cache.setex(original_text, 86400, corrected_text)
+    
+    return corrected_text
 
 # 檢查 Neo4j 進行資料比對
 def query_neo4j(field_name, original_text):
@@ -161,28 +168,6 @@ def upload_file():
                 temp_image_path = temp_file.name
                 temp_file.write(content)
 
-            ocr_image = load_and_preprocess_image(temp_image_path)
-            reference_image_path = '263_0.jpg'
-            reference_image = load_and_preprocess_image(reference_image_path)
-
-            prediction = model.predict([np.expand_dims(ocr_image, axis=0), np.expand_dims(reference_image, axis=0)])
-            threshold = 0.010
-            image_type = '選課單' if prediction[0][0] < threshold else '請假單'
-
-            add_document = (
-                "INSERT INTO imageuploads (Image, UploadDate, UploadedBy, type) VALUES (%s, %s, %s, %s)"
-            )
-            data_document = (content, datetime.now(), uploaded_by, image_type)
-            cursor.execute(add_document, data_document)
-            cnx.commit()
-
-            cursor.execute("SELECT id FROM imageuploads ORDER BY UploadDate DESC LIMIT 1")
-            result = cursor.fetchone()
-            if result is None:
-                return jsonify({'error': 'Failed to retrieve the last inserted ID'}), 500
-
-            imageupload_id = result[0]
-
             ocr_result = ocr.ocr(temp_image_path, cls=True)
             ocr_data = []
             for line in ocr_result[0]:
@@ -200,23 +185,33 @@ def upload_file():
                 })
 
             # 使用 ChatGPT 進行 OCR 結果修正
-            fields_to_check = ['學號', '姓名', '請假事由', '申請科目']
-            for field in fields_to_check:
-                ocr_result = None
-                for item in ocr_data:
-                    if item['text'].startswith(field):
-                        ocr_result = item['text']
-                        break
+            for item in ocr_data:
+                original_text = item['text']
+                correct_text = query_neo4j("欄位", original_text)
                 
-                if ocr_result:
-                    correct_text = query_neo4j(field, ocr_result)
-                    if correct_text:
-                        item['corrected_text'] = correct_text
-                    else:
-                        corrected_text = correct_with_chatgpt(field, ocr_result)
-                        item['corrected_text'] = corrected_text
+                if correct_text:
+                    # 如果 Neo4j 有結果，使用資料庫中的正確值
+                    item['corrected_text'] = correct_text
+                else:
+                    # 如果 Neo4j 沒有結果，使用 ChatGPT 修正
+                    corrected_text = correct_with_chatgpt(original_text)
+                    item['corrected_text'] = corrected_text
 
             json_data = json.dumps(ocr_data, ensure_ascii=False)
+            add_document = (
+                "INSERT INTO imageuploads (Image, UploadDate, UploadedBy, type) VALUES (%s, %s, %s, %s)"
+            )
+            data_document = (content, datetime.now(), uploaded_by, 'OCR')
+            cursor.execute(add_document, data_document)
+            cnx.commit()
+
+            cursor.execute("SELECT id FROM imageuploads ORDER BY UploadDate DESC LIMIT 1")
+            result = cursor.fetchone()
+            if result is None:
+                return jsonify({'error': 'Failed to retrieve the last inserted ID'}), 500
+
+            imageupload_id = result[0]
+
             add_json_data = (
                 "INSERT INTO json_data (data, UploadDate, UploadedBy, id) VALUES (%s, %s, %s, %s)"
             )
