@@ -250,23 +250,25 @@ class ReviewDetailPage extends StatelessWidget {
                               ),
                             ),
                           ),
-                          ElevatedButton.icon(
-                            onPressed: () {
-                              onWithdraw();
-                              Navigator.pop(context);
-                            },
-                            icon: Icon(Icons.undo),
-                            label: Text('撤回審核',
-                                style: TextStyle(color: Colors.black)),
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.orange[600],
-                              padding: EdgeInsets.symmetric(
-                                  horizontal: 24, vertical: 12),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(12),
+                          // 只有當審核狀態為「審查中」時顯示撤回按鈕
+                          if (reviewDetails['review_status'] == '審查中')
+                            ElevatedButton.icon(
+                              onPressed: () {
+                                onWithdraw();
+                                Navigator.pop(context);
+                              },
+                              icon: Icon(Icons.undo),
+                              label: Text('撤回審核',
+                                  style: TextStyle(color: Colors.black)),
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: Colors.orange[600],
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: 24, vertical: 12),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
                               ),
                             ),
-                          ),
                         ],
                       ),
                     ],

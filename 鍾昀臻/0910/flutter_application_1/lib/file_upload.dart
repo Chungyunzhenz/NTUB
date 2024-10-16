@@ -1,105 +1,67 @@
-import 'package:flutter/material.dart';
-import 'package:file_picker/file_picker.dart';
-import 'package:http/http.dart' as http;
+import 'dart:convert';
 import 'dart:io';
-import 'package:permission_handler/permission_handler.dart';
 
-void main() {
-  runApp(MaterialApp(
-    home: FileUploadPage(),
-    theme: ThemeData(
-      primarySwatch: Colors.blue,
-      visualDensity: VisualDensity.adaptivePlatformDensity,
-    ),
-  ));
-}
+import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:http/http.dart' as http;
 
-class FileUploadPage extends StatefulWidget {
+class ImageUploadPage extends StatefulWidget {
   @override
-  _FileUploadPageState createState() => _FileUploadPageState();
+  _ImageUploadPageState createState() => _ImageUploadPageState();
 }
 
-class _FileUploadPageState extends State<FileUploadPage> {
-  File? _file;
+class _ImageUploadPageState extends State<ImageUploadPage> {
+  File? _image;
+  String? _previewImageUrl;
+  bool _isUploading = false;
 
-  Future<void> pickFile() async {
-    var permission = await Permission.storage.request();
-
-    if (permission.isGranted) {
-      final result = await FilePicker.platform.pickFiles();
-      if (result != null) {
-        setState(() {
-          _file = File(result.files.single.path!);
-        });
-      }
-    } else {
-      // 如果用戶拒絕權限，您可以在這裡處理
-      print('Permission denied. Cannot pick the file.');
+  Future<void> _pickImage() async {
+    final pickedFile =
+        await ImagePicker().pickImage(source: ImageSource.gallery);
+    if (pickedFile != null) {
+      setState(() {
+        _image = File(pickedFile.path);
+      });
     }
   }
 
-  Future<void> uploadFile() async {
-    if (_file != null) {
+  Future<void> _uploadImage() async {
+    if (_image == null) return;
+
+    setState(() {
+      _isUploading = true;
+    });
+
+    try {
       var request = http.MultipartRequest(
           'POST', Uri.parse('http://zct.us.kg:5000/upload'));
-      request.files.add(await http.MultipartFile.fromPath('file', _file!.path));
+      request.files
+          .add(await http.MultipartFile.fromPath('file', _image!.path));
+
       var response = await request.send();
 
       if (response.statusCode == 200) {
-        showDialog(
-          context: context,
-          builder: (BuildContext context) {
-            return AlertDialog(
-              title: Text('成功'),
-              content: Text('文件已成功上傳'),
-              actions: <Widget>[
-                TextButton(
-                  child: Text('好的'),
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                ),
-              ],
-            );
-          },
+        final responseData = await response.stream.toBytes();
+        setState(() {
+          _previewImageUrl =
+              'data:image/png;base64,' + base64Encode(responseData);
+        });
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('圖片上傳成功！')),
         );
       } else {
-        showDialog(
-          context: context,
-          builder: (BuildContext context) {
-            return AlertDialog(
-              title: Text('失敗'),
-              content: Text('文件上傳失敗'),
-              actions: <Widget>[
-                TextButton(
-                  child: Text('好的'),
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                ),
-              ],
-            );
-          },
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('圖片上傳失敗，狀態碼: ${response.statusCode}')),
         );
       }
-    } else {
-      showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: Text('錯誤'),
-            content: Text('未選擇文件'),
-            actions: <Widget>[
-              TextButton(
-                child: Text('好的'),
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-              ),
-            ],
-          );
-        },
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('圖片上傳失敗: $e')),
       );
+    } finally {
+      setState(() {
+        _isUploading = false;
+      });
     }
   }
 
@@ -107,66 +69,57 @@ class _FileUploadPageState extends State<FileUploadPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('上傳文件'),
+        title: Text('上傳並預覽圖片'),
+        backgroundColor: Colors.teal,
       ),
       body: Center(
         child: Padding(
           padding: const EdgeInsets.all(16.0),
-          child: Card(
-            elevation: 8.0,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(15.0),
-            ),
-            child: Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: <Widget>[
-                  Text(
-                    '上傳文件',
-                    style: TextStyle(
-                      fontSize: 24.0,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  SizedBox(height: 20),
-                  ElevatedButton.icon(
-                    onPressed: pickFile,
-                    icon: Icon(Icons.folder_open),
-                    label: Text('選擇文件'),
-                    style: ElevatedButton.styleFrom(
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 30, vertical: 15),
-                      textStyle: TextStyle(fontSize: 16),
-                    ),
-                  ),
-                  SizedBox(height: 20),
-                  ElevatedButton.icon(
-                    onPressed: uploadFile,
-                    icon: Icon(Icons.cloud_upload),
-                    label: Text('上傳文件'),
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor:
-                          Colors.green, // 使用 backgroundColor 來設置背景顏色
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 30, vertical: 15),
-                      textStyle: TextStyle(fontSize: 16),
-                    ),
-                  ),
-                  SizedBox(height: 20),
-                  Text(
-                    _file != null
-                        ? '選擇的文件: ${_file!.path.split('/').last}'
-                        : '未選擇文件',
-                    style: TextStyle(
-                      fontSize: 16,
-                      color: Colors.grey[600],
-                    ),
-                    textAlign: TextAlign.center,
-                  ),
-                ],
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              if (_image != null)
+                Image.file(
+                  _image!,
+                  height: 200,
+                  width: 200,
+                  fit: BoxFit.cover,
+                ),
+              SizedBox(height: 16),
+              ElevatedButton(
+                onPressed: _pickImage,
+                style: ElevatedButton.styleFrom(
+                  iconColor: Colors.teal,
+                ),
+                child: Text('選擇圖片'),
               ),
-            ),
+              SizedBox(height: 16),
+              ElevatedButton(
+                onPressed: _isUploading ? null : _uploadImage,
+                style: ElevatedButton.styleFrom(
+                  iconColor: Colors.teal,
+                ),
+                child: _isUploading
+                    ? CircularProgressIndicator(
+                        valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                      )
+                    : Text('上傳圖片'),
+              ),
+              if (_previewImageUrl != null)
+                Column(
+                  children: [
+                    SizedBox(height: 16),
+                    Text('圖片預覽：'),
+                    SizedBox(height: 16),
+                    Image.memory(
+                      base64Decode(_previewImageUrl!.split(',').last),
+                      height: 200,
+                      width: 200,
+                      fit: BoxFit.cover,
+                    ),
+                  ],
+                ),
+            ],
           ),
         ),
       ),

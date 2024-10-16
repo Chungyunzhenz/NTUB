@@ -33,15 +33,15 @@ class _ReviewLeavePageState extends State<ReviewLeavePage> {
 
       final pendingResponse = await http.get(
         Uri.parse(
-            'http://zct.us.kg:5000/getStudentReviews?review_status=審查中&type=請假單'),
+            'http://172.16.37.98:5002/getStudentReviews?review_status=審查中&title=請假單'),
       );
       final returnedResponse = await http.get(
         Uri.parse(
-            'http://zct.us.kg:5000/getStudentReviews?review_status=退回&type=請假單'),
+            'http://172.16.37.98:5002/getStudentReviews?review_status=退回&title=請假單'),
       );
       final completedResponse = await http.get(
         Uri.parse(
-            'http://zct.us.kg:5000/getStudentReviews?review_status=通過&type=請假單'),
+            'http://172.16.37.98:5002/getStudentReviews?review_status=通過&title=請假單'),
       );
 
       if (pendingResponse.statusCode == 200 &&
@@ -82,7 +82,7 @@ class _ReviewLeavePageState extends State<ReviewLeavePage> {
       {String? reason}) async {
     try {
       final response = await http.post(
-        Uri.parse('http://zct.us.kg:5000/updateReviewStatus'),
+        Uri.parse('http://172.16.37.98:5002/updateReviewStatus'),
         headers: {'Content-Type': 'application/json'},
         body: json.encode({
           'id': id,

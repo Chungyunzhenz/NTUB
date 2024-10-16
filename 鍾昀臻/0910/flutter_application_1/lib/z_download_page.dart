@@ -41,7 +41,7 @@ class CourseFormViewPageState extends State<CourseFormViewPage> {
   Future<void> _fetchClassData() async {
     try {
       final response =
-          await http.get(Uri.parse('http://172.20.10.3:5003/api/class_data'));
+          await http.get(Uri.parse('http://zct.us.kg:5000/api/class_data'));
       if (response.statusCode == 200) {
         setState(() {
           _classData =
@@ -63,7 +63,7 @@ class CourseFormViewPageState extends State<CourseFormViewPage> {
   Future<void> _fetchStudentData(String className) async {
     try {
       final response = await http.get(Uri.parse(
-          'http://172.20.10.3:5003/api/class_students/$className?user_role=$userRole'));
+          'http://zct.us.kg:5000/api/class_students/$className?user_role=$userRole'));
       if (response.statusCode == 200) {
         setState(() {
           _studentData =
@@ -87,7 +87,7 @@ class CourseFormViewPageState extends State<CourseFormViewPage> {
   Future<void> _fetchHistoryData() async {
     try {
       final response = await http
-          .get(Uri.parse('http://172.20.10.3:5003/api/download_history'));
+          .get(Uri.parse('http://zct.us.kg:5000/api/download_history'));
       if (response.statusCode == 200) {
         setState(() {
           _studentData =
