@@ -8,10 +8,7 @@ CORS(zuz)  # 允許所有請求
 
 # 設定資料庫連線
 db_config = {
-    'host': '127.0.0.1',
-    'user': 'root',
-    'password': 'nothispass',
-    'database': '113-Ntub_113205DB'
+
 }
 
 db = None

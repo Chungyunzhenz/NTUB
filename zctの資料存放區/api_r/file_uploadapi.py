@@ -7,12 +7,7 @@ file_uploadapi = Blueprint('file_uploadapi', __name__)
 
 # 数据库配置
 config = {
-    'host': '127.0.0.1',
-    'user': 'root',
-    'password': 'nothispass',
-    'database': '113-Ntub_113205DB',
-    'raise_on_warnings': True,
-    'charset': 'binary'  
+
 }
 
 

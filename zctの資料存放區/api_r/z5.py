@@ -26,16 +26,13 @@ except Exception as e:
 
 # 數據庫配置
 db_config = {
-    'host': '127.0.0.1',
-    'user': 'root',
-    'password': 'nothispass',
-    'database': '113-Ntub_113205DB'
+
 }
 
 neo4j_config = {
     'uri': 'neo4j://localhost:7687',
     'user': 'neo4j',
-    'password': 'thispass'
+    'password': ''
 }
 
 # 跟踪 custom_dict.txt 文件的最後修改時間

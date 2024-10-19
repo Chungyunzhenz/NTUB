@@ -6,10 +6,7 @@ login_bp = Blueprint('login_bp', __name__)
 
 # 设置MySQL连接
 db_config = {
-    'host': '127.0.0.1',
-    'user': 'root',
-    'password': 'nothispass',
-    'database': '113-Ntub_113205DB'
+
 }
 
 @login_bp.route('/login', methods=['POST'])

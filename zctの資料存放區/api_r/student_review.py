@@ -8,12 +8,10 @@ student_review_bp = Blueprint('student_review', __name__)
 
 # Database configuration
 db_config = {
-    'host': '127.0.0.1',
-    'user': 'root',
-    'password': 'nothispass',
-    'database': '113-Ntub_113205DB'
+
 }
 
+# 全局變數來儲存學生更新
 student_updates = {}
 
 # 查詢學生審查狀況
@@ -74,6 +72,8 @@ def update_review_status():
     data = request.get_json()
     id = data.get('id')
     new_status = data.get('new_status')
+    reviewer = data.get('reviewer', None)
+    review_date = data.get('review_date', None)
 
     # 驗證新狀態
     valid_statuses = ["審查中", "退回", "通過", "撤回"]
@@ -98,17 +98,18 @@ def update_review_status():
         print("成功連接到資料庫")
 
         # 更新審查狀態
-        update_query = "UPDATE ReviewProgress SET review_status = %s WHERE id = %s"
-        cursor.execute(update_query, (new_status, id))
+        update_query = "UPDATE ReviewProgress SET review_status = %s, reviewer = %s, review_date = %s WHERE id = %s"
+        cursor.execute(update_query, (new_status, reviewer, review_date, id))
         connection.commit()
 
         if cursor.rowcount == 0:
+            print(f"未找到具有給定 id 的審查，id: {id}")
             return jsonify({'error': '未找到具有給定 id 的審查'}), 404
 
         # 更新學生更新狀態
         student_updates[id] = {'status': new_status, 'timestamp': time.time()}
 
-        print(f"審查狀態更新為 '{new_status}'")
+        print(f"審查狀態更新為 '{new_status}'，id: {id}")
         return jsonify({'message': f'審查狀態成功更新為 {new_status}'})
 
     except mysql.connector.Error as err:
@@ -128,6 +129,7 @@ def update_review_status():
 @student_review_bp.route('/withdrawReview', methods=['POST'])
 def withdraw_review():
     data = request.get_json()
+    print(f"Received data: {data}")  # 打印收到的数据
     id = data.get('review_id')
 
     if not id:
@@ -148,17 +150,18 @@ def withdraw_review():
         print("成功連接到資料庫")
 
         # 更新審查狀態為撤回
-        update_query = "UPDATE ReviewProgress SET review_status = %s WHERE id = %s"
-        cursor.execute(update_query, ("撤回", id))
+        update_query = "UPDATE ReviewProgress SET review_status = %s, return_reason = %s WHERE id = %s"
+        cursor.execute(update_query, ("撤回", data.get('return_reason', None), id))
         connection.commit()
 
         if cursor.rowcount == 0:
+            print(f"未找到具有給定 id 的審查，id: {id}")
             return jsonify({'error': '未找到具有給定 id 的審查'}), 404
 
         # 更新學生更新狀態
         student_updates[id] = {'status': "撤回", 'timestamp': time.time()}
 
-        print(f"審查狀態更新為 '撤回'")
+        print(f"審查狀態更新為 '撤回'，id: {id}")
         return jsonify({'message': '審查狀態成功撤回'})
 
     except mysql.connector.Error as err:

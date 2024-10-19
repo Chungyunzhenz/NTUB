@@ -24,10 +24,7 @@ img_uploadapi = Blueprint('img_uploadapi', __name__)
 
 # 数据库配置
 config = {
-    'host': '127.0.0.1',
-    'user': 'root',
-    'password': 'nothispass',
-    'database': '113-Ntub_113205DB',
+
 }
 
 # 設定隨機種子

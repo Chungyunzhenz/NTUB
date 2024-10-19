@@ -10,6 +10,7 @@ from img_uploadapi import img_uploadapi
 from student_review import student_review_bp  # 引入學生評審藍圖
 from new_announcement import new_announcement_bp  # 引入新的公告藍圖
 from download import download
+from stu import stu
 
 app = Flask(__name__)
 
@@ -25,5 +26,6 @@ app.register_blueprint(zuz)
 app.register_blueprint(student_review_bp)  # 注册學生評審藍圖
 app.register_blueprint(new_announcement_bp)  # 注册新的公告藍图
 app.register_blueprint(download)
+app.register_blueprint(stu)
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=5000)

@@ -8,10 +8,7 @@ new_announcement_bp = Blueprint('new_announcement', __name__)
 CORS(new_announcement_bp, resources={r"/*": {"origins": "*"}})
 
 db_config = {
-    'host': '127.0.0.1',
-    'user': 'root',
-    'password': 'nothispass',
-    'database': '113-Ntub_113205DB',
+
 }
 
 def get_db_connection():
