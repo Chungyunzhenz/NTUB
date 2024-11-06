@@ -1,0 +1,1486 @@
+    {
+        "box": {
+            "top_left": [
+                302,
+                0
+            ],
+            "bottom_right": [
+                852,
+                56
+            ]
+        },
+        "text": "國立臺北商業大學學生選課申請書",
+        "corrected_text": "國立北商大學學生請假申請書"
+    },
+    {
+        "box": {
+            "top_left": [
+                685,
+                51
+            ],
+            "bottom_right": [
+                1057,
+                97
+            ]
+        },
+        "text": "申請日期：113年09月10日",
+        "corrected_text": "申請日期：2013年09月10日"
+    },
+    {
+        "box": {
+            "top_left": [
+                680,
+                86
+            ],
+            "bottom_right": [
+                1083,
+                132
+            ]
+        },
+        "text": "會資系(含碩士班)財金系(含碩士班)",
+        "corrected_text": "會計系(含碩士班)財金系(含碩士班)"
+    },
+    {
+        "box": {
+            "top_left": [
+                181,
+                97
+            ],
+            "bottom_right": [
+                288,
+                122
+            ]
+        },
+        "text": "✓日間部",
+        "corrected_text": "日間部"
+    },
+    {
+        "box": {
+            "top_left": [
+                682,
+                112
+            ],
+            "bottom_right": [
+                1083,
+                158
+            ]
+        },
+        "text": "商務系(含碩士班)財稅系(含碩士班)",
+        "corrected_text": "商務系(含碩士班)、財稅系(含碩士班)"
+    },
+    {
+        "box": {
+            "top_left": [
+                65,
+                123
+            ],
+            "bottom_right": [
+                167,
+                149
+            ]
+        },
+        "text": "日間/進修",
+        "corrected_text": "日間/連續"
+    },
+    {
+        "box": {
+            "top_left": [
+                184,
+                130
+            ],
+            "bottom_right": [
+                288,
+                161
+            ]
+        },
+        "text": "進修部",
+        "corrected_text": "進修部"
+    },
+    {
+        "box": {
+            "top_left": [
+                338,
+                126
+            ],
+            "bottom_right": [
+                421,
+                158
+            ]
+        },
+        "text": "雙軌",
+        "corrected_text": "雙軌"
+    },
+    {
+        "box": {
+            "top_left": [
+                683,
+                140
+            ],
+            "bottom_right": [
+                1083,
+                179
+            ]
+        },
+        "text": "企管系（含碩士班）✓資管系(含碩士班）",
+        "corrected_text": "企管系（含碩士班）與資管系（含碩士班）"
+    },
+    {
+        "box": {
+            "top_left": [
+                473,
+                161
+            ],
+            "bottom_right": [
+                557,
+                204
+            ]
+        },
+        "text": "✓二技",
+        "corrected_text": "技术"
+    },
+    {
+        "box": {
+            "top_left": [
+                338,
+                172
+            ],
+            "bottom_right": [
+                421,
+                203
+            ]
+        },
+        "text": "四技",
+        "corrected_text": "四技"
+    },
+    {
+        "box": {
+            "top_left": [
+                577,
+                163
+            ],
+            "bottom_right": [
+                681,
+                193
+            ]
+        },
+        "text": "所/系/科別",
+        "corrected_text": "所系/科別"
+    },
+    {
+        "box": {
+            "top_left": [
+                184,
+                175
+            ],
+            "bottom_right": [
+                286,
+                207
+            ]
+        },
+        "text": "研究所",
+        "corrected_text": "研究所"
+    },
+    {
+        "box": {
+            "top_left": [
+                675,
+                166
+            ],
+            "bottom_right": [
+                778,
+                200
+            ]
+        },
+        "text": "資研所",
+        "corrected_text": "資訊研究所"
+    },
+    {
+        "box": {
+            "top_left": [
+                784,
+                170
+            ],
+            "bottom_right": [
+                981,
+                204
+            ]
+        },
+        "text": "貿易學程創研所",
+        "corrected_text": "貿易學程研究所"
+    },
+    {
+        "box": {
+            "top_left": [
+                65,
+                200
+            ],
+            "bottom_right": [
+                164,
+                228
+            ]
+        },
+        "text": "學制別",
+        "corrected_text": "學歷別"
+    },
+    {
+        "box": {
+            "top_left": [
+                685,
+                196
+            ],
+            "bottom_right": [
+                778,
+                226
+            ]
+        },
+        "text": "應外系",
+        "corrected_text": "應用系"
+    },
+    {
+        "box": {
+            "top_left": [
+                784,
+                196
+            ],
+            "bottom_right": [
+                984,
+                230
+            ]
+        },
+        "text": "商創系商設系",
+        "corrected_text": "商業設計系"
+    },
+    {
+        "box": {
+            "top_left": [
+                340,
+                209
+            ],
+            "bottom_right": [
+                420,
+                242
+            ]
+        },
+        "text": "二專",
+        "corrected_text": "二專"
+    },
+    {
+        "box": {
+            "top_left": [
+                974,
+                202
+            ],
+            "bottom_right": [
+                1082,
+                231
+            ]
+        },
+        "text": "數媒系",
+        "corrected_text": "敏感性"
+    },
+    {
+        "box": {
+            "top_left": [
+                185,
+                212
+            ],
+            "bottom_right": [
+                264,
+                245
+            ]
+        },
+        "text": "五專",
+        "corrected_text": "專五"
+    },
+    {
+        "box": {
+            "top_left": [
+                685,
+                224
+            ],
+            "bottom_right": [
+                733,
+                252
+            ]
+        },
+        "text": "其",
+        "corrected_text": "其"
+    },
+    {
+        "box": {
+            "top_left": [
+                726,
+                224
+            ],
+            "bottom_right": [
+                773,
+                252
+            ]
+        },
+        "text": "他",
+        "corrected_text": "他"
+    },
+    {
+        "box": {
+            "top_left": [
+                68,
+                265
+            ],
+            "bottom_right": [
+                94,
+                291
+            ]
+        },
+        "text": "姓",
+        "corrected_text": "性"
+    },
+    {
+        "box": {
+            "top_left": [
+                133,
+                263
+            ],
+            "bottom_right": [
+                159,
+                289
+            ]
+        },
+        "text": "名",
+        "corrected_text": "名"
+    },
+    {
+        "box": {
+            "top_left": [
+                466,
+                273
+            ],
+            "bottom_right": [
+                543,
+                307
+            ]
+        },
+        "text": "學號",
+        "corrected_text": "學號"
+    },
+    {
+        "box": {
+            "top_left": [
+                584,
+                267
+            ],
+            "bottom_right": [
+                753,
+                310
+            ]
+        },
+        "text": "11236099",
+        "corrected_text": "11236099"
+    },
+    {
+        "box": {
+            "top_left": [
+                801,
+                272
+            ],
+            "bottom_right": [
+                881,
+                305
+            ]
+        },
+        "text": "班級",
+        "corrected_text": "班級"
+    },
+    {
+        "box": {
+            "top_left": [
+                933,
+                267
+            ],
+            "bottom_right": [
+                1000,
+                303
+            ]
+        },
+        "text": "二年",
+        "corrected_text": "二年"
+    },
+    {
+        "box": {
+            "top_left": [
+                1024,
+                267
+            ],
+            "bottom_right": [
+                1077,
+                305
+            ]
+        },
+        "text": "甲班",
+        "corrected_text": "甲班"
+    },
+    {
+        "box": {
+            "top_left": [
+                190,
+                278
+            ],
+            "bottom_right": [
+                356,
+                313
+            ]
+        },
+        "text": "王小明",
+        "corrected_text": "王小明"
+    },
+    {
+        "box": {
+            "top_left": [
+                55,
+                298
+            ],
+            "bottom_right": [
+                174,
+                324
+            ]
+        },
+        "text": "(學生親自簽名)",
+        "corrected_text": "(學生親自簽名)"
+    },
+    {
+        "box": {
+            "top_left": [
+                64,
+                342
+            ],
+            "bottom_right": [
+                165,
+                373
+            ]
+        },
+        "text": "連絡電話",
+        "corrected_text": "聯絡電話"
+    },
+    {
+        "box": {
+            "top_left": [
+                168,
+                337
+            ],
+            "bottom_right": [
+                236,
+                377
+            ]
+        },
+        "text": "(X)",
+        "corrected_text": "()"
+    },
+    {
+        "box": {
+            "top_left": [
+                581,
+                335
+            ],
+            "bottom_right": [
+                898,
+                370
+            ]
+        },
+        "text": "連絡手機0912345678",
+        "corrected_text": "速絡手機：091245678"
+    },
+    {
+        "box": {
+            "top_left": [
+                66,
+                398
+            ],
+            "bottom_right": [
+                165,
+                430
+            ]
+        },
+        "text": "選修身分",
+        "corrected_text": "選修課程分"
+    },
+    {
+        "box": {
+            "top_left": [
+                172,
+                396
+            ],
+            "bottom_right": [
+                567,
+                426
+            ]
+        },
+        "text": "1.跨部2.跨學制3.跨所系科",
+        "corrected_text": "1.跨部門 2.跨學制 3.跨系所"
+    },
+    {
+        "box": {
+            "top_left": [
+                550,
+                389
+            ],
+            "bottom_right": [
+                842,
+                426
+            ]
+        },
+        "text": "4. ✓同系(科）5.其他:",
+        "corrected_text": "44.同系（科）5.其他："
+    },
+    {
+        "box": {
+            "top_left": [
+                55,
+                449
+            ],
+            "bottom_right": [
+                411,
+                475
+            ]
+        },
+        "text": "主旨：擬修習退選(必修科目)",
+        "corrected_text": "主旨：申請退選(必修科目)"
+    },
+    {
+        "box": {
+            "top_left": [
+                151,
+                480
+            ],
+            "bottom_right": [
+                1063,
+                510
+            ]
+        },
+        "text": "撤選(限一科，期中考後二調內申請，撤選後總學分數不得少於該學制所規定之最低學分數)",
+        "corrected_text": "撤遙(限一科，期中考後二週內申請，撤遙後總學分數不得少於該學制所規定之最低學分數)"
+    },
+    {
+        "box": {
+            "top_left": [
+                109,
+                512
+            ],
+            "bottom_right": [
+                253,
+                536
+            ]
+        },
+        "text": "擬申請科目名稱",
+        "corrected_text": "凝視著科目名稱"
+    },
+    {
+        "box": {
+            "top_left": [
+                305,
+                507
+            ],
+            "bottom_right": [
+                433,
+                536
+            ]
+        },
+        "text": "科目代號",
+        "corrected_text": "科目代碼"
+    },
+    {
+        "box": {
+            "top_left": [
+                461,
+                512
+            ],
+            "bottom_right": [
+                579,
+                536
+            ]
+        },
+        "text": "開課班別",
+        "corrected_text": "開課班次"
+    },
+    {
+        "box": {
+            "top_left": [
+                605,
+                510
+            ],
+            "bottom_right": [
+                676,
+                535
+            ]
+        },
+        "text": "學分數",
+        "corrected_text": "學分數"
+    },
+    {
+        "box": {
+            "top_left": [
+                666,
+                510
+            ],
+            "bottom_right": [
+                761,
+                535
+            ]
+        },
+        "text": "時數",
+        "corrected_text": "時間"
+    },
+    {
+        "box": {
+            "top_left": [
+                771,
+                512
+            ],
+            "bottom_right": [
+                801,
+                533
+            ]
+        },
+        "text": "教",
+        "corrected_text": "教"
+    },
+    {
+        "box": {
+            "top_left": [
+                836,
+                512
+            ],
+            "bottom_right": [
+                860,
+                533
+            ]
+        },
+        "text": "師",
+        "corrected_text": "師"
+    },
+    {
+        "box": {
+            "top_left": [
+                908,
+                512
+            ],
+            "bottom_right": [
+                1052,
+                536
+            ]
+        },
+        "text": "上課時問",
+        "corrected_text": "上課時問"
+    },
+    {
+        "box": {
+            "top_left": [
+                58,
+                533
+            ],
+            "bottom_right": [
+                222,
+                585
+            ]
+        },
+        "text": "資料結構",
+        "corrected_text": "核料結構"
+    },
+    {
+        "box": {
+            "top_left": [
+                444,
+                531
+            ],
+            "bottom_right": [
+                605,
+                582
+            ]
+        },
+        "text": "資管四技二乙",
+        "corrected_text": "資管四技"
+    },
+    {
+        "box": {
+            "top_left": [
+                728,
+                531
+            ],
+            "bottom_right": [
+                865,
+                582
+            ]
+        },
+        "text": "李大華",
+        "corrected_text": "李大華"
+    },
+    {
+        "box": {
+            "top_left": [
+                312,
+                542
+            ],
+            "bottom_right": [
+                388,
+                573
+            ]
+        },
+        "text": "s102",
+        "corrected_text": "Zola"
+    },
+    {
+        "box": {
+            "top_left": [
+                629,
+                543
+            ],
+            "bottom_right": [
+                655,
+                570
+            ]
+        },
+        "text": "3",
+        "corrected_text": "3"
+    },
+    {
+        "box": {
+            "top_left": [
+                711,
+                543
+            ],
+            "bottom_right": [
+                737,
+                568
+            ]
+        },
+        "text": "3",
+        "corrected_text": "3"
+    },
+    {
+        "box": {
+            "top_left": [
+                874,
+                542
+            ],
+            "bottom_right": [
+                1066,
+                570
+            ]
+        },
+        "text": "102、103、104",
+        "corrected_text": "(2、103、104"
+    },
+    {
+        "box": {
+            "top_left": [
+                66,
+                579
+            ],
+            "bottom_right": [
+                238,
+                622
+            ]
+        },
+        "text": "陳式設計",
+        "corrected_text": "陳氏設計"
+    },
+    {
+        "box": {
+            "top_left": [
+                449,
+                573
+            ],
+            "bottom_right": [
+                605,
+                622
+            ]
+        },
+        "text": "資管五專二甲",
+        "corrected_text": "資管五二"
+    },
+    {
+        "box": {
+            "top_left": [
+                314,
+                584
+            ],
+            "bottom_right": [
+                402,
+                615
+            ]
+        },
+        "text": "S202",
+        "corrected_text": "202S"
+    },
+    {
+        "box": {
+            "top_left": [
+                626,
+                582
+            ],
+            "bottom_right": [
+                657,
+                612
+            ]
+        },
+        "text": "3",
+        "corrected_text": "3"
+    },
+    {
+        "box": {
+            "top_left": [
+                704,
+                582
+            ],
+            "bottom_right": [
+                739,
+                610
+            ]
+        },
+        "text": "3",
+        "corrected_text": "3"
+    },
+    {
+        "box": {
+            "top_left": [
+                730,
+                582
+            ],
+            "bottom_right": [
+                869,
+                614
+            ]
+        },
+        "text": "林明華",
+        "corrected_text": "林明謝"
+    },
+    {
+        "box": {
+            "top_left": [
+                858,
+                584
+            ],
+            "bottom_right": [
+                1064,
+                614
+            ]
+        },
+        "text": "302、303、304",
+        "corrected_text": "3023304"
+    },
+    {
+        "box": {
+            "top_left": [
+                147,
+                708
+            ],
+            "bottom_right": [
+                652,
+                740
+            ]
+        },
+        "text": "✓選讀其他系科課程列入畢業應修學分數6學分",
+        "corrected_text": "遙讀其他系科課程列入畢業應修學分數學分"
+    },
+    {
+        "box": {
+            "top_left": [
+                692,
+                736
+            ],
+            "bottom_right": [
+                794,
+                768
+            ]
+        },
+        "text": "學分。）",
+        "corrected_text": "學分"
+    },
+    {
+        "box": {
+            "top_left": [
+                822,
+                728
+            ],
+            "bottom_right": [
+                992,
+                757
+            ]
+        },
+        "text": "，請准予辦理。",
+        "corrected_text": "請准予辦理。"
+    },
+    {
+        "box": {
+            "top_left": [
+                175,
+                743
+            ],
+            "bottom_right": [
+                400,
+                768
+            ]
+        },
+        "text": "（本系科採計上限為",
+        "corrected_text": "（本系科探計上限為"
+    },
+    {
+        "box": {
+            "top_left": [
+                393,
+                740
+            ],
+            "bottom_right": [
+                652,
+                768
+            ]
+        },
+        "text": "__學分，含本次申請已累計",
+        "corrected_text": "學分，含本次申請已累計"
+    },
+    {
+        "box": {
+            "top_left": [
+                154,
+                771
+            ],
+            "bottom_right": [
+                333,
+                796
+            ]
+        },
+        "text": "不計入畢業學分",
+        "corrected_text": "不計入學分"
+    },
+    {
+        "box": {
+            "top_left": [
+                57,
+                806
+            ],
+            "bottom_right": [
+                409,
+                836
+            ]
+        },
+        "text": "說明：選修事由一 1.當必修科目",
+        "corrected_text": "視明：選修事由 1.當必修科目"
+    },
+    {
+        "box": {
+            "top_left": [
+                473,
+                808
+            ],
+            "bottom_right": [
+                667,
+                833
+            ]
+        },
+        "text": "2.原部制未開課",
+        "corrected_text": "2.原本未開課"
+    },
+    {
+        "box": {
+            "top_left": [
+                704,
+                803
+            ],
+            "bottom_right": [
+                811,
+                834
+            ]
+        },
+        "text": "3. ✓重修",
+        "corrected_text": "3.重修"
+    },
+    {
+        "box": {
+            "top_left": [
+                903,
+                803
+            ],
+            "bottom_right": [
+                1011,
+                834
+            ]
+        },
+        "text": "4.衝堂",
+        "corrected_text": "4.衡量堂"
+    },
+    {
+        "box": {
+            "top_left": [
+                244,
+                847
+            ],
+            "bottom_right": [
+                435,
+                871
+            ]
+        },
+        "text": "5.轉學補修學分",
+        "corrected_text": "5. 轉學補修學分"
+    },
+    {
+        "box": {
+            "top_left": [
+                470,
+                843
+            ],
+            "bottom_right": [
+                664,
+                873
+            ]
+        },
+        "text": "6.輔系加修學分",
+        "corrected_text": "6.輔系加修學分"
+    },
+    {
+        "box": {
+            "top_left": [
+                706,
+                843
+            ],
+            "bottom_right": [
+                922,
+                873
+            ]
+        },
+        "text": "7.雙主修加修學分",
+        "corrected_text": "變更主修加修學分"
+    },
+    {
+        "box": {
+            "top_left": [
+                243,
+                882
+            ],
+            "bottom_right": [
+                553,
+                912
+            ]
+        },
+        "text": "8.當抵免科目（原科目名稱：",
+        "corrected_text": "當抵免科目（原科目名稱："
+    },
+    {
+        "box": {
+            "top_left": [
+                739,
+                882
+            ],
+            "bottom_right": [
+                841,
+                912
+            ]
+        },
+        "text": "、學分數：",
+        "corrected_text": "學分數："
+    },
+    {
+        "box": {
+            "top_left": [
+                907,
+                882
+            ],
+            "bottom_right": [
+                978,
+                906
+            ]
+        },
+        "text": "、時數：",
+        "corrected_text": "時間："
+    },
+    {
+        "box": {
+            "top_left": [
+                674,
+                905
+            ],
+            "bottom_right": [
+                1084,
+                948
+            ]
+        },
+        "text": "系上規定，跨制度選修",
+        "corrected_text": "繫上安全帶，跨越制度修正"
+    },
+    {
+        "box": {
+            "top_left": [
+                244,
+                922
+            ],
+            "bottom_right": [
+                392,
+                952
+            ]
+        },
+        "text": "9. ✓其他：",
+        "corrected_text": "9.其他："
+    },
+    {
+        "box": {
+            "top_left": [
+                232,
+                966
+            ],
+            "bottom_right": [
+                445,
+                998
+            ]
+        },
+        "text": "10.退選原因說明：",
+        "corrected_text": "10. 退出選原因說明："
+    },
+    {
+        "box": {
+            "top_left": [
+                234,
+                1012
+            ],
+            "bottom_right": [
+                446,
+                1036
+            ]
+        },
+        "text": "11.撤選原因說明：",
+        "corrected_text": "11.口述遙原因說明："
+    },
+    {
+        "box": {
+            "top_left": [
+                62,
+                1057
+            ],
+            "bottom_right": [
+                224,
+                1082
+            ]
+        },
+        "text": "會辦單位意見：",
+        "corrected_text": "食品單位意見："
+    },
+    {
+        "box": {
+            "top_left": [
+                55,
+                1127
+            ],
+            "bottom_right": [
+                619,
+                1154
+            ]
+        },
+        "text": "任課教師簽名（僅特殊情形需任課教師簽名，請參閱備註）：",
+        "corrected_text": "任課教師簽名（特殊情形需任課教師簽名，請參備）"
+    },
+    {
+        "box": {
+            "top_left": [
+                387,
+                1178
+            ],
+            "bottom_right": [
+                485,
+                1208
+            ]
+        },
+        "text": "會辦單位",
+        "corrected_text": "會辦單位"
+    },
+    {
+        "box": {
+            "top_left": [
+                574,
+                1182
+            ],
+            "bottom_right": [
+                631,
+                1208
+            ]
+        },
+        "text": "備註：",
+        "corrected_text": "備註："
+    },
+    {
+        "box": {
+            "top_left": [
+                123,
+                1201
+            ],
+            "bottom_right": [
+                228,
+                1234
+            ]
+        },
+        "text": "所屬系科",
+        "corrected_text": "所屬科系"
+    },
+    {
+        "box": {
+            "top_left": [
+                331,
+                1203
+            ],
+            "bottom_right": [
+                537,
+                1232
+            ]
+        },
+        "text": "（跨系科/通識中心/",
+        "corrected_text": "跨系科通識中心"
+    },
+    {
+        "box": {
+            "top_left": [
+                570,
+                1213
+            ],
+            "bottom_right": [
+                1103,
+                1238
+            ]
+        },
+        "text": "遇以下特殊情形，本申請書需經任課教師簽名：",
+        "corrected_text": "遇以下特殊情形，本申請須需經任課教師簽名："
+    },
+    {
+        "box": {
+            "top_left": [
+                345,
+                1227
+            ],
+            "bottom_right": [
+                524,
+                1253
+            ]
+        },
+        "text": "體育室/軍訓室）",
+        "corrected_text": "體育室/軍訓室"
+    },
+    {
+        "box": {
+            "top_left": [
+                577,
+                1248
+            ],
+            "bottom_right": [
+                1106,
+                1273
+            ]
+        },
+        "text": "1.凡有先修科目限制之課程，尚未修習先修科目：",
+        "corrected_text": "凡有先修科目限制之課程，尚未修習先修科目者："
+    },
+    {
+        "box": {
+            "top_left": [
+                61,
+                1269
+            ],
+            "bottom_right": [
+                120,
+                1294
+            ]
+        },
+        "text": "承辦人：",
+        "corrected_text": "承辦人："
+    },
+    {
+        "box": {
+            "top_left": [
+                305,
+                1268
+            ],
+            "bottom_right": [
+                364,
+                1292
+            ]
+        },
+        "text": "承辦人:",
+        "corrected_text": "承辦人:"
+    },
+    {
+        "box": {
+            "top_left": [
+                622,
+                1282
+            ],
+            "bottom_right": [
+                879,
+                1306
+            ]
+        },
+        "text": "而要直接修習該課程者。",
+        "corrected_text": "而要直接修讀該課程者。"
+    },
+    {
+        "box": {
+            "top_left": [
+                84,
+                1301
+            ],
+            "bottom_right": [
+                264,
+                1358
+            ]
+        },
+        "text": "陳美真",
+        "corrected_text": "陳美真"
+    },
+    {
+        "box": {
+            "top_left": [
+                569,
+                1310
+            ],
+            "bottom_right": [
+                1111,
+                1341
+            ]
+        },
+        "text": "2. 重(補)修之必修科目改爲選修或停開，欲修習",
+        "corrected_text": "2. 重(補)修之必修科目改為抵修或停開，欲修習"
+    },
+    {
+        "box": {
+            "top_left": [
+                622,
+                1346
+            ],
+            "bottom_right": [
+                881,
+                1371
+            ]
+        },
+        "text": "非本班之低年級課程者。",
+        "corrected_text": "非本班之高年級課程者。"
+    },
+    {
+        "box": {
+            "top_left": [
+                69,
+                1366
+            ],
+            "bottom_right": [
+                146,
+                1390
+            ]
+        },
+        "text": "主任/所長：",
+        "corrected_text": "主任/所長："
+    },
+    {
+        "box": {
+            "top_left": [
+                309,
+                1369
+            ],
+            "bottom_right": [
+                387,
+                1388
+            ]
+        },
+        "text": "主任/所長：",
+        "corrected_text": "主任/所長："
+    },
+    {
+        "box": {
+            "top_left": [
+                572,
+                1380
+            ],
+            "bottom_right": [
+                759,
+                1404
+            ]
+        },
+        "text": "3.申請撤選者。",
+        "corrected_text": "3.申請撤銷者。"
+    },
+    {
+        "box": {
+            "top_left": [
+                570,
+                1410
+            ],
+            "bottom_right": [
+                1103,
+                1439
+            ]
+        },
+        "text": "4.網路選課科目已建達人數上限，改以紙本遙課者",
+        "corrected_text": "4.網路選課科目已達人數上限，改以紙本選課者。"
+    },
+    {
+        "box": {
+            "top_left": [
+                567,
+                1441
+            ],
+            "bottom_right": [
+                978,
+                1471
+            ]
+        },
+        "text": "5.各系所之相關規定（範）、公告等。",
+        "corrected_text": "5.各系所之相關規定、公告等。"
+    },
+    {
+        "box": {
+            "top_left": [
+                61,
+                1455
+            ],
+            "bottom_right": [
+                562,
+                1496
+            ]
+        },
+        "text": "★本申請書奉核定後正本由教務處留存（臺北校區：",
+        "corrected_text": "本申請書奉覆定後正本由教務處留存（壹份校區："
+    },
+    {
+        "box": {
+            "top_left": [
+                61,
+                1481
+            ],
+            "bottom_right": [
+                1111,
+                1515
+            ]
+        },
+        "text": "日間學制送至行政大樓3樓、進修學制送至五育樓★學生辦理跨校/學制/系選修學分上限，請依選課相",
+        "corrected_text": "日間學制送至行政大樓3樓、進修學制送至五育樓。學生辦理跨校/學制/系申請修學分上限，請依選課規章。"
+    },
+    {
+        "box": {
+            "top_left": [
+                64,
+                1536
+            ],
+            "bottom_right": [
+                283,
+                1560
+            ]
+        },
+        "text": "系科及相關單位存參。",
+        "corrected_text": "系科及相關單位存根。"
+    },
+    {
+        "box": {
+            "top_left": [
+                570,
+                1546
+            ],
+            "bottom_right": [
+                797,
+                1576
+            ]
+        },
+        "text": "業，由學生自行負責。",
+        "corrected_text": "業務，由學生自行負責。"
+    }
+]
+
