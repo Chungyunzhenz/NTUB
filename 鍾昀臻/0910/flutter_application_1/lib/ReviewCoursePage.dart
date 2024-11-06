@@ -33,15 +33,15 @@ class _ReviewCoursePageState extends State<ReviewCoursePage> {
 
       final pendingResponse = await http.get(
         Uri.parse(
-            'http://zct.us.kg:5000/getStudentReviews?review_status=審查中&type=選課單'),
+            'http://zct.us.kg:5000/TgetStudentReviews?review_status=審查中&title=選課單'),
       );
       final returnedResponse = await http.get(
         Uri.parse(
-            'http://zct.us.kg:5000/getStudentReviews?review_status=退回&type=選課單'),
+            'http://zct.us.kg:5000/TgetStudentReviews?review_status=退回&title=選課單'),
       );
       final completedResponse = await http.get(
         Uri.parse(
-            'http://zct.us.kg:5000/getStudentReviews?review_status=通過&type=選課單'),
+            'http://zct.us.kg:5000/TgetStudentReviews?review_status=通過&title=選課單'),
       );
 
       if (pendingResponse.statusCode == 200 &&
@@ -82,11 +82,11 @@ class _ReviewCoursePageState extends State<ReviewCoursePage> {
       {String? reason}) async {
     try {
       final response = await http.post(
-        Uri.parse('http://zct.us.kg:5000/updateReviewStatus'),
+        Uri.parse('http://zct.us.kg:5000/TupdateReviewStatus'),
         headers: {'Content-Type': 'application/json'},
         body: json.encode({
           'id': id,
-          'new_status': status,
+          'review_status': status,
           'return_reason': reason,
         }),
       );
@@ -98,6 +98,7 @@ class _ReviewCoursePageState extends State<ReviewCoursePage> {
               _pendingRequests.firstWhere((element) => element['id'] == id);
 
           if (status == '退回') {
+            updatedRequest['return_reason'] = reason;
             _returnedRequests.add(updatedRequest);
           } else if (status == '通過') {
             _completedRequests.add(updatedRequest);
@@ -143,7 +144,16 @@ class _ReviewCoursePageState extends State<ReviewCoursePage> {
             TextButton(
               onPressed: () async {
                 Navigator.of(context).pop();
-                await _updateReviewStatus(id, '退回', reason: reason);
+                if (reason.isNotEmpty) {
+                  await _updateReviewStatus(id, '退回', reason: reason);
+                } else {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: const Text('退回原因不能為空'),
+                      backgroundColor: Colors.red,
+                    ),
+                  );
+                }
               },
               child: Container(
                 decoration: BoxDecoration(
@@ -211,7 +221,7 @@ class _ReviewCoursePageState extends State<ReviewCoursePage> {
           return _buildCourseSelectionCard(
             context,
             request['title'],
-            request['description'],
+            request['description'] ?? '',
             request,
             status,
           );

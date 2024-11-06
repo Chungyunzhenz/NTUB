@@ -15,9 +15,8 @@ class _ImageUploadPageState extends State<ImageUploadPage> {
   String? _previewImageUrl;
   bool _isUploading = false;
 
-  Future<void> _pickImage() async {
-    final pickedFile =
-        await ImagePicker().pickImage(source: ImageSource.gallery);
+  Future<void> _pickImage(ImageSource source) async {
+    final pickedFile = await ImagePicker().pickImage(source: source);
     if (pickedFile != null) {
       setState(() {
         _image = File(pickedFile.path);
@@ -87,11 +86,19 @@ class _ImageUploadPageState extends State<ImageUploadPage> {
                 ),
               SizedBox(height: 16),
               ElevatedButton(
-                onPressed: _pickImage,
+                onPressed: () => _pickImage(ImageSource.gallery),
                 style: ElevatedButton.styleFrom(
                   iconColor: Colors.teal,
                 ),
                 child: Text('選擇圖片'),
+              ),
+              SizedBox(height: 16),
+              ElevatedButton(
+                onPressed: () => _pickImage(ImageSource.camera),
+                style: ElevatedButton.styleFrom(
+                  iconColor: Colors.teal,
+                ),
+                child: Text('相機拍攝'),
               ),
               SizedBox(height: 16),
               ElevatedButton(

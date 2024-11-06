@@ -200,7 +200,7 @@ class _AssistantPageState extends State<AssistantPage> {
             SizedBox(height: 16.0),
             _buildFeatureCard(
               context,
-              icon: Icons.download,
+              icon: Icons.announcement,
               text: '新增公告',
               page: const announce.AnnouncementPage(
                   role: announce.UserRole.assistant),

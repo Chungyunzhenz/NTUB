@@ -45,5 +45,5 @@ flutter:
     - lib/assets/c.jpg
     - lib/assets/d.jpg
     - lib/assets/background.jpg
-    
+    - lib/assets/line.png
   uses-material-design: true

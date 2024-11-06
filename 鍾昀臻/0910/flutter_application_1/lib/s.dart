@@ -33,6 +33,7 @@ class StudentPage extends StatefulWidget {
 class _StudentPageState extends State<StudentPage> {
   late String selectedProfileImage;
   String? userUUID; // 用於存儲生成的 UUID
+  bool hasConfirmedUUID = false; // 用於檢查是否已確認過提示訊息
 
   @override
   void initState() {
@@ -82,7 +83,6 @@ class _StudentPageState extends State<StudentPage> {
             _buildListTile(context, Icons.announcement, '公告',
                 AnnouncementPage(role: UserRole.student)),
             _buildListTile(context, Icons.book, '使用手冊', ManualPage()),
-            // 新增個人ID按鈕
             ListTile(
               leading: const Icon(Icons.perm_identity),
               title: const Text('個人ID'),
@@ -177,12 +177,54 @@ class _StudentPageState extends State<StudentPage> {
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _launchLineBot,
-        child: const Icon(Icons.chat),
-        backgroundColor: Colors.teal[300],
+      floatingActionButton: Container(
+        margin: const EdgeInsets.all(8.0), // 加大 margin 滿框效果
+        child: FloatingActionButton(
+          onPressed: _onLineButtonPressed,
+          child: Image.asset('lib/assets/line.png', height: 40), // 設置 LINE 圖示
+          backgroundColor: Colors.teal[300],
+        ),
       ),
     );
+  }
+
+  void _onLineButtonPressed() {
+    if (hasConfirmedUUID) {
+      _launchLineBot(); // 直接進入 LINE Bot 頁面
+    } else {
+      _showLineBotMessage(); // 顯示提示訊息
+    }
+  }
+
+  void _showLineBotMessage() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('注意'),
+          content: const Text('進入 LINE Bot 之前，請先去首頁左側確認自己的 UUID'),
+          actions: [
+            TextButton(
+              child: const Text('確定'),
+              onPressed: () {
+                setState(() {
+                  hasConfirmedUUID = true; // 設置已確認狀態
+                });
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  Future<void> _launchLineBot() async {
+    const url =
+        'https://line.me/R/ti/p/YOUR_LINE_BOT_ID'; // 修改為正確的 LINE Bot URL
+    if (!await launchUrl(Uri.parse(url))) {
+      throw '無法打開 $url';
+    }
   }
 
   ListTile _buildListTile(
@@ -225,14 +267,6 @@ class _StudentPageState extends State<StudentPage> {
     );
   }
 
-  Future<void> _launchLineBot() async {
-    const url =
-        'https://line.me/R/ti/p/YOUR_LINE_BOT_ID'; // 修改為正確的 LINE Bot URL
-    if (!await launchUrl(Uri.parse(url))) {
-      throw '無法打開 $url';
-    }
-  }
-
   void _logout(BuildContext context) {
     Navigator.pushReplacement(
       context,
@@ -247,7 +281,6 @@ class _StudentPageState extends State<StudentPage> {
     );
   }
 
-  // 顯示個人UUID的彈跳視窗
   void _showUUIDDialog(BuildContext context) {
     showDialog(
       context: context,
@@ -303,10 +336,9 @@ class _StudentPageState extends State<StudentPage> {
     );
   }
 
-  // 查詢用戶UUID
   Future<String?> _fetchUserUUID() async {
     if (widget.user['verification_code'] == null) {
-      return null; // 若 UUID 尚未生成，直接返回 null
+      return null;
     }
     final response = await http.get(
       Uri.parse(
@@ -320,7 +352,6 @@ class _StudentPageState extends State<StudentPage> {
     }
   }
 
-  // 生成UUID並上傳到資料庫
   Future<void> _generateUUID(BuildContext context, StateSetter setState) async {
     final response = await http.post(
       Uri.parse('http://zct.us.kg:5005/generate_code'),
@@ -334,8 +365,7 @@ class _StudentPageState extends State<StudentPage> {
     if (response.statusCode == 200) {
       final data = jsonDecode(response.body);
       setState(() {
-        widget.user['verification_code'] =
-            data['verification_code']; // 更新本地 UUID 變數
+        widget.user['verification_code'] = data['verification_code'];
       });
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('生成成功，您的 UUID 是：$userUUID')),

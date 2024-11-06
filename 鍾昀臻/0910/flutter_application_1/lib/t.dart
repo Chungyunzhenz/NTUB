@@ -124,7 +124,7 @@ class _TeacherPageState extends State<TeacherPage> {
           onTap: () => _navigateTo(context, const ManualPage()),
         ),
         ListTile(
-          leading: const Icon(Icons.book),
+          leading: const Icon(Icons.announcement),
           title: const Text('新增公告'),
           onTap: () => _navigateTo(context,
               const announce.AnnouncementPage(role: announce.UserRole.teacher)),
@@ -192,7 +192,7 @@ class _TeacherPageState extends State<TeacherPage> {
             SizedBox(height: 16.0),
             _buildFeatureCard(
               context,
-              icon: Icons.download,
+              icon: Icons.announcement,
               text: '新增公告',
               page: const announce.AnnouncementPage(
                   role: announce.UserRole.teacher),

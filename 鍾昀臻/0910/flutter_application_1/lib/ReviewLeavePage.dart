@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'package:collection/collection.dart';
 
 class ReviewLeavePage extends StatefulWidget {
   const ReviewLeavePage({super.key});
@@ -31,44 +32,42 @@ class _ReviewLeavePageState extends State<ReviewLeavePage> {
       _returnedRequests.clear();
       _completedRequests.clear();
 
-      final pendingResponse = await http.get(
-        Uri.parse(
-            'http://172.16.37.98:5002/getStudentReviews?review_status=審查中&title=請假單'),
-      );
-      final returnedResponse = await http.get(
-        Uri.parse(
-            'http://172.16.37.98:5002/getStudentReviews?review_status=退回&title=請假單'),
-      );
-      final completedResponse = await http.get(
-        Uri.parse(
-            'http://172.16.37.98:5002/getStudentReviews?review_status=通過&title=請假單'),
-      );
+      final responses = await Future.wait([
+        http.get(Uri.parse(
+            'http://zct.us.kg:5000/TgetStudentReviews?review_status=審查中&title=請假單')),
+        http.get(Uri.parse(
+            'http://zct.us.kg:5000/TgetStudentReviews?review_status=退回&title=請假單')),
+        http.get(Uri.parse(
+            'http://zct.us.kg:5000/TgetStudentReviews?review_status=通過&title=請假單')),
+      ]);
 
-      if (pendingResponse.statusCode == 200 &&
-          returnedResponse.statusCode == 200 &&
-          completedResponse.statusCode == 200) {
-        setState(() {
-          _pendingRequests = List<Map<String, dynamic>>.from(
-            json.decode(pendingResponse.body),
-          ).where((request) => request['title'] == '請假單').toList();
-
-          _returnedRequests = List<Map<String, dynamic>>.from(
-            json.decode(returnedResponse.body),
-          ).where((request) => request['title'] == '請假單').toList();
-
-          _completedRequests = List<Map<String, dynamic>>.from(
-            json.decode(completedResponse.body),
-          ).where((request) => request['title'] == '請假單').toList();
-
-          _isLoading = false;
-        });
+      if (responses.every((response) => response.statusCode == 200)) {
+        if (mounted) {
+          setState(() {
+            _pendingRequests =
+                List<Map<String, dynamic>>.from(json.decode(responses[0].body))
+                    .where((request) => request['title'] == '請假單')
+                    .toList();
+            _returnedRequests =
+                List<Map<String, dynamic>>.from(json.decode(responses[1].body))
+                    .where((request) => request['title'] == '請假單')
+                    .toList();
+            _completedRequests =
+                List<Map<String, dynamic>>.from(json.decode(responses[2].body))
+                    .where((request) => request['title'] == '請假單')
+                    .toList();
+            _isLoading = false;
+          });
+        }
       } else {
         throw Exception('加載請假單失敗');
       }
     } catch (e) {
-      setState(() {
-        _isLoading = false;
-      });
+      if (mounted) {
+        setState(() {
+          _isLoading = false;
+        });
+      }
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text('錯誤: $e'),
@@ -79,32 +78,36 @@ class _ReviewLeavePageState extends State<ReviewLeavePage> {
   }
 
   Future<void> _updateReviewStatus(int id, String status,
-      {String? reason}) async {
+      {String? returnReason}) async {
     try {
       final response = await http.post(
-        Uri.parse('http://172.16.37.98:5002/updateReviewStatus'),
+        Uri.parse('http://zct.us.kg:5000/TupdateReviewStatus'),
         headers: {'Content-Type': 'application/json'},
         body: json.encode({
           'id': id,
-          'new_status': status,
-          'return_reason': reason,
+          'review_status': status,
+          'return_reason': returnReason ?? '',
         }),
       );
 
       if (response.statusCode == 200) {
-        setState(() {
-          // 更新本地資料：從 pending 中移除，添加到相應的列表
-          final updatedRequest =
-              _pendingRequests.firstWhere((element) => element['id'] == id);
+        if (mounted) {
+          setState(() {
+            final updatedRequest = _pendingRequests
+                .firstWhereOrNull((element) => element['id'] == id);
 
-          if (status == '退回') {
-            _returnedRequests.add(updatedRequest);
-          } else if (status == '通過') {
-            _completedRequests.add(updatedRequest);
-          }
+            if (updatedRequest != null) {
+              _pendingRequests.removeWhere((element) => element['id'] == id);
 
-          _pendingRequests.removeWhere((element) => element['id'] == id);
-        });
+              if (status == '退回') {
+                updatedRequest['return_reason'] = returnReason;
+                _returnedRequests.add(updatedRequest);
+              } else if (status == '通過') {
+                _completedRequests.add(updatedRequest);
+              }
+            }
+          });
+        }
 
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
@@ -113,6 +116,7 @@ class _ReviewLeavePageState extends State<ReviewLeavePage> {
           ),
         );
       } else {
+        print('更新審核狀態失敗，狀態碼: ${response.statusCode}，回應: ${response.body}');
         throw Exception('更新審核狀態失敗');
       }
     } catch (e) {
@@ -142,8 +146,17 @@ class _ReviewLeavePageState extends State<ReviewLeavePage> {
           actions: [
             TextButton(
               onPressed: () async {
-                Navigator.of(context).pop();
-                await _updateReviewStatus(id, '退回', reason: reason);
+                if (reason.isNotEmpty) {
+                  Navigator.of(context).pop();
+                  await _updateReviewStatus(id, '退回', returnReason: reason);
+                } else {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: const Text('退回原因不能為空'),
+                      backgroundColor: Colors.red,
+                    ),
+                  );
+                }
               },
               child: Container(
                 decoration: BoxDecoration(
@@ -207,17 +220,13 @@ class _ReviewLeavePageState extends State<ReviewLeavePage> {
       itemCount: requests.length,
       itemBuilder: (context, index) {
         final request = requests[index];
-        if (request['title'] == '請假單') {
-          return _buildLeaveRequestCard(
-            context,
-            request['title'],
-            request['description'],
-            request,
-            status,
-          );
-        } else {
-          return const SizedBox.shrink();
-        }
+        return _buildLeaveRequestCard(
+          context,
+          request['title'],
+          request['description'] ?? '',
+          request,
+          status,
+        );
       },
     );
   }

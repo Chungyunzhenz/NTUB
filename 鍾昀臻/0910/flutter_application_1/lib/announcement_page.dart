@@ -30,6 +30,9 @@ class AnnouncementPageState extends State<AnnouncementPage> {
 
   Future<void> _fetchAnnouncements() async {
     try {
+      setState(() {
+        isLoading = true;
+      });
       final response =
           await http.get(Uri.parse('http://zct.us.kg:5000/announcement'));
       if (response.statusCode == 200) {
@@ -39,40 +42,17 @@ class AnnouncementPageState extends State<AnnouncementPage> {
             announcements =
                 List<Map<String, dynamic>>.from(data['announcement']);
             _sortAnnouncements();
-            isLoading = false;
           });
         }
       } else {
-        if (mounted) {
-          setState(() {
-            isLoading = false;
-          });
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(
-                'Failed to load announcements. Server error.',
-                style: TextStyle(color: Colors.white),
-              ),
-              backgroundColor: Colors.red,
-            ),
-          );
-        }
+        _showSnackbar('無法載入公告，伺服器錯誤', Colors.red);
       }
     } catch (e) {
-      if (mounted) {
-        setState(() {
-          isLoading = false;
-        });
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(
-              'Failed to load announcements. Network error.',
-              style: TextStyle(color: Colors.white),
-            ),
-            backgroundColor: Colors.red,
-          ),
-        );
-      }
+      _showSnackbar('無法載入公告，網路錯誤: $e', Colors.red);
+    } finally {
+      setState(() {
+        isLoading = false;
+      });
     }
   }
 
@@ -80,7 +60,7 @@ class AnnouncementPageState extends State<AnnouncementPage> {
     required String purpose,
     required String content,
     required String sender,
-  }) async { 
+  }) async {
     try {
       final uri = Uri.parse('http://zct.us.kg:5000/save_announcement');
       final response = await http.post(
@@ -94,37 +74,71 @@ class AnnouncementPageState extends State<AnnouncementPage> {
       );
 
       if (response.statusCode == 200) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(
-              'Announcement saved successfully.',
-              style: TextStyle(color: Colors.white),
-            ),
-            backgroundColor: Colors.green,
-          ),
-        );
-        _fetchAnnouncements();
+        _showSnackbar('公告已成功儲存', Colors.green);
+        await _fetchAnnouncements();
       } else {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(
-              'Failed to save announcement.',
-              style: TextStyle(color: Colors.white),
-            ),
-            backgroundColor: Colors.red,
-          ),
-        );
+        final responseData = jsonDecode(response.body);
+        if (responseData.containsKey('error')) {
+          _showSnackbar('錯誤: ${responseData['error']}', Colors.red);
+        } else {
+          _showSnackbar('儲存公告失敗，狀態碼: ${response.statusCode}', Colors.red);
+        }
       }
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(
-            'Failed to save announcement. Network error.',
-            style: TextStyle(color: Colors.white),
-          ),
-          backgroundColor: Colors.red,
-        ),
+      _showSnackbar('儲存公告失敗，網路錯誤: $e', Colors.red);
+    }
+  }
+
+  Future<void> _updateAnnouncement({
+    required int id,
+    required String purpose,
+    required String content,
+  }) async {
+    try {
+      final uri = Uri.parse('http://zct.us.kg:5000/update_announcement/$id');
+      final response = await http.put(
+        uri,
+        headers: {'Content-Type': 'application/json'},
+        body: jsonEncode({
+          'Purpose': purpose,
+          'content': content,
+        }),
       );
+
+      if (response.statusCode == 200) {
+        _showSnackbar('公告已成功更新', Colors.green);
+        await _fetchAnnouncements();
+      } else {
+        final responseData = jsonDecode(response.body);
+        if (responseData.containsKey('error')) {
+          _showSnackbar('錯誤: ${responseData['error']}', Colors.red);
+        } else {
+          _showSnackbar('更新公告失敗，狀態碼: ${response.statusCode}', Colors.red);
+        }
+      }
+    } catch (e) {
+      _showSnackbar('更新公告失敗，網路錯誤: $e', Colors.red);
+    }
+  }
+
+  Future<void> _deleteAnnouncement(int id) async {
+    try {
+      final uri = Uri.parse('http://zct.us.kg:5000/delete_announcement/$id');
+      final response = await http.delete(uri);
+
+      if (response.statusCode == 200) {
+        _showSnackbar('公告已成功刪除', Colors.green);
+        await _fetchAnnouncements();
+      } else {
+        final responseData = jsonDecode(response.body);
+        if (responseData.containsKey('error')) {
+          _showSnackbar('錯誤: ${responseData['error']}', Colors.red);
+        } else {
+          _showSnackbar('刪除公告失敗，狀態碼: ${response.statusCode}', Colors.red);
+        }
+      }
+    } catch (e) {
+      _showSnackbar('刪除公告失敗，網路錯誤: $e', Colors.red);
     }
   }
 
@@ -200,25 +214,17 @@ class AnnouncementPageState extends State<AnnouncementPage> {
                 ),
               ),
               child: const Text('保存'),
-              onPressed: () {
+              onPressed: () async {
                 if (purposeController.text.isNotEmpty &&
                     contentController.text.isNotEmpty) {
-                  _saveAnnouncement(
+                  Navigator.of(context).pop();
+                  await _saveAnnouncement(
                     purpose: purposeController.text,
                     content: contentController.text,
                     sender: selectedSender,
                   );
-                  Navigator.of(context).pop();
                 } else {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      content: Text(
-                        '請填寫所有字段',
-                        style: TextStyle(color: Colors.white),
-                      ),
-                      backgroundColor: Colors.orange,
-                    ),
-                  );
+                  _showSnackbar('請填寫所有字段', Colors.orange);
                 }
               },
             ),
@@ -228,12 +234,97 @@ class AnnouncementPageState extends State<AnnouncementPage> {
     );
   }
 
+  void _showEditAnnouncementDialog(Map<String, dynamic> announcement) {
+    TextEditingController purposeController =
+        TextEditingController(text: announcement['Purpose']);
+    TextEditingController contentController =
+        TextEditingController(text: announcement['content']);
+
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(15.0),
+          ),
+          title: const Text('編輯公告'),
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: <Widget>[
+                TextField(
+                  controller: purposeController,
+                  decoration: const InputDecoration(
+                    labelText: "公告標題",
+                    border: OutlineInputBorder(),
+                  ),
+                ),
+                const SizedBox(height: 16),
+                TextField(
+                  controller: contentController,
+                  decoration: const InputDecoration(
+                    labelText: "公告内容",
+                    border: OutlineInputBorder(),
+                  ),
+                  maxLines: 5,
+                ),
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: const Text('取消'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.teal,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10.0),
+                ),
+              ),
+              child: const Text('保存'),
+              onPressed: () async {
+                if (purposeController.text.isNotEmpty &&
+                    contentController.text.isNotEmpty) {
+                  Navigator.of(context).pop();
+                  await _updateAnnouncement(
+                    id: announcement['id'],
+                    purpose: purposeController.text,
+                    content: contentController.text,
+                  );
+                } else {
+                  _showSnackbar('請填寫所有字段', Colors.orange);
+                }
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void _showSnackbar(String message, Color backgroundColor) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(
+          message,
+          style: const TextStyle(color: Colors.white),
+        ),
+        backgroundColor: backgroundColor,
+      ),
+    );
+  }
+
   void _sortAnnouncements() {
-    announcements.sort((a, b) {
-      final DateFormat inputFormat = DateFormat('yyyy-MM-dd HH:mm:ss');
-      final DateTime timeA = inputFormat.parse(a['time']);
-      final DateTime timeB = inputFormat.parse(b['time']);
-      return isAscending ? timeA.compareTo(timeB) : timeB.compareTo(timeA);
+    setState(() {
+      announcements.sort((a, b) {
+        final DateFormat inputFormat = DateFormat('yyyy-MM-dd HH:mm:ss');
+        final DateTime timeA = inputFormat.parse(a['time']);
+        final DateTime timeB = inputFormat.parse(b['time']);
+        return isAscending ? timeA.compareTo(timeB) : timeB.compareTo(timeA);
+      });
     });
   }
 
@@ -241,8 +332,15 @@ class AnnouncementPageState extends State<AnnouncementPage> {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) =>
-            AnnouncementDetailPage(announcement: announcement),
+        builder: (context) => AnnouncementDetailPage(
+          announcement: announcement,
+          onDelete: () async {
+            await _deleteAnnouncement(announcement['id']);
+            Navigator.of(context).pop();
+          },
+          onEdit: () => _showEditAnnouncementDialog(announcement),
+          role: widget.role, // 傳遞角色
+        ),
       ),
     );
   }
@@ -330,11 +428,26 @@ class AnnouncementPageState extends State<AnnouncementPage> {
                                       fontSize: 14,
                                     ),
                                   ),
-                                  const Icon(
-                                    Icons.arrow_forward_ios,
-                                    size: 16,
-                                    color: Colors.teal,
-                                  ),
+                                  if (widget.role != UserRole.student)
+                                    Row(
+                                      children: [
+                                        IconButton(
+                                          icon: const Icon(Icons.edit,
+                                              color: Colors.blue),
+                                          onPressed: () =>
+                                              _showEditAnnouncementDialog(
+                                                  announcement),
+                                        ),
+                                        IconButton(
+                                          icon: const Icon(Icons.delete,
+                                              color: Colors.red),
+                                          onPressed: () async {
+                                            await _deleteAnnouncement(
+                                                announcement['id']);
+                                          },
+                                        ),
+                                      ],
+                                    ),
                                 ],
                               ),
                             ],
@@ -350,8 +463,17 @@ class AnnouncementPageState extends State<AnnouncementPage> {
 
 class AnnouncementDetailPage extends StatelessWidget {
   final Map<String, dynamic> announcement;
+  final VoidCallback onDelete;
+  final VoidCallback onEdit;
+  final UserRole role; // 新增角色參數
 
-  const AnnouncementDetailPage({super.key, required this.announcement});
+  const AnnouncementDetailPage({
+    super.key,
+    required this.announcement,
+    required this.onDelete,
+    required this.onEdit,
+    required this.role, // 傳入角色
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -365,6 +487,21 @@ class AnnouncementDetailPage extends StatelessWidget {
       appBar: AppBar(
         title: const Text('公告詳情'),
         backgroundColor: Colors.teal,
+        actions: [
+          if (role != UserRole.student) // 根據角色顯示按鈕
+            IconButton(
+              icon: const Icon(Icons.edit),
+              onPressed: onEdit,
+            ),
+          if (role != UserRole.student) // 根據角色顯示按鈕
+            IconButton(
+              icon: const Icon(Icons.delete),
+              onPressed: () {
+                Navigator.of(context).pop();
+                onDelete();
+              },
+            ),
+        ],
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),

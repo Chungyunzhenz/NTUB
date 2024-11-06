@@ -68,6 +68,17 @@ class _ReviewListPageState extends State<ReviewListPage> {
       child: Scaffold(
         appBar: AppBar(
           title: Text('查看所有審查進度'),
+          actions: [
+            IconButton(
+              icon: Icon(Icons.refresh),
+              onPressed: () async {
+                await fetchReviews();
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(content: Text('列表已更新')),
+                );
+              },
+            ),
+          ],
           bottom: TabBar(
             indicatorColor: Colors.white,
             tabs: [
@@ -80,13 +91,16 @@ class _ReviewListPageState extends State<ReviewListPage> {
         ),
         body: isLoading
             ? Center(child: CircularProgressIndicator())
-            : TabBarView(
-                children: [
-                  buildReviewList(reviewingReviews, Colors.teal[100]!),
-                  buildReviewList(rejectedReviews, Colors.red[100]!),
-                  buildReviewList(completedReviews, Colors.green[100]!),
-                  buildReviewList(withdrawnReviews, Colors.orange[100]!),
-                ],
+            : RefreshIndicator(
+                onRefresh: fetchReviews,
+                child: TabBarView(
+                  children: [
+                    buildReviewList(reviewingReviews, Colors.teal[100]!),
+                    buildReviewList(rejectedReviews, Colors.red[100]!),
+                    buildReviewList(completedReviews, Colors.green[100]!),
+                    buildReviewList(withdrawnReviews, Colors.orange[100]!),
+                  ],
+                ),
               ),
       ),
     );
@@ -161,15 +175,18 @@ class _ReviewListPageState extends State<ReviewListPage> {
   void _handleWithdraw(Map<String, dynamic> review) async {
     try {
       final response = await http.post(
-        Uri.parse('http://zct.us.kg:5000/updateReviewStatus'),
+        Uri.parse('http://zct.us.kg:5000/withdrawReview'),
         headers: {'Content-Type': 'application/json'},
-        body: jsonEncode({'id': review['id'], 'new_status': '撤回'}),
+        body: jsonEncode({'id': review['id']}),
       );
 
       if (response.statusCode == 200) {
         // 撤回成功後，重新獲取數據更新 UI
         await fetchReviews();
         print('Review withdrawn successfully');
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('審查已成功撤回')),
+        );
       } else {
         print('Failed to withdraw review: ${response.statusCode}');
       }

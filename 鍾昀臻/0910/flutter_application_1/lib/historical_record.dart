@@ -10,7 +10,7 @@ class HistoryPage extends StatefulWidget {
 class _HistoryPageState extends State<HistoryPage> {
   List<dynamic> historyData = [];
   final TextEditingController keywordController = TextEditingController();
-  String searchType = 'academic_year'; // 默认搜索类型
+  String searchType = 'academic_year'; // 默認搜尋類型
   bool isLoading = true;
   String errorMessage = '';
 
@@ -28,8 +28,8 @@ class _HistoryPageState extends State<HistoryPage> {
 
   Future<void> fetchHistoryData() async {
     try {
-      final response = await http
-          .get(Uri.parse('http://zct.us.kg:5000/history')); //zct.us.kg:5000
+      final response =
+          await http.get(Uri.parse('http://zct.us.kg:5000/api/history'));
 
       if (response.statusCode == 200) {
         setState(() {
@@ -58,10 +58,8 @@ class _HistoryPageState extends State<HistoryPage> {
     });
 
     try {
-      final response = await http.post(
-        Uri.parse('http://zct.us.kg:5000/filter_history'),
-        headers: {'Content-Type': 'application/json'},
-        body: json.encode({'type': searchType, 'keyword': keyword}),
+      final response = await http.get(
+        Uri.parse('http://zct.us.kg:5000/api/history?$searchType=$keyword'),
       );
 
       if (response.statusCode == 200) {
@@ -75,7 +73,6 @@ class _HistoryPageState extends State<HistoryPage> {
           isLoading = false;
         });
         _showSnackbar('Failed to search history data');
-        print('Error: ${response.statusCode} - ${response.reasonPhrase}');
       }
     } catch (e) {
       setState(() {
@@ -83,7 +80,6 @@ class _HistoryPageState extends State<HistoryPage> {
         isLoading = false;
       });
       _showSnackbar('Error searching history data');
-      print('Exception caught: $e');
     }
   }
 
